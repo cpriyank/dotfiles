@@ -1,0 +1,56 @@
+general {
+        output_format = "i3bar"
+        colors = true
+        interval = 5
+}
+
+order += "cpu_temperature 0"
+order += "cpu_usage"
+order += "disk /home"
+order += "wireless wlp1s0"
+order += "mpd"
+order += "battery 1"
+order += "volume master"
+order += "time"
+
+wireless wlp1s0 {
+        format_up = "W: %quality at (%essid)"
+        format_down = "W: down"
+				color_good = "#f4ff81"
+}
+
+battery 1 {
+        format = "%status %percentage"
+        format_down = "No battery"
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 10
+}
+
+cpu_usage {
+    format = "CPU: %usage"
+}
+
+mpd {
+		color_good = "#66cccc"
+    format_up = "%title"
+    format_down = " - "
+}
+
+cpu_temperature 0 {
+        format = "T: %degrees °C"
+}
+
+disk /home {
+        format = "%free"
+}
+
+time {
+    format = "%m-%d %H:%M"
+}
+
+volume master {
+    format = "♪: %volume"
+    device = "default"
+    mixer = "Master"
+    mixer_idx = 0
+}

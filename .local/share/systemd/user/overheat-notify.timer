@@ -1,0 +1,10 @@
+[Unit]
+Description=Notify on overheating
+
+[Timer]
+OnStartupSec=5min
+OnUnitActiveSec=20s
+Unit=overheat-notify.service
+
+[Install]
+WantedBy=default.target

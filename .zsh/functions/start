@@ -1,0 +1,2 @@
+# Start a system service
+sudo systemctl start $1.service

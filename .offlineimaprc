@@ -1,0 +1,126 @@
+[general]
+ui=ttyui
+accounts = outlook,gmail,penn
+pythonfile=~/.mutt/offlineimap.py
+fsync = False
+status_backend = sqlite
+
+
+[Account outlook]
+# Minutes between syncs
+# autorefresh = 15
+# Number of quick-syncs between autorefreshes. Quick-syncs do not update if the
+# only changes were to IMAP flags
+# quick = 30
+localrepository = outlook-Local
+remoterepository = outlook-Remote
+
+[Repository outlook-Local]
+type = Maildir
+localfolders = ~/.mutt/mail/outlook
+
+[Repository outlook-Remote]
+# Instead of closing the connection once a sync is complete, offlineimap will
+# send empty data to the server to hold the connection open. A value of 60
+# attempts to hold the connection for a minute between syncs (both quick and
+# autorefresh).This setting has no effect if autorefresh and holdconnectionopen
+# are not both set.
+keepalive = 60
+# OfflineIMAP normally closes IMAP server connections between refreshes if
+# the global option autorefresh is specified.  If you wish it to keep the
+# connection open, set this to true. This setting has no effect if autorefresh
+# is not set.
+holdconnectionopen = yes
+maxconnections = 3
+type = IMAP
+remoteuser = priyank.sc@outlook.com
+remotehost = imap-mail.outlook.com
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+remotepasseval = get_pass("Outlook")
+realdelete = no
+folderfilter = lambda folder: folder in ['Inbox', 'Drafts', 'Sent']
+
+
+[Account gmail]
+localrepository = gmail-Local
+remoterepository = gmail-Remote
+
+[Repository gmail-Local]
+type = Maildir
+localfolders = ~/.mutt/mail/gmail
+nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
+                            'sent':    '[Gmail]/Sent Mail',
+                            'flagged': '[Gmail]/Starred',
+                            'trash':   '[Gmail]/Trash',
+                            'archive': '[Gmail]/All Mail',
+                           }.get(folder, folder)
+
+[Repository gmail-Remote]
+type = Gmail
+remoteuser = priyank.chaudhary90@gmail.com
+remotepasseval = get_pass("Gmail")
+realdelete = no
+maxconnections = 3
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
+                            '[Gmail]/Sent Mail': 'sent',
+                            '[Gmail]/Starred':   'flagged',
+                            '[Gmail]/Trash':     'trash',
+                            '[Gmail]/All Mail':  'archive',
+                           }.get(folder, folder)
+folderfilter = lambda folder: folder not in ['[Gmail]/Spam',
+                                         '[Gmail]/Trash',
+                                         '[Gmail]/All Mail',
+																				 'Bills',
+																				 'Phone',
+																				 'Penn',
+																				 'Trash',
+																				 'Bijness',
+																				 '[Gmail]/Chats',
+																				 '[Gmail]/Important']
+
+
+[Account penn]
+localrepository = penn-Local
+remoterepository = penn-Remote
+
+[Repository penn-Local]
+type = Maildir
+localfolders = ~/.mutt/mail/penn
+nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
+                            'sent':    '[Gmail]/Sent Mail',
+                            'flagged': '[Gmail]/Starred',
+                            'trash':   '[Gmail]/Trash',
+                            'archive': '[Gmail]/All Mail',
+														'important': '[Gmail]/Important'
+                           }.get(folder, folder)
+
+[Repository penn-Remote]
+type = Gmail
+remoteuser = priyc@seas.upenn.edu
+remotepasseval = get_pass("Penn")
+realdelete = no
+maxconnections = 3
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
+                            '[Gmail]/Sent Mail': 'sent',
+                            '[Gmail]/Starred':   'flagged',
+                            '[Gmail]/Trash':     'trash',
+                            '[Gmail]/All Mail':  'archive',
+														'[Gmail]/Important': 'important'
+                           }.get(folder, folder)
+folderfilter = lambda folder: folder not in ['[Gmail]/Spam',
+                                         '[Gmail]/Trash',
+                                         '[Gmail]/All Mail',
+																				 'Trash',
+																				 '[Gmail]/Important']
+
+
+[mbnames]
+enabled = yes
+filename = ~/.mutt/mailboxes
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"

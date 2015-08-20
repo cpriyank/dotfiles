@@ -1,0 +1,1 @@
+sudo systemctl restart $1.service

@@ -1,0 +1,3 @@
+# vim: ft=muttrc
+macro index ,p      "<pipe-message>cat > ~/"   "save message as"
+macro index <space> "<collapse-thread>"        "[un]collapse thread"
