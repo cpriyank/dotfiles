@@ -1,0 +1,14 @@
+set from      = "priyc@seas.upenn.edu"
+set sendmail = "/usr/bin/msmtp -a penn"
+set mbox      = "+penn/archive"
+set postponed = "+penn/drafts"
+
+color status blue default
+
+macro index D \
+    "<save-message>+penn/trash<enter>" \
+    "move message to the trash"
+
+macro index S \
+    "<save-message>+penn/spam<enter>"  \
+        "mark message as spam"

@@ -1,0 +1,8 @@
+auto-center = yes
+crossfade-time = 5
+second-column = yes
+
+welcome-screen-list = yes
+scroll = yes
+
+enable-colors = yes

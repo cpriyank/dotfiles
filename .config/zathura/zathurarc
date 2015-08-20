@@ -1,0 +1,23 @@
+set pages-per-row 1
+
+map = zoom in
+map - zoom out
+map + zoom best-fit
+map f zoom width
+
+set incremental-search
+set adjust-open width
+set font "Source Code Pro 9"
+
+# set default-bg "#000000"
+# set default-fg "#FFFFFF"
+
+set statusbar-bg "#FDF6E3"
+set statusbar-fg "#671800"
+
+# set inputbar-bg "#000000"
+# set inputbar-fg "#FFFFFF"
+
+set recolor-darkcolor "#671800"
+set recolor-lightcolor "#FDF6E3"
+# set recolor true

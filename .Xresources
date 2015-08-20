@@ -1,0 +1,72 @@
+!-- Color scheme --!
+#include ".config/colors/solarized"
+
+
+!-- Xcursor --!
+Xcursor.theme: Vanilla-DMZ
+Xcursor.size:  22
+
+
+!-- Xft --!
+Xft.dpi: 96
+Xft.antialias: true
+Xft.rgba: rgb
+Xft.hinting: true
+Xft.hintstyle:hintslight
+Xft.lcdfilter: lcddefault
+
+
+!-- Urxvt --!
+URxvt.font:                xft:Consolas:size=11:antialias=false
+URxvt.scrollBar:           false
+URxvt.internalBorder:      2
+URxvt.urgentOnBell:        true
+URxvt.cursorBlink:         true
+! URxvt.perl-ext-common:     default
+URxvt.matcher.button:      1
+! do not scroll with output
+URxvt*scrollTtyOutput: false
+
+! scroll in relation to buffer (with mouse scroll or Shift+Page Up)
+URxvt*scrollWithBuffer: true
+
+! scroll back to the bottom on keypress
+URxvt*scrollTtyKeypress: true
+
+
+!-- Xterm --!
+! Adding the following line to your resource file will then make xterm
+! interpret all incoming data as UTF-8 encoded
+XTerm*locale: true
+xterm*termName: xterm-256color
+xterm*faceName:Source Code Pro:size=11:antialias=false
+! When TERM is not set explicitly, color schemes for some programs, such as
+! vim, may not appear until a key is pressed or some other input occurs. This
+! can be remedied with this resource setting
+Xterm*saveLines: 4096
+XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+xterm*borderWidth: 0
+
+!-- Rofi --!
+rofi.opacity: 90
+rofi.width: 50
+rofi.lines: 5
+rofi.columns: 1
+rofi.font: monospace 9
+rofi.fg: #d64937
+rofi.bg: #2d2d2d
+rofi.hlfg: #2d2d2d
+rofi.hlbg: #d64937
+rofi.bc: #d64937
+rofi.bw: 2
+rofi.loc: 0
+rofi.padding: 2
+rofi.yoffset: -2
+rofi.xoffset: 0
+rofi.fixed-num-lines: false
+rofi.hmode: false
+rofi.terminal: xterm
+rofi.ssh-set-title: true
+rofi.key-window: F12
+rofi.key-run: mod1+F2
+rofi.key-ssh: mod1+F3

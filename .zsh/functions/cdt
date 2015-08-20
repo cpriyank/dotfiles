@@ -1,0 +1,3 @@
+# Create temporary directory and cd to it
+builtin cd "$(mktemp -d)"
+builtin pwd

@@ -1,0 +1,5 @@
+emulate -L zsh
+for file in *
+do
+mv $file ${file}(:r)
+done

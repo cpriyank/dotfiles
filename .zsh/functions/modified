@@ -1,0 +1,3 @@
+# List files modified within the last n (defaults to 1) days
+emulate -L zsh
+print -l -- *(c-${1:-1})

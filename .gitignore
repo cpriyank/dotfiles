@@ -1,0 +1,18 @@
+.aria2/dht.dat
+.gnupg/*
+!.gnupg/gpg.conf
+
+# directory files created by KDE
+.directory
+
+# Top secret!
+.ssh/authorized_keys
+.ssh/id_*
+.ssh/*.pem
+.ssh/known_hosts
+
+# vim
+.swp
+.swo
+.*.swp
+.*.swo

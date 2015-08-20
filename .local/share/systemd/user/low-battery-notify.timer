@@ -1,0 +1,10 @@
+[Unit]
+Description=Notify on low battery
+
+[Timer]
+OnStartupSec=2min
+OnUnitActiveSec=1min
+Unit=low-battery-notify.service
+
+[Install]
+WantedBy=default.target

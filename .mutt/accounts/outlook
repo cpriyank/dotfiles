@@ -1,0 +1,14 @@
+set from     = "priyank.sc@outlook.com"
+set sendmail = "/usr/bin/msmtp -a outlook"
+set mbox      = "+outlook/archive"
+set postponed = "+outlook/drafts"
+
+color status green default
+
+macro index D \
+    "<save-message>+outlook/trash<enter>" \
+    "move message to the trash"
+
+macro index S \
+    "<save-message>+outlook/junk<enter>"  \
+        "mark message as spam"

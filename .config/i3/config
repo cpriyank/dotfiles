@@ -1,0 +1,227 @@
+# Super key as $mod
+set $mod Mod1
+set $Alt Mod4
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+# This font is widely installed, provides lots of unicode glyphs,
+# right-to-left
+# text rendering and scalability on retina/hidpi displays (thanks to pango).
+font pango:Aller 9
+
+# change container layout (stacked, tabbed, default)
+bindsym $mod+s layout stacking
+bindsym $mod+a layout tabbed
+bindsym $mod+d layout default
+
+# change focus between tiling / floating windows
+bindsym $mod+Space focus mode_toggle
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# kill focused window
+bindsym $mod+x kill
+bindsym $mod+F4 kill
+# The middle button over a titlebar also kills the window
+bindsym --release button2 kill
+# The middle button and a modifer over any part of the window kills the window
+bindsym --whole-window $mod+button2 kill
+
+# change focus
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+h focus left
+
+# Move focused window                                       ($mod+Shift+[hjkl])
+bindsym $mod+Shift+J move down
+bindsym $mod+Shift+K move up
+bindsym $mod+Shift+L move right
+bindsym $mod+Shift+H move left
+
+# Resize a focused window by $mod+r followed by a shortcur key
+mode "resize" {
+# Changes are applied on key press
+  bindsym h resize shrink width 10 px or 10 ppt
+  bindsym k resize grow height 10 px or 10 ppt
+  bindsym j resize shrink height 10 px or 10 ppt
+  bindsym l resize grow width 10 px or 10 ppt
+
+  # Enter or Escape to go back to normal
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# split in horizontal orientation
+bindsym $mod+c split h
+
+# Split in vertical orientation
+bindsym $mod+v split v
+
+# Toggle between vertical and horizontal split layout
+bindsym $mod+i layout toggle split
+
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+# Reload the configuration file. I rarely use this.
+bindsym $mod+semicolon reload
+
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# log out prompt
+set $mode_system (l)ock, (e)logout, (s)uspend, (h)ibernate, (q)uick hibernate, (r)eboot, Shift+(s)hutdown
+mode "$mode_system" {
+  bindsym l       exec --no-startup-id i3lock -c 111111 -d
+  bindsym e       exec --no-startup-id i3-msg exit && pkill X, mode "default"
+  bindsym s       exec --no-startup-id i3lock && notify-send "SYSTEM: Suspending..." && systemctl suspend, mode "default"
+  bindsym h       exec --no-startup-id i3lock && notify-send "SYSTEM: Hibernating..." && systemctl hibernate, mode "default"
+  bindsym r       exec --no-startup-id systemctl reboot, mode "default"
+  bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $Alt+x mode "$mode_system"
+
+# Pulse Audio controls
+# For PulseAudio
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse set Master 5%+ unmute
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse set Master 5%- unmute
+
+# mpc controls
+bindsym Shift+XF86AudioLowerVolume exec mpc prev
+bindsym Shift+XF86AudioRaiseVolume exec mpc next
+bindsym Shift+XF86AudioMute exec mpc toggle
+
+# Brightness controls
+bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 -time 0
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 -time 0
+
+# Screenshot
+bindsym --release Print exec --no-startup-id scrot
+bindsym --release Shift+Print exec --no-startup-id scrot -s
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# switch to next and previous workspaces
+bindsym $mod+left workspace prev
+bindsym $mod+right workspace next
+
+# scratchpad
+bindsym $mod+o move scratchpad
+bindsym $mod+m scratchpad show
+
+#
+# window rules
+#
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+
+# no border in those windows
+for_window [class="(?i)^firefox$"] border 1pixel
+for_window [class="(?i)^chromium$"] border 1pixel
+for_window [class="(?i)^mpv$"] border 1pixel
+for_window [class="(?i)^xterm$"] border 1pixel
+for_window [class="(?i)^urxvt$"] border 1pixel
+for_window [class="(?i)^telegram$"] border 1pixel
+for_window [class="(?i)^zathura$"] border 1pixel
+for_window [class="(?i)^thunar$"] border 1pixel
+
+# windows that should always float
+for_window [class="(?i)^lxappearance$"] floating enable
+for_window [class="(?i)^plank$"] floating enable
+for_window [class="(?i)^gimp$"] floating enable
+for_window [class="(?i)^viewnior$"] floating enable
+
+# programs with specific workspaces
+# assign [class="(?i)^firefox$"] 1
+# assign [class="(?i)^thunar$"] 2
+# assign [class="(?i)^chromium$"] 3
+
+#
+# Window Navigation (From slackword.net)
+#
+# switch back and forth between the last two workspaces
+bindsym $mod+Tab workspace back_and_forth
+# Assume you are on workspace "1: www" and switch to "2: IM" using mod+2
+# because somebody sent you a message. You don’t need to remember where you
+# came from now, you can just press $mod+2 again to switch back to "1: www".
+workspace_auto_back_and_forth yes
+# Move window back and forth
+bindsym $mod+Shift+Tab move container to workspace back_and_forth; workspace back_and_forth
+
+# Hide edge borders (vertical , horizontal, or both)
+hide_edge_borders both
+
+#
+# Launchers
+#
+bindsym $Alt+f exec thunar
+bindsym $Alt+e exec firefox
+bindsym $Alt+Return exec --no-startup-id urxvtc
+bindsym $Alt+p exec --no-startup-id xterm
+bindsym $Alt+t exec transmission-gtk
+bindsym $Alt+m exec thunderbird
+bindsym $Alt+c exec chromium
+
+#
+# i3bar
+#
+bar {
+    status_command i3status --config ~/.config/i3/i3status
+    position top
+    mode hide
+    modifier $Alt
+    colors {
+        background      #2d2d2d
+        statusline      #dedede
+        separator       #2d2d2d
+
+        focused_workspace  #d64937 #d64937 #dedede
+        active_workspace   #2d2d2d #5f676a #dedede
+        inactive_workspace #2d2d2d #2d2d2d #eeeeee
+        urgent_workspace   #333333 #900000 #ffffff
+    }
+}
+
+# <clientclass>             <border> <background>   <text>
+client.focused              #d64937     #d64937     #dedede
+client.unfocused            #333333     #333333     #dedede
+client.focused_inactive     #333333     #333333     #dedede
+client.urgent               #383a3b     #383a3b     #ee0000
+
+# autostart applications, then switch back to workspace 3
+# (Being a command-line utility, i3-msg does not support startup notifications,
+# hence the exec --no-startup-id.)
+# (Starting firefox with i3’s exec command is important in order to make i3
+# create a startup notification context, without which the firefox window(s)
+# cannot be matched onto the workspace on which the command was started and
+# opens in focused workspace rather than the one where exec command was issued)
+exec --no-startup-id i3-msg 'workspace 1; exec firefox;'
+exec clipit
+exec --no-startup-id i3-msg 'workspace 2; exec thunar; workspace 3'
