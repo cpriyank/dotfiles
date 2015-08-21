@@ -4,6 +4,9 @@ alias music='ncmpc --config ~/.config/ncmpc/config'
 
 alias v='vim'
 
+# Allow alias expansion after sudo
+alias sudo='sudo '
+
 # Open vim in readonly mode
 alias vr='vim -R'
 
