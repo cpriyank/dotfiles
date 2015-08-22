@@ -28,7 +28,7 @@ setopt HIST_VERIFY
 
 ## Keybindings----------------------------------------------------------------
 bindkey '^R' history-incremental-search-backward
-bindkey -M viins 'jj' vi-cmd-mode
+bindkey -M viins 'jk' vi-cmd-mode
 
 
 ## Load the new autocompletion system-----------------------------------------
