@@ -1,4 +1,4 @@
-# Use vi keybindings for line editing-----------------------------------------
+# Use vi keybindings for line editing (Default if $EDITOR *contains* vi)------
 bindkey -v
 
 
@@ -27,7 +27,8 @@ setopt HIST_VERIFY
 
 
 ## Keybindings----------------------------------------------------------------
-bindkey "\e/" history-incremental-search-backward
+bindkey '^R' history-incremental-search-backward
+bindkey -M viins 'jj' vi-cmd-mode
 
 
 ## Load the new autocompletion system-----------------------------------------
