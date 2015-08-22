@@ -44,11 +44,11 @@ set background=dark
 set t_Co=256 " Use 256 colors
 
 try  " Don't use a color scheme if not found
-  colorscheme solarized
+  colorscheme Tomorrow-Night
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
-set noshowmode " Don't show the mode you're in. Lightline has your back
+set noshowmode " Don't show the mode you're in. Vim-airline has your back
 set number " Show line numbers
 set relativenumber " Use relative line numbers
 
@@ -63,14 +63,6 @@ set list
 set title " Show the filename in the window titlebar
 set cursorline " Highlight current line
 set nowrap " Don't wrap lines by default
-
-" Move more naturally up/down when wrapping is enabled.
-nnoremap j gj
-nnoremap k gk
-
-if has('gui_running') " Use GUI fonts for lightline
-  set guifont=Inconsolata for Powerline:h11 columns=80 lines=10
-endif
 
 
 " Essentials------------------------------------------------------------
@@ -174,11 +166,17 @@ let g:tex_flavor = "latex"
 " vim
 autocmd vimrc BufRead .vimrc,*.vim set keywordprg=:help
 
-" markdown
+" Treat md as markdown
 autocmd vimrc BufRead,BufNewFile *.md set filetype=markdown
 
 
 " Vimprovments----------------------------------------------------------
+" Move more naturally up/down when wrapping is enabled.
+nnoremap j gj
+nnoremap k gk
+
+" Use jj (and the other default <C-[>) to go to the normal mode
+inoremap jj <ESC>
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
@@ -189,10 +187,6 @@ function! StripWhitespace()
 	call setreg('/', old_query)
 endfunction
 noremap <leader>ss :call StripWhitespace()<CR>
-
-" Don't move cursor while scrolling
-" noremap <C-k> 14j14<C-e>
-" noremap <C-l> 14k14<C-y>
 
 " New mappings for page up and down
 map <PageUp> <C-U>
@@ -212,7 +206,6 @@ autocmd vimrc BufReadPost *
 
 
 " Plugins and their respective configuration----------------------------
-
 " NERDTree
 let NERDTreeShowHidden = 1
 "let NERDTreeMouseMode = 2
