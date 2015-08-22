@@ -178,6 +178,9 @@ nnoremap k gk
 " Use jj (and the other default <C-[>) to go to the normal mode
 inoremap jj <ESC>
 
+" Toggle spelling visuals with <leader>s
+nnoremap <leader>s :set spell!
+
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
 	let save_cursor = getpos(".")
