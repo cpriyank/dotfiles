@@ -175,8 +175,8 @@ autocmd vimrc BufRead,BufNewFile *.md set filetype=markdown
 nnoremap j gj
 nnoremap k gk
 
-" Use jj (and the other default <C-[>) to go to the normal mode
-inoremap jj <ESC>
+" Use jk (and the other default <C-[>) to go to the normal mode
+inoremap jk <ESC>
 
 " Toggle spelling visuals with <leader>s
 nnoremap <leader>s :set spell!
