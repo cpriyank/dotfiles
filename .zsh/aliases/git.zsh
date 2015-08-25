@@ -53,7 +53,7 @@ alias grbi='git rebase -i'
 alias grbm='git rebase master'
 alias grbs='git rebase --skip'
 
-alias grh='git reset HEAD'
+alias grh='git reset HEAD --'
 alias grhh='git reset HEAD --hard'
 
 alias grmv='git remote rename'
