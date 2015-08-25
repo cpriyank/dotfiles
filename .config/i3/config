@@ -34,7 +34,7 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 bindsym $mod+h focus left
 
-# Move focused window                                       ($mod+Shift+[hjkl])
+# Move focused window   ($mod+Shift+[hjkl])
 bindsym $mod+Shift+J move down
 bindsym $mod+Shift+K move up
 bindsym $mod+Shift+L move right
@@ -61,7 +61,7 @@ bindsym $mod+c split h
 bindsym $mod+v split v
 
 # Toggle between vertical and horizontal split layout
-bindsym $mod+i layout toggle split
+bindsym $mod+t layout toggle split
 
 # Enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
