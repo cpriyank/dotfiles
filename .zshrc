@@ -6,7 +6,7 @@ bindkey -v
 # (Zsh doesn't use readline. It uses its own ZLE (Z Line Editing).
 HISTFILE=${ZDOTDIR:-${HOME}}/.zsh_history
 HISTSIZE=16384
-SAVEHIST=512
+SAVEHIST=$HISTSIZE
 setopt HIST_IGNORE_ALL_DUPS
 
 # Append the new history to the old
