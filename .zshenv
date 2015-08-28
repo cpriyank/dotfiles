@@ -1,5 +1,5 @@
 ## According to section 2.5.10 of Zsh guide, this file is the safest place to
-## define environment variables
+## define environment variables.
 
 # Prefer system binaries to local ones.
 # Don't add anything to $path if it's there already ('-U means unique').
