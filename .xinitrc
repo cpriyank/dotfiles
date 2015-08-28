@@ -30,4 +30,4 @@ nitrogen --restore &
 rofi &
 urxvtd -q -o -f &
 dunst &
-exec i3 -V >> ~/.cache/i3/i3log-$(date +'%F-%k-%M-%S') 2>&1
+exec i3 #-V >> ~/.cache/i3/i3log-$(date +'%F-%k-%M-%S') 2>&1
