@@ -6,6 +6,8 @@ alias msal='mpc search album'
 
 alias v='vim'
 
+alias m='tmux -f ~/.tmux/config'
+
 # Allow alias expansion after sudo
 alias sudo='sudo '
 
