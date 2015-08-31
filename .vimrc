@@ -44,7 +44,7 @@ set background=dark
 set t_Co=256 " Use 256 colors
 
 try  " Don't use a color scheme if not found
-  colorscheme Tomorrow-Night
+  colorscheme gruvbox
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
@@ -241,6 +241,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_modified=1
 "enable paste detection >
 let g:airline_detect_paste=1
+let g:airline_theme="gruvbox"
 
 
 " Begin adding plugins here. Managed by vim-plug
@@ -270,6 +271,7 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 " Visual
 "Plug 'nathanaelkane/vim-indent-guides' " Highlight all indent levels
 Plug 'bling/vim-airline' " Pretty status line
+Plug 'morhetz/gruvbox' " colorscheme
 
 " Misc
 Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`
