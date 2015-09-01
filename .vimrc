@@ -40,6 +40,10 @@ endif
 " Many useful defaults are covered in tpop/vim-sensible plugin. This file has 
 " been edited to avoid redundancy while keeping desired overrides
 
+" This needs to be before selecting gruvbox colorscheme to ensure italics are
+" displayed correctly
+let g:gruvbox_italic=1
+
 set background=dark
 set t_Co=256 " Use 256 colors
 
