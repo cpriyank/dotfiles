@@ -98,6 +98,10 @@ bind-key -t vi-edit Down history-down
 set -g status-interval 5
 set -g status-justify centre # center align window list
 
+# By default, tmux advertises itself as screen without 256-color support.
+# Change that.
+set -g default-terminal "screen-256color"
+
 # default statusbar colors
 set -g status-fg blue
 set -g status-bg default
