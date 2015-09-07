@@ -1,5 +1,5 @@
 !-- Color scheme --!
-#include ".config/colors/solarized"
+#include ".config/colors/tomorrow"
 
 
 !-- Xcursor --!
@@ -53,12 +53,12 @@ rofi.width: 50
 rofi.lines: 5
 rofi.columns: 1
 rofi.font: monospace 9
-rofi.fg: #d64937
-rofi.bg: #2d2d2d
-rofi.hlfg: #2d2d2d
-rofi.hlbg: #d64937
-rofi.bc: #d64937
-rofi.bw: 2
+rofi.fg: #d5d5d5
+rofi.bg: #2e2e2e
+rofi.hlfg: #ffffff
+rofi.hlbg: #ca4a4b
+rofi.bc: #979797
+rofi.bw: 1
 rofi.loc: 0
 rofi.padding: 2
 rofi.yoffset: -2
