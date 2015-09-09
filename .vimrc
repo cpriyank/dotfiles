@@ -42,13 +42,13 @@ endif
 
 " This needs to be before selecting gruvbox colorscheme to ensure italics are
 " displayed correctly
-let g:gruvbox_italic=1
+"let g:gruvbox_italic=1
 
 set background=dark
 set t_Co=256 " Use 256 colors
 
 try  " Don't use a color scheme if not found
-  colorscheme gruvbox
+  colorscheme Tomorrow-Night
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
@@ -101,7 +101,7 @@ set sidescrolloff=3
 set expandtab " Expand tabs into spaces
 set tabstop=2 " Make tabs as wide as two spaces
 set shiftwidth=2 " Apply the same for autoindent
-set softtabstop=2 " Tab key results in 2 spaces as well
+set softtabstop=2 " <TAB> and <BS> key results in 2 spaces as well
 
 
 " Fomatting-------------------------------------------------------------
@@ -147,7 +147,6 @@ set gcr=a:blinkon0 " Disable cursor blinking
 
 
 " Custom shortcuts for moving around buffers----------------------------
-nnoremap <leader>b :CtrlPBuffer<CR> " List other buffers with ,b
 map <leader><leader> :b#<CR> " Switch between the last two files with ,,
 map gb :bnext<CR> " Next buffer
 map gB :bprev<CR> " Previous one
@@ -181,9 +180,6 @@ nnoremap k gk
 
 " Use jk (and the other default <C-[>) to go to the normal mode
 inoremap jk <ESC>
-
-" Toggle spelling visuals with <leader>s
-nnoremap <leader>s :set spell!
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
@@ -229,11 +225,7 @@ autocmd vimrc VimEnter *
 "  \   exec 'cd' fnameescape(argv(0)) |
 "  \   NERDTree |
 "  \ end
-"
-"" CtrlP.vim easier binding
-"map <leader>p <C-P>
-"map <leader>r :CtrlPMRUFiles<CR>
-"
+
 "" Indent Guides
 "let g:indent_guides_start_level = 2
 "let g:indent_guides_guide_size = 1
@@ -245,7 +237,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_modified=1
 "enable paste detection >
 let g:airline_detect_paste=1
-let g:airline_theme="gruvbox"
+" let g:airline_theme="gruvbox"
 
 
 " Begin adding plugins here. Managed by vim-plug
@@ -259,27 +251,38 @@ Plug 'tpope/vim-sensible' " Sensible defaults
 Plug 'tpope/vim-fugitive' " Git wrapper
 
 "" Filesystem and project management
-"Plug 'tpope/vim-eunuch' " Unix task helper
-"Plug 'Rename2' " Rename the file currently being edited
+Plug 'Rename2' " Rename the file currently being edited
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
-"Plug 'ctrlpvim/ctrlp.vim' " Fuzzy finder
+
+"" Language specific
+Plug 'octave.vim', {'for': 'octave'}
+Plug 'puppetlabs/puppet-syntax-vim'
+Plug 'derekwyatt/vim-scala', {'for': 'scala'}
+Plug 'honza/dockerfile.vim'
+Plug 'klen/python-mode', {'for': 'python'}
+Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
+
+"" Snippets and abbreviations
+Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
 
 "" Writing/editing helpers
-"Plug 'tpope/vim-commentary' " Commenting helper
-"Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
-"Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
+Plug 'tpope/vim-commentary' " Commenting helper
+Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
+Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 
-"Plug 'junegunn/goyo.vim' " Distraction free writing
-"Plug 'junegunn/limelight.vim' " Hyperfocus writing
+Plug 'junegunn/goyo.vim' " Distraction free writing
+Plug 'junegunn/limelight.vim' " Hyperfocus writing
 
 " Visual
-"Plug 'nathanaelkane/vim-indent-guides' " Highlight all indent levels
 Plug 'bling/vim-airline' " Pretty status line
 Plug 'morhetz/gruvbox' " colorscheme
+Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
 
 " Misc
 Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`
-"Plug 'tpope/vim-unimpaired' " Handy bracket mappings
-"Plug 'chrisbra/CheckAttach' " Will always have your back
-"Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
+Plug 'tpope/vim-unimpaired' " Handy bracket mappings
+Plug 'godlygeek/tabular' " Automatically line the text up
+Plug 'chrisbra/CheckAttach' " Will always have your back
+Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
 call plug#end()
