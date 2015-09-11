@@ -8,8 +8,11 @@ alias v='vim'
 
 alias m='tmux -f ~/.tmux/config'
 
-# Allow alias expansion after sudo
+# Allow alias expansion after `sudo`
 alias sudo='sudo '
+
+# Allow alias expansion after `man`
+alias man='man '
 
 # Open vim in readonly mode
 alias vr='vim -R'
