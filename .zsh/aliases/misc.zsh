@@ -1,6 +1,6 @@
 ## Utility specific aliases
 # Use config file for ncmpc
-alias music='ncmpc --config ~/.config/ncmpc/config'
+alias ncmpc='command ncmpc --config ~/.config/ncmpc/config'
 alias msar='mpc search artist'
 alias msal='mpc search album'
 
