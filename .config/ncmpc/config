@@ -12,8 +12,8 @@ seek-time = 10
 
 welcome-screen-list = yes
 
-list-format = "[[%artist%|(artist n/a)] - [%title%|(title n/a)]]|%file%"
-status-format = "[[%album%|(album n/a)] / [%title%|(title n/a)]]|%file%"
+list-format = "[%artist% - %title%]|%file%"
+status-format = "[%album% / %title%]|%file%"
 status-message-time = 60
 
 enable-colors = yes
