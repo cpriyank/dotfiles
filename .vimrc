@@ -207,6 +207,10 @@ autocmd vimrc BufReadPost *
   \   exe "normal g`\"" |
   \ endif
 
+" After search and replace, go back to where you started (with confirmation)
+noremap ;; :%s:::g<Left><Left><Left>
+noremap ;' :%s:::cg<Left><Left><Left><Left>
+
 
 " Plugins and their respective configuration----------------------------
 " NERDTree
@@ -248,7 +252,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible' " Sensible defaults
 
 " Wrappers
-Plug 'tpope/vim-fugitive' " Git wrapper
+" Plug 'tpope/vim-fugitive' " Git wrapper
 
 "" Filesystem and project management
 Plug 'Rename2' " Rename the file currently being edited
@@ -256,9 +260,9 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 
 "" Language specific
 Plug 'octave.vim', {'for': 'octave'}
-Plug 'puppetlabs/puppet-syntax-vim'
+" Plug 'puppetlabs/puppet-syntax-vim'
 Plug 'derekwyatt/vim-scala', {'for': 'scala'}
-Plug 'honza/dockerfile.vim'
+" Plug 'honza/dockerfile.vim'
 Plug 'klen/python-mode', {'for': 'python'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
@@ -271,18 +275,18 @@ Plug 'tpope/vim-commentary' " Commenting helper
 Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
 Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 
-Plug 'junegunn/goyo.vim' " Distraction free writing
-Plug 'junegunn/limelight.vim' " Hyperfocus writing
+" Plug 'junegunn/goyo.vim' " Distraction free writing
+" Plug 'junegunn/limelight.vim' " Hyperfocus writing
 
 " Visual
 Plug 'bling/vim-airline' " Pretty status line
-Plug 'morhetz/gruvbox' " colorscheme
+" Plug 'morhetz/gruvbox' " colorscheme
 Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
 
 " Misc
 Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`
 Plug 'tpope/vim-unimpaired' " Handy bracket mappings
-Plug 'godlygeek/tabular' " Automatically line the text up
-Plug 'chrisbra/CheckAttach' " Will always have your back
+" Plug 'godlygeek/tabular' " Automatically line the text up
+" Plug 'chrisbra/CheckAttach' " Will always have your back
 Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
 call plug#end()
