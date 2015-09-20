@@ -1,1 +1,0 @@
-systemctl --user disable $1.service

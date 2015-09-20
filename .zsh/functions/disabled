@@ -1,1 +1,0 @@
-sudo systemctl disable $1.service; listd;

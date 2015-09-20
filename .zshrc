@@ -59,10 +59,11 @@ unset aliasfiles
 autoload -U ${fpath[1]}/*(:t)
 
 
-## The "command not found" hook-----------------------------------------------
-# It searches the official repos, when entering an unrecognized command
-# And suggests a package that provides that command
-source ${ZDOTDIR:-${HOME}}/.zsh/plugs/command-not-found.zsh
+# Source plugins
+plugins=(${ZDOTDIR:-${HOME}}/.zsh/plugs/*)
+for file in ${plugins}; do
+	source $file
+unset plugins
 
 
 ## Prompt---------------------------------------------------------------------
