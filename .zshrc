@@ -29,6 +29,7 @@ setopt HIST_VERIFY
 ## Keybindings----------------------------------------------------------------
 bindkey '^R' history-incremental-search-backward
 bindkey -M viins 'jk' vi-cmd-mode
+bindkey "^[[A" history-beginning-search-backward-end
 
 
 ## Load the new autocompletion system-----------------------------------------
@@ -63,6 +64,7 @@ autoload -U ${fpath[1]}/*(:t)
 plugins=(${ZDOTDIR:-${HOME}}/.zsh/plugs/*)
 for file in ${plugins}; do
 	source $file
+done
 unset plugins
 
 
