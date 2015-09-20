@@ -17,13 +17,21 @@ if [[ -e /usr/bin/pacman ]] ; then
 	alias paclinfo='pacman -Qi'
 	alias paclfind='pacman -Qs'
 
-	# Find orphaned packages
-	alias pacorf='pacman -Qdt'
+	# Remove orphaned packages
+	alias pacorf='sudo pacman -Rns $(pacman -Qtdq)'
 
 	# List all explicitly installed packages not in base and base-devel
 	alias paclist='expac -HM "%011m\t%-20n\t%10d" $( comm -23 <(pacman -Qqen|sort) <(pacman -Qqg base base-devel|sort) ) | sort -n'
 
-	alias aurlist='pacman -Qem' # List packages installed from aur 
+	# List packages installed from AUR
+	alias aurlist='pacman -Qem'
+
+	# Install an AUR package
+	alias packin='packer -S'
+
+	# Upgrade AUR packages
+	alias pacupg='packer -Syyu --auronly'
+
 elif [[ -e /usr/bin/apt-get ]] ; then
 
 	## Debian specific aliases
@@ -43,7 +51,7 @@ elif [[ -e /usr/bin/apt-get ]] ; then
 
 	# Apt policy
 	alias acp='apt-cache policy'
-	
+
 	# sort installed Debian-packages by size
 	alias paclist="dpkg-query -Wf 'x \${Installed-Size} \${Package} \${Status}\n' | sed -ne '/^x  /d' -e '/^x \(.*\) install ok installed$/s//\1/p' | sort -nr"
 fi
