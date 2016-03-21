@@ -1,0 +1,14 @@
+set from      = "priyank.chaudhary90@gmail.com"
+set sendmail = "/usr/bin/msmtp -a gmail"
+set mbox      = "+gmail/archive"
+set postponed = "+gmail/drafts"
+
+color status cyan default
+
+macro index D \
+    "<save-message>+gmail/trash<enter>" \
+    "move message to the trash"
+
+macro index S \
+    "<save-message>+gmail/spam<enter>"  \
+        "mark message as spam"

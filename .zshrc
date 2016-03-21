@@ -26,6 +26,15 @@ setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 
 
+<<<<<<< HEAD
+=======
+## Keybindings----------------------------------------------------------------
+bindkey '^R' history-incremental-search-backward
+bindkey -M viins 'jk' vi-cmd-mode
+bindkey "^[[A" history-beginning-search-backward-end
+
+
+>>>>>>> origin/master
 ## Load the new autocompletion system-----------------------------------------
 autoload -Uz compinit
 compinit

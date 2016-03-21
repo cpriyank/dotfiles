@@ -1,0 +1,18 @@
+emulate -L zsh
+# Wait until the program loads
+n=0
+while true
+do
+  # PID of last background command
+  if xdotool search --onlyvisible --pid $! 2>/dev/null; then
+    break
+  else
+    if [ $n -eq 90 ]; then
+      notify-send -u critical "Error during start"
+      break
+    else
+      n=`expr $n + 1`
+      sleep 0.5
+    fi
+  fi
+done

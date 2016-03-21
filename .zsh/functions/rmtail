@@ -1,0 +1,6 @@
+# Trim extensions of all the files in current directory
+emulate -L zsh
+for file in *
+do
+mv $file ${file}(:r)
+done

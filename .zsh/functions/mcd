@@ -1,0 +1,3 @@
+emulate -L zsh
+# Create a new directory and 'cd' to it
+mkdir -p "$@" && cd "$_";

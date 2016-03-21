@@ -1,0 +1,36 @@
+enable-mouse = yes
+search-mode = album
+wide-cursor = no
+
+auto-center = yes
+scroll = yes
+
+visible-bell = yes
+
+crossfade-time = 5
+seek-time = 10
+
+welcome-screen-list = yes
+
+list-format = "[%artist% - %title%]|%file%"
+status-format = "[%album% / %title%]|%file%"
+status-message-time = 60
+
+enable-colors = yes
+color background = none
+color title = white
+color title-bold = blue,bold
+color line = white
+color line-flags = white,bold
+color list = red
+color list-bold = magenta,bold
+
+color browser-directory = blue
+color browser-playlist = red,bold
+
+color progressbar = white,bold
+color status-state = yellow,bold
+color status-song = magenta
+color status-time = yellow
+color alert = yellow,reverse
+
