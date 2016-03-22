@@ -1,8 +1,6 @@
 " vimrc
 " 
 " Priyank Chaudhary
-" www.seas.upenn.edu/~priyc
-
 
 " Disable Vi compatibility. Must be enabled to prevent adverse effects.
 set nocompatible
@@ -42,13 +40,13 @@ endif
 
 " This needs to be before selecting gruvbox colorscheme to ensure italics are
 " displayed correctly
-"let g:gruvbox_italic=1
+let g:gruvbox_italic=1
 
 set background=dark
 set t_Co=256 " Use 256 colors
 
 try  " Don't use a color scheme if not found
-  colorscheme Tomorrow-Night
+  colorscheme gruvbox
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
@@ -213,29 +211,13 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 
 
 " Plugins and their respective configuration----------------------------
-" NERDTree
-let NERDTreeShowHidden = 1
-"let NERDTreeMouseMode = 2
-let NERDTreeMinimalUI = 1
-map <leader>n :NERDTreeToggle<CR>
-"autocmd vimrc StdinReadPre * let s:std_in=1
-"" If no file or directory arguments are specified, open NERDtree.
-"" If a directory is specified as the only argument, open it in NERDTree.
-autocmd vimrc VimEnter *
-"  \ if argc() == 0 && !exists("s:std_in") |
-"  \   NERDTree |
-"  \ elseif argc() == 1 && isdirectory(argv(0)) |
-"  \   bd |
-"  \   exec 'cd' fnameescape(argv(0)) |
-"  \   NERDTree |
-"  \ end
-
 "" Indent Guides
 "let g:indent_guides_start_level = 2
 "let g:indent_guides_guide_size = 1
 
 
 " Airline
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 " enable modified detection >
 let g:airline_detect_modified=1
@@ -256,7 +238,6 @@ Plug 'tpope/vim-sensible' " Sensible defaults
 
 "" Filesystem and project management
 Plug 'Rename2' " Rename the file currently being edited
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 
 "" Language specific
 Plug 'octave.vim', {'for': 'octave'}
@@ -275,18 +256,17 @@ Plug 'tpope/vim-commentary' " Commenting helper
 Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
 Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 
-" Plug 'junegunn/goyo.vim' " Distraction free writing
-" Plug 'junegunn/limelight.vim' " Hyperfocus writing
+Plug 'junegunn/goyo.vim' " Distraction free writing
+Plug 'junegunn/limelight.vim' " Hyperfocus writing
 
 " Visual
-Plug 'bling/vim-airline' " Pretty status line
-" Plug 'morhetz/gruvbox' " colorscheme
+Plug 'vim-airline/vim-airline' " Pretty status line
+Plug 'vim-airline/vim-airline-themes'
+Plug 'morhetz/gruvbox' " colorscheme
 Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
 
 " Misc
 Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`
 Plug 'tpope/vim-unimpaired' " Handy bracket mappings
-" Plug 'godlygeek/tabular' " Automatically line the text up
-" Plug 'chrisbra/CheckAttach' " Will always have your back
 Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
 call plug#end()
