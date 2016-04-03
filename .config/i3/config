@@ -142,15 +142,8 @@ bindsym $mod+m scratchpad show
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
-# no border in those windows
-for_window [class="(?i)^firefox$"] border 1pixel
-for_window [class="(?i)^chromium$"] border 1pixel
-for_window [class="(?i)^mpv$"] border 1pixel
-for_window [class="(?i)^xterm$"] border 1pixel
-for_window [class="(?i)^urxvt$"] border 1pixel
-for_window [class="(?i)^gvim$"] border 1pixel
-for_window [class="(?i)^zathura$"] border 1pixel
-for_window [class="(?i)^thunar$"] border 1pixel
+# no border at all
+new_window 1pixel
 
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
