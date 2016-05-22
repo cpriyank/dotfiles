@@ -18,7 +18,7 @@ if [[ -e /usr/bin/pacman ]] ; then
 	alias paclfind='pacman -Qs'
 
 	# Remove orphaned packages
-	alias pacorf='sudo pacman -Rns $(pacman -Qtdq)'
+	alias pacrorf='sudo pacman -Rns $(pacman -Qtdq)'
 
 	# List all explicitly installed packages not in base and base-devel
 	alias paclist='expac -HM "%011m\t%-20n\t%10d" $( comm -23 <(pacman -Qqen|sort) <(pacman -Qqg base base-devel|sort) ) | sort -n'
@@ -26,11 +26,14 @@ if [[ -e /usr/bin/pacman ]] ; then
 	# List packages installed from AUR
 	alias aurlist='pacman -Qem'
 
+	# Search AUR for matching strings
+	alias aurfind='pacaur -s'
+
 	# Install an AUR package
-	alias packin='packer -S'
+	alias aurin='pacaur -ay'
 
 	# Upgrade AUR packages
-	alias packupg='packer -Syyu --auronly'
+	alias aurupg='pacaur -u'
 
 elif [[ -e /usr/bin/apt-get ]] ; then
 
