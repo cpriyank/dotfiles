@@ -2,12 +2,10 @@
 set $mod Mod1
 set $Alt Mod4
 
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
-# This font is widely installed, provides lots of unicode glyphs,
-# right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:Aller 9
+font pango:Sans 9
+
+# Run programs with Alt + F2
+bindsym $mod+F2 exec rofi -show run
 
 # change container layout (stacked, tabbed, default)
 bindsym $mod+s layout stacking
@@ -147,7 +145,6 @@ new_window 1pixel
 
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
-for_window [class="(?i)^plank$"] floating enable
 for_window [class="(?i)^gimp$"] floating enable
 for_window [class="(?i)^viewnior$"] floating enable
 
@@ -179,7 +176,6 @@ bindsym $Alt+e exec firefox
 bindsym $Alt+Return exec --no-startup-id urxvtc
 bindsym $Alt+p exec --no-startup-id xterm
 bindsym $Alt+t exec transmission-gtk
-bindsym $Alt+m exec thunderbird
 bindsym $Alt+c exec chromium
 
 #
