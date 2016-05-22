@@ -1,7 +1,3 @@
-" vimrc
-" 
-" Priyank Chaudhary
-
 " Disable Vi compatibility. Must be enabled to prevent adverse effects.
 set nocompatible
 
@@ -238,15 +234,6 @@ Plug 'tpope/vim-sensible' " Sensible defaults
 
 "" Filesystem and project management
 Plug 'Rename2' " Rename the file currently being edited
-
-"" Language specific
-Plug 'octave.vim', {'for': 'octave'}
-" Plug 'puppetlabs/puppet-syntax-vim'
-Plug 'derekwyatt/vim-scala', {'for': 'scala'}
-" Plug 'honza/dockerfile.vim'
-Plug 'klen/python-mode', {'for': 'python'}
-Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 
 "" Snippets and abbreviations
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
