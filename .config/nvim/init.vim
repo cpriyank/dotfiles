@@ -59,7 +59,6 @@ set nowrap " Don't wrap lines by default
 
 " Essentials------------------------------------------------------------
 set linespace=0 " No extra spaces between rows
-set spell " Show spelling mistakes by default
 set hidden " Allow switching buffers without saving
 set report=0 " Show all changes
 set clipboard=unnamed " Make yanks go to OS clipboard
@@ -93,16 +92,23 @@ set softtabstop=2 " <TAB> and <BS> key results in 2 spaces as well
 " Fomatting-------------------------------------------------------------
 set textwidth=79 " Make it obvious where 79 character width is
 set colorcolumn=+1 " Highlight column at textwidth
-" Automatically insert comment leader after 'o' or 'O' in Normal mode.
-" set fo+=o
 " Only insert single space after a '.', '?' and '!' with a join command.
 set nojoinspaces
+set fo+=2 " Use the indent of the second line of a paragraph
+set fo+=1 " Don't break a line after a one-letter word
+set fo+=n " Recognize numbered lists
+set fo+=r " (in mail) comment leader after
 
 
 " Code folding----------------------------------------------------------
 set foldmethod=indent " Fold based on indent
 set foldnestmax=3 " Deepest fold level
 set nofoldenable " Don't fold by default
+
+
+" vimdiff options-------------------------------------------------------
+set diffopt=filler " Add vertical spaces to keep right and left aligned
+set diffopt+=iwhite " Ignore whitespaces
 
 
 " Search and/or Replace-------------------------------------------------
