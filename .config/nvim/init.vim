@@ -164,6 +164,13 @@ nnoremap k gk
 " Use jk (and the other default <C-[>) to go to the normal mode
 inoremap jk <ESC>
 
+" Hard to type things
+iabbrev >> →
+iabbrev << ←
+
+" Yank from cursor to end of line
+nnoremap Y y$<Paste>
+
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
 	let save_cursor = getpos(".")
