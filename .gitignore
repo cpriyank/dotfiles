@@ -1,18 +1,9 @@
-.aria2/dht.dat
-.gnupg/*
-!.gnupg/gpg.conf
-
-# directory files created by KDE
-.directory
+aria2/.aria2/dht.dat
+gnupg/*
+!gnupg/.gnupg/gpg.conf
 
 # Top secret!
-.ssh/authorized_keys
-.ssh/id_*
-.ssh/*.pem
-.ssh/known_hosts
-
-# vim
-.swp
-.swo
-.*.swp
-.*.swo
+ssh/.ssh/authorized_keys
+ssh/.ssh/id_*
+ssh/.ssh/*.pem
+ssh/.ssh/known_hosts
