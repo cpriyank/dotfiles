@@ -1,0 +1,6 @@
+[Unit]
+Description=Reminder to look far and outside to reduce eyestrain, via libnotify
+
+[Service]
+Type=simple
+ExecStart=${HOME}/bin/lookout.zsh

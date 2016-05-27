@@ -1,0 +1,10 @@
+[Unit]
+Description=Reminder to look far and outside to reduce eyestrain
+
+[Timer]
+OnStartupSec=3min
+OnUnitActiveSec=25min
+Unit=look-out.service
+
+[Install]
+WantedBy=default.target
