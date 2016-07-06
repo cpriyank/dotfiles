@@ -4,13 +4,12 @@
 # Prefer system binaries to local ones.
 # Don't add anything to $path if it's there already ('-U means unique').
 typeset -gU path
-GOPATH=~/Development/gopher
-path=($path ~/bin $GOPATH/bin)
+path=($path ~/bin)
 
-cdpath=(~/ ~/Development/ ~/Development/C++/ ~/Development/gopher/)
+cdpath=(~/ ~/z/)
 
 export ZSH_CONFIG_HOME=$HOME/.zsh
 export EDITOR="nvim"
 # export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 export VDPAU_DRIVER=va_gl
-export LIBVA_DRIVER_NAME=vdpau
+#export LIBVA_DRIVER_NAME=vdpau
