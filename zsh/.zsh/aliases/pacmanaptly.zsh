@@ -1,6 +1,6 @@
 if [[ -e /usr/bin/pacman ]] ; then
 	## Arch specific aliases
-	alias pacupg='sudo pacman -Syyu'
+	alias pacupg='sudo pacman -Syu'
 	alias pacin='sudo pacman -S'
 	alias pacins='sudo pacman -U'
 	alias pacrem='sudo pacman -Rns'
