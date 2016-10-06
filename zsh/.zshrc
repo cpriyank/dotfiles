@@ -25,6 +25,9 @@ setopt HIST_REDUCE_BLANKS
 # i.e. You just have to type <RET> to execute it.
 setopt HIST_VERIFY
 
+# Ignore commands starting with a space
+setopt HIST_IGNORE_SPACE
+
 
 ## Keybindings----------------------------------------------------------------
 bindkey '^R' history-incremental-search-backward
