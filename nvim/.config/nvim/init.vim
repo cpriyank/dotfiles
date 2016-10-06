@@ -227,6 +227,8 @@ let g:airline_detect_modified=1
 "enable paste detection >
 let g:airline_detect_paste=1
 
+" Rainbow Paranthesis active
+let g:rainbow_active = 1
 
 " Begin adding plugins here. Managed by vim-plug
 call plug#begin()
@@ -244,6 +246,8 @@ Plug 'derekwyatt/vim-scala', {'for': 'scala'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'wlangstroth/vim-racket', {'for': 'racket'}
+Plug 'luochen1990/rainbow', {'for': 'racket'}
 
 "" Snippets and abbreviations
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
