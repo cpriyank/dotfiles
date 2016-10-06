@@ -46,8 +46,8 @@ alias apone='youtube-dl -a'
 # Redshift aliases. For saving eyes, seriously.
 # Gandhinagar coordinates
 alias shantib='redshift -o -l 23.22:72.68'
-# Philly coordinates  
-alias shanti='redshift -o -l 39.95:-75.19'
+# Seattle coordinates  
+alias shanti='redshift -o -l 47.61:-122.33' -t 4500:2800
 # Reset color
 alias ashanti='redshift -x'
 
