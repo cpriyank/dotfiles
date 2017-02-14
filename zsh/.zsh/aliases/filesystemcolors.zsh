@@ -62,6 +62,3 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-
-# cd and ls together
-alias cdl="cd $1 && l"
