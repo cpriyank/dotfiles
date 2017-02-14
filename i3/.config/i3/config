@@ -2,7 +2,7 @@
 set $mod Mod1
 set $Alt Mod4
 
-font pango:Sans 9
+font pango:Cantarell 9
 
 # Run programs with Alt + F2
 bindsym $mod+F2 exec rofi -show run
@@ -146,7 +146,7 @@ new_window 1pixel
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
 for_window [class="(?i)^gimp$"] floating enable
-for_window [class="(?i)^viewnior$"] floating enable
+# for_window [class="(?i)^viewnior$"] floating enable
 
 # programs with specific workspaces
 # assign [class="(?i)^firefox$"] 1
@@ -171,12 +171,16 @@ hide_edge_borders both
 #
 # Launchers
 #
-bindsym $Alt+f exec thunar
-bindsym $Alt+e exec firefox
+bindsym $Alt+j exec urxvtc -e vifm
+bindsym $Alt+u exec firefox
+bindsym $Alt+y exec firefox --private-window
 bindsym $Alt+Return exec --no-startup-id urxvtc
-bindsym $Alt+p exec --no-startup-id xterm
-bindsym $Alt+t exec transmission-gtk
-bindsym $Alt+c exec chromium
+bindsym $Alt+z exec --no-startup-id urxvtc
+bindsym $Alt+n exec --no-startup-id urxvtc
+bindsym $Alt+p exec --no-startup-id xterm -e fish
+bindsym $Alt+h exec transmission-gtk
+bindsym $Alt+k exec inox
+bindsym $Alt+i exec inox --incognito
 
 #
 # i3bar
@@ -211,6 +215,6 @@ client.urgent               #383a3b     #383a3b     #ee0000
 # create a startup notification context, without which the firefox window(s)
 # cannot be matched onto the workspace on which the command was started and
 # opens in focused workspace rather than the one where exec command was issued)
-exec --no-startup-id i3-msg 'workspace 1; exec firefox;'
+# exec --no-startup-id i3-msg 'workspace 1; exec TZ=UTC firefox;'
 exec clipit
-exec --no-startup-id i3-msg 'workspace 2; exec thunar; workspace 3'
+# exec --no-startup-id i3-msg 'workspace 2; exec thunar; workspace 3'
