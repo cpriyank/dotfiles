@@ -7,6 +7,7 @@ alias msal='mpc search album'
 alias v='nvim'
 
 alias m='tmux -f ~/.tmux/config'
+alias a='tmux attach'
 
 # Allow alias expansion after `sudo`
 alias sudo='sudo '
@@ -34,6 +35,10 @@ alias da='du -sch'
 alias vpath='echo $PATH | tr -s ":" "\n"'
 
 alias rm='rm -i' # Also see RM_STAR_SILENT options of Zsh
+
+# Warn on overwrite
+alias cp='cp -i'
+alias mv='mv -i'
 
 # Remove current empty directory nicely
 alias rmdir='cd ..; rmdir $OLDPWD || cd $OLDPWD'
