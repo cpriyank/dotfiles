@@ -73,7 +73,7 @@ bindsym $mod+Shift+r restart
 # log out prompt
 set $mode_system (l)ock, (e)logout, (s)uspend, (h)ibernate, (q)uick hibernate, (r)eboot, Shift+(s)hutdown
 mode "$mode_system" {
-  bindsym l       exec --no-startup-id i3lock -c 111111 -d
+  bindsym l       exec --no-startup-id i3lock -i /home/tiniyo/Pictures/wallpapers/oath-word.png
   bindsym e       exec --no-startup-id i3-msg exit && pkill X, mode "default"
   bindsym s       exec --no-startup-id i3lock && notify-send "SYSTEM: Suspending..." && systemctl suspend, mode "default"
   bindsym h       exec --no-startup-id i3lock && notify-send "SYSTEM: Hibernating..." && systemctl hibernate, mode "default"
@@ -181,6 +181,10 @@ bindsym $Alt+p exec --no-startup-id xterm -e fish
 bindsym $Alt+h exec transmission-gtk
 bindsym $Alt+k exec inox
 bindsym $Alt+i exec inox --incognito
+
+bindsym $mod+w [class="(?i)firefox"] focus
+bindsym $mod+e [class="(?i)urxvt" title="(?i)nvim"] focus
+bindsym $mod+z [class="(?i)zathura"] focus
 
 #
 # i3bar
