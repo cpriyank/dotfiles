@@ -1,5 +1,5 @@
 !-- Color scheme --!
-#include ".config/colors/tomorrow"
+#include ".config/colors/monokai"
 
 
 !-- Xft --!
@@ -12,7 +12,7 @@ Xft.lcdfilter: lcddefault
 
 
 !-- Urxvt --!
-URxvt.font:                xft:Consolas:size=9, xft:Inconsolata for Powerline:size=13
+URxvt.font:                xft:Consolas:style=Bold:size=11,xft:Inconsolata for Powerline:style=Medium,xft:DejaVu Sans Mono:style=Bold:size=11
 URxvt.scrollBar:           false
 URxvt.internalBorder:      2
 URxvt.urgentOnBell:        true
@@ -34,7 +34,7 @@ URxvt*scrollTtyKeypress: true
 ! interpret all incoming data as UTF-8 encoded
 XTerm*locale: true
 xterm*termName: xterm-256color
-xterm*faceName:DejaVu Sans Mono:size=11:antialias=false
+xterm*faceName:monospace:style=bold:size=11
 ! When TERM is not set explicitly, color schemes for some programs, such as
 ! vim, may not appear until a key is pressed or some other input occurs. This
 ! can be remedied with this resource setting
