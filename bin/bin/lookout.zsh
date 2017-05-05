@@ -5,6 +5,13 @@ if [[ -s todo ]]
 then
 	var=$(<todo)
 	notify-send -u critical "{${var}}"
+elif [[ -s tips ]]
+then
+	var=$(<tips)
+	notify-send -u critical "{${var}}"
+elif [[ -e `which fortune` ]]
+then
+	notify-send -u normal "`fortune -a`"
 else
-	notify-send -a "Have a break" -u critical "`fortune`"
+	notify-send -a "Relax" -u normal "Look outside for a while"
 fi
