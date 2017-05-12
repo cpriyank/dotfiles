@@ -62,7 +62,7 @@ set linespace=0 " No extra spaces between rows
 set hidden " Allow switching buffers without saving
 set report=0 " Show all changes
 set clipboard=unnamed " Make yanks go to OS clipboard
-set esckeys " Allow cursor keys in insert mode
+" set esckeys " Allow cursor keys in insert mode
 let mapleader=","  " Change default backslash mapleader. Easier to type
 set autochdir " Auto switch to current file's directory on opening new buffer
 set ruler " Show column and line number
@@ -76,6 +76,7 @@ set wildignore+=*/vendor/*,*/.git/*,*/.hg/*,*/.svn/*,*/log/*,*/tmp/*
 
 
 " Mouse and scrolling in terminal---------------------------------------
+set mouse=a " Mouse is not enabled by default anymore
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
 " Start scrolling three lines before the vertical window border
@@ -165,8 +166,8 @@ nnoremap k gk
 inoremap jk <ESC>
 
 " Hard to type things
-iabbrev >> →
-iabbrev << ←
+" iabbrev >> →
+" iabbrev << ←
 
 " Yank from cursor to end of line
 nnoremap Y y$<Paste>
@@ -195,6 +196,8 @@ autocmd nviminit BufReadPost *
 noremap ;; :%s:::g<Left><Left><Left>
 noremap ;' :%s:::cg<Left><Left><Left><Left>
 
+" Search and replace word under the cursor
+:nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 " Plugins and their respective configuration----------------------------
 " NERDTree
@@ -214,6 +217,32 @@ autocmd nviminit VimEnter *
 "  \   NERDTree |
 "  \ end
 
+" go specific and vim-go config ---------------------------------------------
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+let g:go_list_type = "quickfix"
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#cmd#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
@@ -227,6 +256,11 @@ let g:airline_detect_modified=1
 "enable paste detection >
 let g:airline_detect_paste=1
 
+let g:deoplete#enable_at_startup = 1
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+
 " Begin adding plugins here. Managed by vim-plug
 call plug#begin()
 
@@ -235,19 +269,31 @@ Plug 'Rename2' " Rename the file currently being edited
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 
 "" Language specific
+Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'octave.config/nvim', {'for': 'octave'}
 " Plug 'puppetlabs/puppet-syntax-vim'
 Plug 'derekwyatt/vim-scala', {'for': 'scala'}
 " Plug 'honza/dockerfile.config/nvim'
 Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
+Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
 
 "" Snippets and abbreviations
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
+" Track the engine.
+Plug 'SirVer/ultisnips'
+" Snippets are separated from the engine. Add this if you want them:
+Plug 'honza/vim-snippets'
+
 
 "" Writing/editing helpers
 Plug 'tpope/vim-commentary' " Commenting helper
 Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
 Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
+Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-go', { 'do': 'make'}
+Plug 'JuliaEditorSupport/deoplete-julia'
 
 "" Visual
 Plug 'vim-airline/vim-airline' " Pretty status line
