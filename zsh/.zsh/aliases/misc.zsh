@@ -4,7 +4,7 @@ alias ncmpc='command ncmpc --config ~/.config/ncmpc/config'
 alias msar='mpc search artist'
 alias msal='mpc search album'
 
-alias v='nvim'
+alias v="$EDITOR"
 
 alias m='tmux -f ~/.tmux/config'
 alias a='tmux attach'
@@ -16,7 +16,7 @@ alias sudo='sudo '
 alias man='man '
 
 # Open vim in readonly mode
-alias vr='nvim -R'
+alias vr='v -R'
 
 alias scp='scp -p'
 alias wget='wget -c'
@@ -48,6 +48,8 @@ alias apo='youtube-dl'
 # Download videos from the list of URLs from a file
 alias apone='youtube-dl -a'
 
+alias asong='youtube-dl -f 251'
+
 # Redshift aliases. For saving eyes, seriously.
 # Gandhinagar coordinates
 alias shantib='redshift -o -l 23.22:72.68'
@@ -56,3 +58,4 @@ alias shanti='redshift -o -l 47.61:-122.33' -t 4500:2800
 # Reset color
 alias ashanti='redshift -x'
 
+alias please='sudo $(fc -ln -1)'
