@@ -36,13 +36,14 @@ endif
 
 " This needs to be before selecting gruvbox colorscheme to ensure italics are
 " displayed correctly
-let g:gruvbox_italic=1
+" let g:gruvbox_italic=1
+let base16colorspace=256  " Access colors present in 256 colorspace
 
 set background=dark
 set t_Co=256 " Use 256 colors
 
 try  " Don't use a color scheme if not found
-  colorscheme gruvbox
+ colorscheme base16-monokai
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
@@ -163,10 +164,6 @@ let g:tex_flavor = "latex"
 " vim
 autocmd vimrc BufRead .vimrc,*.vim set keywordprg=:help
 
-" Treat md as markdown
-autocmd vimrc BufRead,BufNewFile *.md set filetype=markdown
-
-
 " Vimprovments----------------------------------------------------------
 " Move more naturally up/down when wrapping is enabled.
 nnoremap j gj
@@ -174,6 +171,10 @@ nnoremap k gk
 
 " Use jk (and the other default <C-[>) to go to the normal mode
 inoremap jk <ESC>
+
+" Toggle folding with <Space>
+nnoremap <Space> za
+vnoremap <Space> za
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
@@ -205,6 +206,8 @@ autocmd vimrc BufReadPost *
 noremap ;; :%s:::g<Left><Left><Left>
 noremap ;' :%s:::cg<Left><Left><Left><Left>
 
+" Search and replace word under the cursor
+:nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 " Plugins and their respective configuration----------------------------
 "" Indent Guides
@@ -221,6 +224,19 @@ let g:airline_detect_modified=1
 let g:airline_detect_paste=1
 " let g:airline_theme="gruvbox"
 
+" vim-go config
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " Begin adding plugins here. Managed by vim-plug
 " 
@@ -232,11 +248,16 @@ Plug 'tpope/vim-sensible' " Sensible defaults
 " Wrappers
 " Plug 'tpope/vim-fugitive' " Git wrapper
 
-"" Filesystem and project management
-Plug 'Rename2' " Rename the file currently being edited
+"" Language specific
+Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'klen/python-mode', {'for': 'python'}
 
 "" Snippets and abbreviations
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+Plug 'Shougo/neocomplete.vim', {'for': 'go'}
 
 "" Writing/editing helpers
 Plug 'tpope/vim-commentary' " Commenting helper
@@ -245,15 +266,16 @@ Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 
 Plug 'junegunn/goyo.vim' " Distraction free writing
 Plug 'junegunn/limelight.vim' " Hyperfocus writing
+Plug 'junegunn/vim-easy-align'
 
 " Visual
 Plug 'vim-airline/vim-airline' " Pretty status line
 Plug 'vim-airline/vim-airline-themes'
-Plug 'morhetz/gruvbox' " colorscheme
 Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
 
 " Misc
 Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`
+Plug 'Raimondi/delimitMate' " Auto complete quotes, parens, brackets, etc
 Plug 'tpope/vim-unimpaired' " Handy bracket mappings
 Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
 call plug#end()
