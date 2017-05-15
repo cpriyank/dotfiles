@@ -24,7 +24,7 @@ if [[ -e /usr/bin/pacman ]] ; then
 	alias paclist='expac -HM "%011m\t%-20n\t%10d" $( comm -23 <(pacman -Qqen|sort) <(pacman -Qqg base base-devel|sort) ) | sort -n'
 
 	# List packages installed from AUR
-	alias aurlist='pacman -Qem'
+	alias aurlist='pacman -Qm'
 
 	# Search AUR for matching strings
 	alias aurfind='pacaur -s'
