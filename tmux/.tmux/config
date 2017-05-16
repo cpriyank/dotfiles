@@ -4,11 +4,7 @@ set -g prefix C-a
 bind C-a send-prefix
 
 # Mouse support
-set -g mode-mouse on
-set -g mouse-resize-pane on
-set -g mouse-select-pane on
-set -g mouse-select-window on
-set -g mouse-utf8 on
+set -g mouse on
 
 # scrollback buffer
 set -g history-limit 4096
@@ -29,8 +25,8 @@ unbind [
 bind Escape copy-mode
 unbind p
 bind p paste-buffer
-bind-key -t vi-copy 'v' begin-selection
-bind-key -t vi-copy 'y' copy-selection
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X copy-selection
 
 # Window split bindings
 unbind %
@@ -92,8 +88,8 @@ set -g window-status-format "#I:#W"
 set -g window-status-current-format "#I:#W"
 
 set -g status-keys vi
-bind-key -t vi-edit Up history-up
-bind-key -t vi-edit Down history-down
+bind-key -T edit-mode-vi Up send-keys -X history-up
+bind-key -T edit-mode-vi Down send-keys -X history-down
 
 set -g status-interval 5
 set -g status-justify centre # center align window list
