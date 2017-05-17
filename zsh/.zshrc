@@ -105,8 +105,12 @@ zle -N self-insert url-quote-magic
 
 
 ## Keybindings----------------------------------------------------------------
-bindkey '^R' history-incremental-search-backward
-bindkey -M viins 'jk' vi-cmd-mode
 bindkey '^Z' fg-vim
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+
+
+# . /home/tiniyo/torch/install/bin/torch-activate
+
+
+# export PATH="/home/tiniyo/miniconda3/bin:$PATH"
