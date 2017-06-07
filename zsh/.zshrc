@@ -75,8 +75,10 @@ unset plugins
 autoload -U promptinit && promptinit
 prompt pure
 # Enable fish-like syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
+case $(uname) in
+    "Linux") source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ;;
+    "Darwin") source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ;;
+esac
 
 ## Misc options---------------------------------------------------------------
 # If LOCAL_OPTIONS is set in a function (or was already set before
