@@ -2,6 +2,49 @@
 set nocompatible
 
 
+" Begin adding plugins here. Managed by vim-plug -----------------------------
+" 
+" Reload vimrc and :PlugInstall to install plugins
+
+call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-sensible' " Sensible defaults
+
+" Wrappers
+" Plug 'tpope/vim-fugitive' " Git wrapper
+
+"" Language specific
+Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'klen/python-mode', {'for': 'python'}
+
+"" Snippets and abbreviations
+Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+Plug 'Shougo/neocomplete.vim', {'for': 'go'}
+
+"" Writing/editing helpers
+Plug 'tpope/vim-commentary' " Commenting helper
+Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
+Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
+
+Plug 'junegunn/goyo.vim' " Distraction free writing
+Plug 'junegunn/limelight.vim' " Hyperfocus writing
+Plug 'junegunn/vim-easy-align'
+
+" Visual
+Plug 'itchyny/lightline.vim' " Pretty status line
+Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
+
+" Misc
+Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`
+Plug 'Raimondi/delimitMate' " Auto complete quotes, parens, brackets, etc
+Plug 'tpope/vim-unimpaired' " Handy bracket mappings
+Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
+call plug#end()
+
+
+" Essentials -----------------------------------------------------------------
 " Create vimrc autocmd group and remove any existing vimrc autocmds,
 " in case .vimrc is re-sourced.
 augroup vimrc
@@ -215,15 +258,6 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 "let g:indent_guides_guide_size = 1
 
 
-" Airline
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-" enable modified detection >
-let g:airline_detect_modified=1
-"enable paste detection >
-let g:airline_detect_paste=1
-" let g:airline_theme="gruvbox"
-
 " vim-go config
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -237,45 +271,3 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-
-" Begin adding plugins here. Managed by vim-plug
-" 
-" Reload vimrc and :PlugInstall to install plugins
-
-call plug#begin('~/.vim/plugged')
-Plug 'tpope/vim-sensible' " Sensible defaults
-
-" Wrappers
-" Plug 'tpope/vim-fugitive' " Git wrapper
-
-"" Language specific
-Plug 'fatih/vim-go', {'for': 'go'}
-Plug 'klen/python-mode', {'for': 'python'}
-
-"" Snippets and abbreviations
-Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
-Plug 'Shougo/neocomplete.vim', {'for': 'go'}
-
-"" Writing/editing helpers
-Plug 'tpope/vim-commentary' " Commenting helper
-Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
-Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
-
-Plug 'junegunn/goyo.vim' " Distraction free writing
-Plug 'junegunn/limelight.vim' " Hyperfocus writing
-Plug 'junegunn/vim-easy-align'
-
-" Visual
-Plug 'vim-airline/vim-airline' " Pretty status line
-Plug 'vim-airline/vim-airline-themes'
-Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
-
-" Misc
-Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`
-Plug 'Raimondi/delimitMate' " Auto complete quotes, parens, brackets, etc
-Plug 'tpope/vim-unimpaired' " Handy bracket mappings
-Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
-call plug#end()
