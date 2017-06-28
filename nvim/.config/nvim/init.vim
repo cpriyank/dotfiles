@@ -265,7 +265,6 @@ let g:UltiSnipsExpandTrigger="<tab>"
 call plug#begin()
 
 "" Filesystem and project management
-Plug 'Rename2' " Rename the file currently being edited
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 
 "" Language specific
