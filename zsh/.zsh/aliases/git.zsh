@@ -1,5 +1,8 @@
 # Use `hub` by default for git
-eval "$(hub alias -s)"
+if [[ -e "$(command -v hub)" ]]
+then
+	eval "$(hub alias -s)"
+fi
 
 alias g='git'
 
