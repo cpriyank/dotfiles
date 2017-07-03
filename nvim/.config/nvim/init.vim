@@ -40,7 +40,7 @@ try  " Don't use a color scheme if not found
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
-set noshowmode " Don't show the mode you're in. vim-airline has your back
+set noshowmode " Don't show the mode you're in. lightline.vim has your back
 set number " Show line numbers
 set relativenumber " Use relative line numbers
 
@@ -201,14 +201,14 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 
 " Plugins and their respective configuration----------------------------
 " NERDTree
-let NERDTreeShowHidden = 1
+" let NERDTreeShowHidden = 1
 "let NERDTreeMouseMode = 2
-let NERDTreeMinimalUI = 1
-map <leader>n :NERDTreeToggle<CR>
+" let NERDTreeMinimalUI = 1
+" map <leader>n :NERDTreeToggle<CR>
 "autocmd nviminit StdinReadPre * let s:std_in=1
 "" If no file or directory arguments are specified, open NERDtree.
 "" If a directory is specified as the only argument, open it in NERDTree.
-autocmd nviminit VimEnter *
+" autocmd nviminit VimEnter *
 "  \ if argc() == 0 && !exists("s:std_in") |
 "  \   NERDTree |
 "  \ elseif argc() == 1 && isdirectory(argv(0)) |
@@ -249,33 +249,30 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)<Paste>
 
 " Airline
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline_powerline_fonts = 1
+" let g:airline#extensions#tabline#enabled = 1
 " enable modified detection >
-let g:airline_detect_modified=1
+" let g:airline_detect_modified=1
 "enable paste detection >
-let g:airline_detect_paste=1
+" let g:airline_detect_paste=1
 
-let g:deoplete#enable_at_startup = 1
-
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
+" let g:deoplete#enable_at_startup = 1
 
 " Begin adding plugins here. Managed by vim-plug
 call plug#begin()
 
 "" Filesystem and project management
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
+" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 
 "" Language specific
 Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'octave.config/nvim', {'for': 'octave'}
 " Plug 'puppetlabs/puppet-syntax-vim'
-Plug 'derekwyatt/vim-scala', {'for': 'scala'}
+" Plug 'derekwyatt/vim-scala', {'for': 'scala'}
 " Plug 'honza/dockerfile.config/nvim'
 Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
-Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
+" Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
 
 "" Snippets and abbreviations
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
@@ -292,11 +289,12 @@ Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'JuliaEditorSupport/deoplete-julia'
+" Plug 'JuliaEditorSupport/deoplete-julia'
 
 "" Visual
-Plug 'vim-airline/vim-airline' " Pretty status line
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline' " Pretty status line
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
 
 "" Misc
