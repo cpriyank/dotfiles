@@ -57,4 +57,14 @@ elif [[ -e /usr/bin/apt-get ]] ; then
 
 	# sort installed Debian-packages by size
 	alias paclist="dpkg-query -Wf 'x \${Installed-Size} \${Package} \${Status}\n' | sed -ne '/^x  /d' -e '/^x \(.*\) install ok installed$/s//\1/p' | sort -nr"
+
+elif [[ -e /usr/local/bin/brew ]] ; then
+
+	# Brew specific aliases
+	alias pacupg='brew upgrade'
+	alias pacin='brew install'
+	alias pacrem='brew rmtree'
+	alias pacre='brew rmtree --dry-run'
+	alias pacref='brew update'
+	alias pacrorf='brew cleanup'
 fi
