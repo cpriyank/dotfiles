@@ -58,4 +58,8 @@ alias shanti='redshift -o -l 47.61:-122.33' -t 4500:2800
 # Reset color
 alias ashanti='redshift -x'
 
+# exec previous command with sudo
 alias please='sudo $(fc -ln -1)'
+
+# Recursively delete `.DS_Store` files
+alias cleanup="find . -name '*.DS_Store' -type f -ls
