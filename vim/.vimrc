@@ -137,6 +137,7 @@ set sidescrolloff=3
 
 " Indentation-----------------------------------------------------------
 set expandtab " Expand tabs into spaces
+set smarttab " <Tab> inserts and <Bs> deletes shiftwidth places at line start
 set tabstop=2 " Make tabs as wide as two spaces
 set shiftwidth=2 " Apply the same for autoindent
 set softtabstop=2 " <TAB> and <BS> key results in 2 spaces as well
