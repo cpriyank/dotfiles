@@ -247,21 +247,21 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 
 " Plugins and their respective configuration----------------------------
 " NERDTree
-" let NERDTreeShowHidden = 1
-"let NERDTreeMouseMode = 2
-" let NERDTreeMinimalUI = 1
-" map <leader>n :NERDTreeToggle<CR>
-"autocmd nviminit StdinReadPre * let s:std_in=1
-"" If no file or directory arguments are specified, open NERDtree.
-"" If a directory is specified as the only argument, open it in NERDTree.
-" autocmd nviminit VimEnter *
-"  \ if argc() == 0 && !exists("s:std_in") |
-"  \   NERDTree |
-"  \ elseif argc() == 1 && isdirectory(argv(0)) |
-"  \   bd |
-"  \   exec 'cd' fnameescape(argv(0)) |
-"  \   NERDTree |
-"  \ end
+let NERDTreeShowHidden = 1
+let NERDTreeMouseMode = 2
+let NERDTreeMinimalUI = 1
+map <leader>n :NERDTreeToggle<CR>
+autocmd nviminit StdinReadPre * let s:std_in=1
+" If no file or directory arguments are specified, open NERDtree.
+" If a directory is specified as the only argument, open it in NERDTree.
+ autocmd nviminit VimEnter *
+  \ if argc() == 0 && !exists("s:std_in") |
+  \   NERDTree |
+  \ elseif argc() == 1 && isdirectory(argv(0)) |
+  \   bd |
+  \   exec 'cd' fnameescape(argv(0)) |
+  \   NERDTree |
+  \ end
 
 " go specific and vim-go config ---------------------------------------------
 let g:go_highlight_functions = 1
@@ -308,7 +308,7 @@ nmap ga <Plug>(EasyAlign)<Paste>
 call plug#begin()
 
 "" Filesystem and project management
-" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 
 "" Language specific
 Plug 'fatih/vim-go', {'for': 'go'}
@@ -319,6 +319,22 @@ Plug 'octave.config/nvim', {'for': 'octave'}
 " Plug 'honza/dockerfile.config/nvim'
 Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 " Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
+" CamelCase and snake_case motions
+Plug 'bkad/CamelCaseMotion', {'for': ['go', 'python']}
+
+" For web dev
+Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+Plug 'leafgarland/typescript-vim'
+Plug 'sheerun/vim-json'
+" Autocomplete (npm install -g tern)
+Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
+" Autocomplete using flow (npm install -g flow-bin)
+Plug 'steelsojka/deoplete-flow', {'for': 'javascript'}
+" JS Documentation comments
+Plug 'heavenshell/vim-jsdoc', { 'on': ['JsDoc'] }
+Plug 'othree/html5.vim', {'for': 'html'}
+" Color highlighter
+Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx'] }
 
 "" Snippets and abbreviations
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
@@ -346,8 +362,9 @@ Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
 "" Misc
 Plug 'tpope/vim-unimpaired' " Handy bracket mappings
 Plug 'junegunn/vim-easy-align'
-Plug 'Raimondi/delimitMate' " Auto complete quotes, parens, brackets, etc
+Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 Plug 'chrisbra/CheckAttach' " Will always have your back
 Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
-
+Plug 'Shougo/denite.nvim' " Unite files, buffers, etc. sources
+Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' } " Intelligent buffer closing
 call plug#end()
