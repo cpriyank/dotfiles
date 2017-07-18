@@ -62,4 +62,4 @@ alias ashanti='redshift -x'
 alias please='sudo $(fc -ln -1)'
 
 # Recursively delete `.DS_Store` files
-alias cleanup="find . -name '*.DS_Store' -type f -ls
+alias cleanup="find . -name '*.DS_Store' -type f -ls"
