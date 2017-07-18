@@ -210,6 +210,8 @@ nnoremap k gk
 
 " Use jk (and the other default <C-[>) to go to the normal mode
 inoremap jk <ESC>
+" Use hh to complete the word in insert mode
+inoremap hh <C-p>
 
 " Hard to type things
 " iabbrev >> →
@@ -287,6 +289,10 @@ endfunction
 
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+" for python completion
+let g:python2_host_prog = '/usr/local/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
