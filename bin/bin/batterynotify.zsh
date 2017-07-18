@@ -10,5 +10,5 @@ then
 	then notify-send -u normal "Battery level is $battery_level" "Please remove the charger now"
 	fi
 else
-	notify-send -u normal "acpi not installed"
+	echo "acpi not installed"
 fi
