@@ -58,6 +58,7 @@ set nowrap " Don't wrap lines by default
 
 
 " Essentials------------------------------------------------------------
+set encoding=utf-8 nobomb " BOM often causes trouble
 set linespace=0 " No extra spaces between rows
 set hidden " Allow switching buffers without saving
 set report=0 " Show all changes
@@ -246,6 +247,7 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 
 " Search and replace word under the cursor
 :nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+nmap <Leader>d :b#<bar>bd#<CR>
 
 " Plugins and their respective configuration----------------------------
 " NERDTree
@@ -308,7 +310,17 @@ nmap ga <Plug>(EasyAlign)<Paste>
 "enable paste detection >
 " let g:airline_detect_paste=1
 
-" let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['xo']
+nnoremap <Leader>b :ls<CR>:b<Space>
 
 " Begin adding plugins here. Managed by vim-plug
 call plug#begin()
@@ -330,6 +342,8 @@ Plug 'bkad/CamelCaseMotion', {'for': ['go', 'python']}
 
 " For web dev
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+" Plug 'othree/javascript-libraries-syntax.vim', {'for' : 'javascript'}
+Plug 'vim-syntastic/syntastic'
 Plug 'leafgarland/typescript-vim'
 Plug 'sheerun/vim-json'
 " Autocomplete (npm install -g tern)
@@ -339,6 +353,7 @@ Plug 'steelsojka/deoplete-flow', {'for': 'javascript'}
 " JS Documentation comments
 Plug 'heavenshell/vim-jsdoc', { 'on': ['JsDoc'] }
 Plug 'othree/html5.vim', {'for': 'html'}
+Plug 'sindresorhus/vim-xo' " jslint
 " Color highlighter
 Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx'] }
 
@@ -372,5 +387,5 @@ Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 Plug 'chrisbra/CheckAttach' " Will always have your back
 Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
 Plug 'Shougo/denite.nvim' " Unite files, buffers, etc. sources
-Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' } " Intelligent buffer closing
+" Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' } " Intelligent buffer closing
 call plug#end()
