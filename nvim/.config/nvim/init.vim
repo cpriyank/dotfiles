@@ -64,7 +64,7 @@ set hidden " Allow switching buffers without saving
 set report=0 " Show all changes
 set clipboard=unnamed " Make yanks go to OS clipboard
 " set esckeys " Allow cursor keys in insert mode
-let mapleader=","  " Change default backslash mapleader. Easier to type
+let mapleader=" "  " Change default backslash mapleader. Easier to type
 set autochdir " Auto switch to current file's directory on opening new buffer
 set ruler " Show column and line number
 set lazyredraw " Don't force redraw when updating buffers
@@ -275,8 +275,8 @@ let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
-autocmd FileType go nmap <leader>b  <Plug>(go-build)
-autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>mb  <Plug>(go-build)
+autocmd FileType go nmap <leader>mr  <Plug>(go-run)
 let g:go_list_type = "quickfix"
 
 " Recommended setting to improve deoplete-go performance
@@ -292,13 +292,15 @@ function! s:build_go_files()
     call go#cmd#Build(0)
   endif
 endfunction
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
 
 " for python completion
-let g:python2_host_prog = '/usr/local/bin/python'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python2_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
 
 " for vim-javacomplete2
 " autocmd FileType java setlocal omnifunc=javacomplete#Complete
@@ -322,11 +324,6 @@ nmap ga <Plug>(EasyAlign)<Paste>
 " let g:airline_detect_modified=1
 "enable paste detection >
 " let g:airline_detect_paste=1
-
-let g:deoplete#enable_at_startup = 1
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -364,7 +361,7 @@ Plug 'JamshedVesuna/vim-markdown-preview'
 " Plug 'othree/javascript-libraries-syntax.vim', {'for' : 'javascript'}
 Plug 'vim-syntastic/syntastic'
 " Plug 'leafgarland/typescript-vim'
-" Plug 'sheerun/vim-json'
+Plug 'sheerun/vim-json'
 " Autocomplete (npm install -g tern)
 " Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
 " Autocomplete using flow (npm install -g flow-bin)
@@ -387,6 +384,7 @@ Plug 'honza/vim-snippets'
 "" Writing/editing helpers
 Plug 'tpope/vim-commentary' " Commenting helper
 Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
+Plug 'tpope/vim-repeat' " repeat some of tpope plugin actions with '.'
 Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -398,6 +396,8 @@ Plug 'zchee/deoplete-go', { 'do': 'make'}
 " Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
 Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
+Plug 'junegunn/limelight.vim' " Hyperfocus-writing in Vim.
+Plug 'junegunn/goyo.vim' " Distraction-free writing in Vim
 
 "" Misc
 Plug 'tpope/vim-unimpaired' " Handy bracket mappings
@@ -408,3 +408,36 @@ Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
 Plug 'Shougo/denite.nvim' " Unite files, buffers, etc. sources
 " Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' } " Intelligent buffer closing
 call plug#end()
+
+" Change file_rec command.
+call denite#custom#var('file_rec', 'command',
+	\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+nnoremap <leader>f :<C-u>Denite file_rec<CR>
+nnoremap <leader>b :<C-u>Denite buffer<CR>
+nnoremap <leader>fb :<C-u>DeniteBufferDir buffer<CR>
+nnoremap <leader>bf :<C-u>DeniteBufferDir file_rec<CR>
+
+	" Change mappings.
+	call denite#custom#map(
+	      \ 'insert',
+	      \ '<C-j>',
+	      \ '<denite:move_to_next_line>',
+	      \ 'noremap'
+	      \)
+	call denite#custom#map(
+	      \ 'insert',
+	      \ '<C-k>',
+	      \ '<denite:move_to_previous_line>',
+	      \ 'noremap'
+	      \)
+
+let g:deoplete#enable_at_startup = 1
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+nmap <Leader>l <Plug>(Limelight)
+xmap <Leader>l <Plug>(Limelight)
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
