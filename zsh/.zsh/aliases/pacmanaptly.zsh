@@ -67,4 +67,10 @@ elif [[ -e /usr/local/bin/brew ]] ; then
 	alias pacre='brew rmtree --dry-run'
 	alias pacref='brew update'
 	alias pacrorf='brew cleanup'
+
+elif [[ -e /usr/sbin/pkg ]] ; then
+	# FreeBSD specific
+	alias pacin='sudo pkg install'
+	alias pacorf='sudo pkg autoremove'
+	alias pacrem='sudo pkg remove'
 fi
