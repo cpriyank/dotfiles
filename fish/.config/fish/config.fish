@@ -1,9 +1,7 @@
 source ~/.config/fish/aliases.fish
 source ~/.config/fish/functions/cdf.fish
-
-
 set -gx GOPATH ~/z/go
-set -gx PATH /usr/local/sbin ~/z/go/bin /snap/bin $PATH
+set -gx PATH /usr/local/sbin /Users/pika/z/go/bin $PATH
 # Base16 Shell
 # if status --is-interactive
 #     eval sh $HOME/.config/fish/base16-monokai-dark.sh
