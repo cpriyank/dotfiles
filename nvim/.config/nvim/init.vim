@@ -279,6 +279,10 @@ autocmd FileType go nmap <leader>b  <Plug>(go-build)
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 let g:go_list_type = "quickfix"
 
+" Recommended setting to improve deoplete-go performance
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
   let l:file = expand('%')
@@ -295,6 +299,15 @@ autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 " for python completion
 let g:python2_host_prog = '/usr/local/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
+
+" for vim-javacomplete2
+" autocmd FileType java setlocal omnifunc=javacomplete#Complete
+" nmap <F4> <Plug>(JavaComplete-Imports-Add)
+" imap <F4> <Plug>(JavaComplete-Imports-Add)
+" nmap <F5> <Plug>(JavaComplete-Imports-AddMissing)
+" imap <F5> <Plug>(JavaComplete-Imports-AddMissing)
+" nmap <F6> <Plug>(JavaComplete-Imports-RemoveUnused)
+" imap <F6> <Plug>(JavaComplete-Imports-RemoveUnused)
 
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -322,6 +335,9 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['xo']
 nnoremap <Leader>b :ls<CR>:b<Space>
 
+" Use github flavored markdown
+let vim_markdown_preview_github=1
+
 " Begin adding plugins here. Managed by vim-plug
 call plug#begin()
 
@@ -331,6 +347,7 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 "" Language specific
 Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
+Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
 Plug 'octave.config/nvim', {'for': 'octave'}
 " Plug 'puppetlabs/puppet-syntax-vim'
 " Plug 'derekwyatt/vim-scala', {'for': 'scala'}
@@ -338,24 +355,26 @@ Plug 'octave.config/nvim', {'for': 'octave'}
 Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 " Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
 " CamelCase and snake_case motions
-Plug 'bkad/CamelCaseMotion', {'for': ['go', 'python']}
+Plug 'vim-scripts/camelcasemotion'
+" Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'}
+Plug 'JamshedVesuna/vim-markdown-preview'
 
 " For web dev
-Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+" Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 " Plug 'othree/javascript-libraries-syntax.vim', {'for' : 'javascript'}
 Plug 'vim-syntastic/syntastic'
-Plug 'leafgarland/typescript-vim'
-Plug 'sheerun/vim-json'
+" Plug 'leafgarland/typescript-vim'
+" Plug 'sheerun/vim-json'
 " Autocomplete (npm install -g tern)
-Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
+" Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
 " Autocomplete using flow (npm install -g flow-bin)
-Plug 'steelsojka/deoplete-flow', {'for': 'javascript'}
+" Plug 'steelsojka/deoplete-flow', {'for': 'javascript'}
 " JS Documentation comments
-Plug 'heavenshell/vim-jsdoc', { 'on': ['JsDoc'] }
-Plug 'othree/html5.vim', {'for': 'html'}
-Plug 'sindresorhus/vim-xo' " jslint
+" Plug 'heavenshell/vim-jsdoc', { 'on': ['JsDoc'] }
+" Plug 'othree/html5.vim', {'for': 'html'}
+" Plug 'sindresorhus/vim-xo' " jslint
 " Color highlighter
-Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx'] }
+" Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx'] }
 
 "" Snippets and abbreviations
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
