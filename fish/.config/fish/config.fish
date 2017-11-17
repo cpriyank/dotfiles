@@ -3,9 +3,9 @@ source ~/.config/fish/functions/cdf.fish
 set -gx GOPATH ~/z/go
 set -gx PATH /usr/local/sbin /Users/pika/z/go/bin $PATH
 # Base16 Shell
-# if status --is-interactive
-#     eval sh $HOME/.config/fish/base16-monokai-dark.sh
-# end
+if status --is-interactive
+    eval sh $HOME/.config/fish/base16-monokai.sh
+end
 
 # THEME PURE #
 set fish_function_path ~/.config/fish/functions/pure $fish_function_path
