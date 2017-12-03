@@ -1,3 +1,12 @@
+# Navigation
+function ...   ; cd ../.. ; end
+function ....  ; cd ../../.. ; end
+function ..... ; cd ../../../.. ; end
+
+
+# File size
+alias fs="stat -f \"%z bytes\""
+
 ## Utility specific aliases
 if which nvim > /dev/null
 	alias v="nvim"
@@ -31,8 +40,9 @@ alias da='du -sch'
 alias rm='rm -i' # Also see RM_STAR_SILENT options of Zsh
 
 # Warn on overwrite
-alias cp='cp -i'
-alias mv='mv -i'
+alias mv 'command gmv --interactive --verbose'
+alias rm 'command grm --interactive --verbose'
+alias cp 'command gcp --interactive --verbose'
 
 # Download video by URL from STDIN
 alias apo='youtube-dl'
@@ -59,6 +69,7 @@ alias gsb='git status -sb'
 alias gst='git status'
 alias gd='git diff'
 alias glola="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
+alias master="git checkout master"
 
 alias gp='git push'
 alias gpd='git push --dry-run'
