@@ -29,32 +29,83 @@ if has('persistent_undo')
 endif
 
 
-" Looks-----------------------------------------------------------------
-set background=dark
-set t_Co=256 " Use 256 colors
+" Begin adding plugins here. Managed by vim-plug-----------------------------
+call plug#begin()
 
-let base16colorspace=256 " " Access colors present in 256 colorspace
+"" Filesystem and project management
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
+Plug 'airblade/vim-gitgutter' " shows a git diff in the 'gutter' (sign column)
+Plug 'majutsushi/tagbar'
 
-try  " Don't use a color scheme if not found
-  colorscheme base16-monokai
-catch /^Vim\%((\a\+)\)\=:E185/
-endtry
+"" Language specific
+Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'davidhalter/jedi-vim', {'for': 'python'}
+Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
+Plug 'octave.config/nvim', {'for': 'octave'}
+" Plug 'puppetlabs/puppet-syntax-vim'
+" Plug 'derekwyatt/vim-scala', {'for': 'scala'}
+" Plug 'honza/dockerfile.config/nvim'
+Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
+" Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
+" CamelCase and snake_case motions
+Plug 'vim-scripts/camelcasemotion'
+" Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'}
+Plug 'JamshedVesuna/vim-markdown-preview'
 
-set noshowmode " Don't show the mode you're in. lightline.vim has your back
-set number " Show line numbers
-set relativenumber " Use relative line numbers
+" For web dev
+" Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+" Plug 'othree/javascript-libraries-syntax.vim', {'for' : 'javascript'}
+" Plug 'vim-syntastic/syntastic'
+" Plug 'leafgarland/typescript-vim'
+Plug 'sheerun/vim-json'
+" Autocomplete (npm install -g tern)
+" Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
+" Autocomplete using flow (npm install -g flow-bin)
+" Plug 'steelsojka/deoplete-flow', {'for': 'javascript'}
+" JS Documentation comments
+" Plug 'heavenshell/vim-jsdoc', { 'on': ['JsDoc'] }
+" Plug 'othree/html5.vim', {'for': 'html'}
+" Plug 'sindresorhus/vim-xo' " jslint
+" Color highlighter
+" Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx'] }
 
-" Show absolute numbers in insert mode, otherwise relative
-autocmd nviminit InsertEnter * :set norelativenumber
-autocmd nviminit InsertLeave * :set relativenumber
+"" Snippets and abbreviations
+Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
+" Track the engine.
+Plug 'SirVer/ultisnips'
+" Snippets are separated from the engine. Add this if you want them:
+Plug 'honza/vim-snippets'
 
-" Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set list
 
-set title " Show the filename in the window titlebar
-set cursorline " Highlight current line
-set nowrap " Don't wrap lines by default
+"" Writing/editing helpers
+Plug 'tpope/vim-commentary' " Commenting helper
+Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
+Plug 'tpope/vim-repeat' " repeat some of tpope plugin actions with '.'
+Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
+Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'zchee/deoplete-go', { 'do': 'make'}
+" Plug 'JuliaEditorSupport/deoplete-julia'
+Plug 'roxma/nvim-completion-manager'
+Plug 'w0rp/ale'
+
+"" Visual
+" Plug 'vim-airline/vim-airline' " Pretty status line
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
+Plug 'junegunn/limelight.vim' " Hyperfocus-writing in Vim.
+Plug 'junegunn/goyo.vim' " Distraction-free writing in Vim
+
+"" Misc
+Plug 'tpope/vim-unimpaired' " Handy bracket mappings
+Plug 'junegunn/vim-easy-align'
+Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
+Plug 'chrisbra/CheckAttach' " Will always have your back
+Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
+Plug 'Shougo/denite.nvim' " Unite files, buffers, etc. sources
+" Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' } " Intelligent buffer closing
+call plug#end()
 
 
 " Essentials------------------------------------------------------------
@@ -137,6 +188,34 @@ set noerrorbells " Disable error bells. I can notice visual bells.
 set nostartofline " Don’t reset cursor to start of line when moving around.
 set shortmess=atI " Disable startup message
 set gcr=a:blinkon0 " Disable cursor blinking
+
+
+" Looks-----------------------------------------------------------------
+set background=dark
+set t_Co=256 " Use 256 colors
+
+let base16colorspace=256 " " Access colors present in 256 colorspace
+
+try  " Don't use a color scheme if not found
+  colorscheme base16-monokai
+catch /^Vim\%((\a\+)\)\=:E185/
+endtry
+
+set noshowmode " Don't show the mode you're in. lightline.vim has your back
+set number " Show line numbers
+set relativenumber " Use relative line numbers
+
+" Show absolute numbers in insert mode, otherwise relative
+autocmd nviminit InsertEnter * :set norelativenumber
+autocmd nviminit InsertLeave * :set relativenumber
+
+" Show “invisible” characters
+set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set list
+
+set title " Show the filename in the window titlebar
+set cursorline " Highlight current line
+set nowrap " Don't wrap lines by default
 
 
 " Custom shortcuts for moving around buffers----------------------------
@@ -280,8 +359,8 @@ autocmd FileType go nmap <leader>mr  <Plug>(go-run)
 let g:go_list_type = "quickfix"
 
 " Recommended setting to improve deoplete-go performance
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
@@ -292,15 +371,15 @@ function! s:build_go_files()
     call go#cmd#Build(0)
   endif
 endfunction
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
 
 " for python completion
-let g:python2_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python2_host_prog = '/usr/local/bin/python2'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 " for vim-javacomplete2
 " autocmd FileType java setlocal omnifunc=javacomplete#Complete
@@ -325,89 +404,23 @@ nmap ga <Plug>(EasyAlign)<Paste>
 "enable paste detection >
 " let g:airline_detect_paste=1
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['xo']
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_javascript_checkers = ['xo']
 nnoremap <Leader>b :ls<CR>:b<Space>
 
 " Use github flavored markdown
 let vim_markdown_preview_github=1
 
-" Begin adding plugins here. Managed by vim-plug
-call plug#begin()
-
-"" Filesystem and project management
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
-
-"" Language specific
-Plug 'fatih/vim-go', {'for': 'go'}
-Plug 'davidhalter/jedi-vim', {'for': 'python'}
-Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
-Plug 'octave.config/nvim', {'for': 'octave'}
-" Plug 'puppetlabs/puppet-syntax-vim'
-" Plug 'derekwyatt/vim-scala', {'for': 'scala'}
-" Plug 'honza/dockerfile.config/nvim'
-Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
-" Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
-" CamelCase and snake_case motions
-Plug 'vim-scripts/camelcasemotion'
-" Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'}
-Plug 'JamshedVesuna/vim-markdown-preview'
-
-" For web dev
-" Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-" Plug 'othree/javascript-libraries-syntax.vim', {'for' : 'javascript'}
-Plug 'vim-syntastic/syntastic'
-" Plug 'leafgarland/typescript-vim'
-Plug 'sheerun/vim-json'
-" Autocomplete (npm install -g tern)
-" Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
-" Autocomplete using flow (npm install -g flow-bin)
-" Plug 'steelsojka/deoplete-flow', {'for': 'javascript'}
-" JS Documentation comments
-" Plug 'heavenshell/vim-jsdoc', { 'on': ['JsDoc'] }
-" Plug 'othree/html5.vim', {'for': 'html'}
-" Plug 'sindresorhus/vim-xo' " jslint
-" Color highlighter
-" Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx'] }
-
-"" Snippets and abbreviations
-Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
-" Track the engine.
-Plug 'SirVer/ultisnips'
-" Snippets are separated from the engine. Add this if you want them:
-Plug 'honza/vim-snippets'
-
-
-"" Writing/editing helpers
-Plug 'tpope/vim-commentary' " Commenting helper
-Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
-Plug 'tpope/vim-repeat' " repeat some of tpope plugin actions with '.'
-Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
-Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-" Plug 'JuliaEditorSupport/deoplete-julia'
-
-"" Visual
-" Plug 'vim-airline/vim-airline' " Pretty status line
-" Plug 'vim-airline/vim-airline-themes'
-Plug 'itchyny/lightline.vim'
-Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
-Plug 'junegunn/limelight.vim' " Hyperfocus-writing in Vim.
-Plug 'junegunn/goyo.vim' " Distraction-free writing in Vim
-
-"" Misc
-Plug 'tpope/vim-unimpaired' " Handy bracket mappings
-Plug 'junegunn/vim-easy-align'
-Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
-Plug 'chrisbra/CheckAttach' " Will always have your back
-Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
-Plug 'Shougo/denite.nvim' " Unite files, buffers, etc. sources
-" Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' } " Intelligent buffer closing
-call plug#end()
+" neovim-completion manager
+set shortmess+=c
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+let g:ale_sign_column_always = 1
+nnoremap <silent> <leader>t :TagbarToggle<CR>
 
 " Change file_rec command.
 call denite#custom#var('file_rec', 'command',
@@ -432,12 +445,18 @@ nnoremap <leader>bf :<C-u>DeniteBufferDir file_rec<CR>
 	      \ 'noremap'
 	      \)
 
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 nmap <Leader>l <Plug>(Limelight)
 xmap <Leader>l <Plug>(Limelight)
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
+
+" Write this in your vimrc file
+let g:ale_lint_on_text_changed = 'never'
+" You can disable this option too
+" if you don't want linters to run on opening a file
+let g:ale_lint_on_enter = 0
