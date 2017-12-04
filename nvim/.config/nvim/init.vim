@@ -36,10 +36,12 @@ call plug#begin()
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 Plug 'airblade/vim-gitgutter' " shows a git diff in the 'gutter' (sign column)
 Plug 'majutsushi/tagbar'
+" async grep from vim
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 
 "" Language specific
 Plug 'fatih/vim-go', {'for': 'go'}
-Plug 'davidhalter/jedi-vim', {'for': 'python'}
+" Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
 Plug 'octave.config/nvim', {'for': 'octave'}
 " Plug 'puppetlabs/puppet-syntax-vim'
@@ -93,7 +95,7 @@ Plug 'w0rp/ale'
 " Plug 'vim-airline/vim-airline' " Pretty status line
 " Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
-Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
+Plug 'Yggdroot/indentLine'
 Plug 'junegunn/limelight.vim' " Hyperfocus-writing in Vim.
 Plug 'junegunn/goyo.vim' " Distraction-free writing in Vim
 
@@ -334,17 +336,6 @@ let NERDTreeShowHidden = 1
 let NERDTreeMouseMode = 2
 let NERDTreeMinimalUI = 1
 map <leader>n :NERDTreeToggle<CR>
-autocmd nviminit StdinReadPre * let s:std_in=1
-" If no file or directory arguments are specified, open NERDtree.
-" If a directory is specified as the only argument, open it in NERDTree.
- autocmd nviminit VimEnter *
-  \ if argc() == 0 && !exists("s:std_in") |
-  \   NERDTree |
-  \ elseif argc() == 1 && isdirectory(argv(0)) |
-  \   bd |
-  \   exec 'cd' fnameescape(argv(0)) |
-  \   NERDTree |
-  \ end
 
 " go specific and vim-go config ---------------------------------------------
 let g:go_highlight_functions = 1
@@ -378,8 +369,8 @@ autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
 
 " for python completion
-let g:python2_host_prog = '/usr/local/bin/python2'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python2_host_prog = '/usr/bin/python2'
+let g:python3_host_prog = '/usr/bin/python3'
 
 " for vim-javacomplete2
 " autocmd FileType java setlocal omnifunc=javacomplete#Complete
@@ -460,3 +451,6 @@ let g:ale_lint_on_text_changed = 'never'
 " You can disable this option too
 " if you don't want linters to run on opening a file
 let g:ale_lint_on_enter = 0
+
+" Search for a word in all files in project
+nnoremap <Leader>fp :Grepper<Space>-query<Space>
