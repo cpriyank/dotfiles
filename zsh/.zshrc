@@ -107,12 +107,14 @@ zle -N self-insert url-quote-magic
 
 
 ## Keybindings----------------------------------------------------------------
-bindkey '^Z' fg-vim
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 
 # . /home/tiniyo/torch/install/bin/torch-activate
-
+# In OS X autosuggestion config is maintained as a package in brew
+# source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# In arch, one might have to manage by oneself or zsh-autosuggestions
+# AUR package and source zsh file accordingly
 
 # export PATH="/home/tiniyo/miniconda3/bin:$PATH"
