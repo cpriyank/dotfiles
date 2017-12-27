@@ -369,8 +369,8 @@ autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
 
 " for python completion
-let g:python2_host_prog = '/usr/bin/python2'
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python2_host_prog = system('which python3')
+let g:python3_host_prog = system('which python2')
 
 " for vim-javacomplete2
 " autocmd FileType java setlocal omnifunc=javacomplete#Complete
