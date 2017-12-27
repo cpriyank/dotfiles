@@ -3,4 +3,4 @@
 	url = https://github.com/syl20bnr/spacemacs.git
 [submodule "fish/.config/fish/functions/pure"]
 	path = fish/.config/fish/functions/pure
-	url = https://github.com/pronoid/pure.git
+	url = https://github.com/rafaelrinaldi/pure
