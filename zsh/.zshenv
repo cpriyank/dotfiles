@@ -18,5 +18,5 @@ else export EDITOR="nano"
 fi
 export LC_COLLATE=C
 # export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
-export VDPAU_DRIVER=va_gl
+# export VDPAU_DRIVER=va_gl
 #export LIBVA_DRIVER_NAME=vdpau
