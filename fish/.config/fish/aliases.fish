@@ -1,76 +1,145 @@
-# Navigation
+### Navigation
 function ...   ; cd ../.. ; end
 function ....  ; cd ../../.. ; end
 function ..... ; cd ../../../.. ; end
 
 
-# File size
-alias fs="stat -f \"%z bytes\""
-
-## Utility specific aliases
-if which nvim > /dev/null
-	alias v="nvim"
-else if which vim > /dev/null
-  alias v="vim"
-else
-  echo vim or neovim is not installed.
+### File size
+function fs
+	stat -f \"%z bytes\" $argv
 end
 
-alias l="la"
+function v
+	$EDITOR $argv
+end
 
-alias m='tmux -f ~/.tmux/config'
-alias a='tmux attach'
+function l
+	la $argv
+end
+
+function m
+	tmux -f ~/.tmux/config
+end
+
+function a
+	tmux attach
+end
 
 # Open vim in readonly mode
-alias vr='v -R'
+function vr
+	v -R $argv
+end
 
-alias scp='scp -p'
-alias wget='wget -c'
+function scp
+	scp -p $argv
+end
 
-alias pong='ping -c 3 www.google.com'
+function wget
+	wget -c $argv
+end
 
-alias xrr='xrdb ~/.Xresources'
+function pong
+	ping -c 3 www.google.com
+end
 
-alias matlab='matlab -nosplash -nodesktop'
-alias tree='tree -C'
+function xrr
+	xrdb ~/.Xresources
+end
+
+function tree
+	tree -C $argv
+end
 
 # Make du readable
-alias da='du -sch'
-
-alias rm='rm -i' # Also see RM_STAR_SILENT options of Zsh
+function da
+	du -sch $argv
+end
 
 # Warn on overwrite
-alias mv 'command gmv --interactive --verbose'
-alias rm 'command grm --interactive --verbose'
-alias cp 'command gcp --interactive --verbose'
+function mv
+	command gmv --interactive --verbose $argv
+end
 
-# Download video by URL from STDIN
-alias apo='youtube-dl'
+function rm
+	command grm --interactive --verbose $argv
+end
+
+function cp
+	command gcp --interactive --verbose $argv
+end
+
+### Download video by URL from STDIN
+function apo
+	youtube-dl $argv
+end
+
+function asong
+	youtube-dl -f 251 $argv
+end
+
 # Download videos from the list of URLs from a file
-alias apone='youtube-dl -a'
+function apone
+	youtube-dl -a $argv
+end
 
-alias asong='youtube-dl -f 251'
-
-# Redshift aliases. For saving eyes, seriously.
+### Redshift aliases. For saving eyes, seriously.
 # Gandhinagar coordinates
-alias shantib='redshift -o -l 23.22:72.68'
+function shantib
+	redshift -o -l 23.22:72.68
+end
+
 # Seattle coordinates  
-alias shanti='redshift -o -l 47.61:-122.33 -t 4500:2800'
+function shanti
+	redshift -o -l 47.61:-122.33 -t 4500:2800
+end
+
 # Reset color
-alias ashanti='redshift -x'
+function ashanti
+	redshift -x
+end
 
-# Recursively delete `.DS_Store` files
-alias cleanup="find . -name '*.DS_Store' -type f -ls"
+### Recursively delete `.DS_Store` files
+function cleanup
+	find . -name '*.DS_Store' -type f -ls
+end
 
-alias ga='git add'
-alias gc='git commit -v'
-alias gco='git checkout'
-alias gsb='git status -sb'
-alias gst='git status'
-alias gd='git diff'
-alias glola="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
-alias master="git checkout master"
+### Git specific
+function ga
+	git add $argv
+end
 
-alias gp='git push'
-alias gpd='git push --dry-run'
-alias grh='git reset HEAD --'
+function gc
+	git commit -v $argv
+end
+
+function gco
+	git checkout $argv
+end
+
+function gsb
+	git status -sb
+end
+
+function gst
+	git status
+end
+
+function gd
+	git diff $argv
+end
+
+function glola
+	git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+end
+
+function gp
+	git push $argv
+end
+
+function gpd
+	git push --dry-run $argv
+end
+
+function grh
+	git reset HEAD -- $argv
+end
