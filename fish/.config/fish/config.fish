@@ -20,4 +20,4 @@ if status --is-interactive
 end
 
 ### Pure prompt theme
-set -gx fish_function_path $fish_function_path $HOME/.config/fish/pure
+set fish_function_path $fish_function_path $HOME/.config/fish/pure
