@@ -6,11 +6,11 @@ function ..... ; cd ../../../.. ; end
 
 ### File size
 function fs
-	stat -f \"%z bytes\" $argv
+	stat -f "%z bytes" $argv
 end
 
 function v
-	$EDITOR $argv
+	eval $EDITOR $argv
 end
 
 function l
@@ -31,11 +31,11 @@ function vr
 end
 
 function scp
-	scp -p $argv
+	command scp -p $argv
 end
 
 function wget
-	wget -c $argv
+	command wget -c $argv
 end
 
 function pong
@@ -47,7 +47,7 @@ function xrr
 end
 
 function tree
-	tree -C $argv
+	command tree -C $argv
 end
 
 # Make du readable
