@@ -1,16 +1,15 @@
 ## Add some colors to your workspace(s)
 # Detect OS and determine proper flag to colorize
-typeset -ga colorflag
-typeset -ga grep_options
 if ls --color=auto / >/dev/null 2>&1; then # GNU/Linux ls
-    colorflag+=( --color=auto )
+    colorflag="--color"
 elif ls -G / >/dev/null 2>&1; then # OSX ls
-    colorflag+=( -G )
+    colorflag="-G"
 fi
 
-if grep --color=auto -q "a" <<< "a" >/dev/null 2>&1; then
-    grep_options+=( --color=auto )
-fi
+# Always enable colored `grep` output
+# Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.
+# Thanks @matthiasbynes
+alias grep='grep --color=auto'
 
 # List all files in a nicely detailed, colored format
 alias l="ls -hlF ${colorflag}"
@@ -38,15 +37,6 @@ alias lsbig="command ls -flh *(.OL[1,10])"
 alias lsnew="command ls -rtlh *(D.om[1,10])"
 # The ten newest directories and ten newest .directories
 alias lsnd="command ls -rthdl *(/om[1,10]) .*(D/om[1,10])"
-
-# Use colors when GNU grep with color-support
-if (( $#grep_options > 0 )); then
-    o=${grep_options:+"${grep_options[*]}"}
-    # Execute \kbd{grep -{}-color=auto}
-    alias grep='grep '$o
-    alias egrep='egrep '$o
-    unset o
-fi
 
 # Color 'less' output
 export LESS_TERMCAP_mb=$'\E[01;31m'
