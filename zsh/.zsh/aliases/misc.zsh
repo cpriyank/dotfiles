@@ -54,7 +54,7 @@ alias asong='youtube-dl -f 251'
 # Gandhinagar coordinates
 alias shantib='redshift -o -l 23.22:72.68'
 # Seattle coordinates  
-alias shanti='redshift -o -l 47.61:-122.33' -t 4500:2800
+alias shanti='redshift -o -l 47.61:-122.33 -t 4500:2800'
 # Reset color
 alias ashanti='redshift -x'
 
