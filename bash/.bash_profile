@@ -1,11 +1,11 @@
 # Load our dotfiles like ~/.bash_prompt, etc…
 #   ~/.extra can be used for settings you don’t want to commit,
 #   Use it to configure your PATH, thus it being first in line.
-for file in ~/.zsh/aliases/*; do source $file; done
 for file in ~/.{extra,bash_prompt,exports,functions}; do
     [[ -r "$file" ]] && source "$file"
 done
 unset file
+for file in ~/.zsh/aliases/*; do source $file; done
 
 # to help sublimelinter etc with finding my PATHS
 case $- in
@@ -90,3 +90,6 @@ shopt -s dirspell 2> /dev/null
 
 # Turn on recursive globbing (enables ** to recurse all directories)
 shopt -s globstar 2> /dev/null
+
+# base16-shell theme
+source ~/.zsh/plugs/base16-monokai.dark.sh
