@@ -1,0 +1,23 @@
+if hash nvim 2>/dev/null
+then
+    export EDITOR="nvim"
+elif hash vim 2>/dev/null
+then
+    export EDITOR="vim"
+else
+    export EDITOR="nano"
+fi
+
+# https://wiki.archlinux.org/index.php/locale
+export LC_COLLATE=C
+
+if [[ ! -d $HOME/z/go ]]
+then
+    mkdir -p $HOME/z/go
+fi
+
+export GOPATH=$HOME/z/go
+PATH=$PATH:$GOPATH
+
+# export VDPAU_DRIVER=va_gl
+# export LIBVA_DRIVER_NAME=vdpau
