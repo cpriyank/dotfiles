@@ -46,6 +46,7 @@ done
 unset autocompfiles
 
 
+source ~/.exports
 ## Aliases and functions------------------------------------------------------
 aliasfiles=(${ZDOTDIR:-${HOME}}/.zsh/aliases/*)
 for file in ${aliasfiles}; do
