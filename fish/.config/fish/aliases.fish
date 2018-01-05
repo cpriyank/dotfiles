@@ -50,6 +50,11 @@ function tree
 	command tree -C $argv
 end
 
+# cat files with syntax highlighting
+function c
+	pygmentize -O style=monokai -f console256 -g $argv
+end
+
 # Make du readable
 function da
 	du -sch $argv
