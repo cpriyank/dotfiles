@@ -87,6 +87,11 @@ function apone
 	youtube-dl -a $argv
 end
 
+# just play audio from a video file or url
+function p
+	mpv --no-video $argv
+end
+
 ### Redshift aliases. For saving eyes, seriously.
 # Gandhinagar coordinates
 function shantib

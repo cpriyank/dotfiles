@@ -54,6 +54,9 @@ alias apone='youtube-dl -a'
 
 alias asong='youtube-dl -f 251'
 
+# just play audio from a video file or url
+alias p='mpv --no-video'
+
 # Redshift aliases. For saving eyes, seriously.
 # Gandhinagar coordinates
 alias shantib='redshift -o -l 23.22:72.68'
