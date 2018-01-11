@@ -53,13 +53,15 @@ Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 Plug 'vim-scripts/camelcasemotion'
 " Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'}
 Plug 'JamshedVesuna/vim-markdown-preview'
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 " For web dev
 " Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 " Plug 'othree/javascript-libraries-syntax.vim', {'for' : 'javascript'}
 " Plug 'vim-syntastic/syntastic'
 " Plug 'leafgarland/typescript-vim'
-Plug 'sheerun/vim-json'
+" Plug 'sheerun/vim-json'
 " Autocomplete (npm install -g tern)
 " Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
 " Autocomplete using flow (npm install -g flow-bin)
@@ -72,7 +74,7 @@ Plug 'sheerun/vim-json'
 " Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx'] }
 
 "" Snippets and abbreviations
-Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
+" Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
 " Track the engine.
 Plug 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
@@ -105,7 +107,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 Plug 'chrisbra/CheckAttach' " Will always have your back
 Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
-Plug 'Shougo/denite.nvim' " Unite files, buffers, etc. sources
+" Plug 'Shougo/denite.nvim' " Unite files, buffers, etc. sources
 " Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' } " Intelligent buffer closing
 call plug#end()
 
@@ -221,7 +223,8 @@ set nowrap " Don't wrap lines by default
 
 
 " Custom shortcuts for moving around buffers----------------------------
-map <leader><leader> :b#<CR> " Switch between the last two files with ,,
+" Switch between the last two files with double space
+map <leader><leader> :b#<CR>
 
 " Jump to buffer number 1-9 with ,<N> or 1-99 with <N>gb
 let c = 1
@@ -328,6 +331,8 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 
 " Search and replace word under the cursor
 :nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
+" Delete current buffer
 nmap <Leader>d :b#<bar>bd#<CR>
 
 " Plugins and their respective configuration----------------------------
@@ -369,8 +374,8 @@ autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
 
 " for python completion
-let g:python2_host_prog = system('which python3')
-let g:python3_host_prog = system('which python2')
+let g:python2_host_prog =  '/usr/local/bin/python2'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 " for vim-javacomplete2
 " autocmd FileType java setlocal omnifunc=javacomplete#Complete
@@ -400,7 +405,6 @@ nmap ga <Plug>(EasyAlign)<Paste>
 " let g:syntastic_check_on_open = 1
 " let g:syntastic_check_on_wq = 0
 " let g:syntastic_javascript_checkers = ['xo']
-nnoremap <Leader>b :ls<CR>:b<Space>
 
 " Use github flavored markdown
 let vim_markdown_preview_github=1
@@ -413,28 +417,28 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 let g:ale_sign_column_always = 1
 nnoremap <silent> <leader>t :TagbarToggle<CR>
 
-" Change file_rec command.
-call denite#custom#var('file_rec', 'command',
-	\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+" " Change file_rec command.
+" call denite#custom#var('file_rec', 'command',
+" 	\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
 
-nnoremap <leader>f :<C-u>Denite file_rec<CR>
-nnoremap <leader>b :<C-u>Denite buffer<CR>
-nnoremap <leader>fb :<C-u>DeniteBufferDir buffer<CR>
-nnoremap <leader>bf :<C-u>DeniteBufferDir file_rec<CR>
+" nnoremap <leader>f :<C-u>Denite file_rec<CR>
+" nnoremap <leader>b :<C-u>Denite buffer<CR>
+" nnoremap <leader>fb :<C-u>DeniteBufferDir buffer<CR>
+" nnoremap <leader>bf :<C-u>DeniteBufferDir file_rec<CR>
 
-	" Change mappings.
-	call denite#custom#map(
-	      \ 'insert',
-	      \ '<C-j>',
-	      \ '<denite:move_to_next_line>',
-	      \ 'noremap'
-	      \)
-	call denite#custom#map(
-	      \ 'insert',
-	      \ '<C-k>',
-	      \ '<denite:move_to_previous_line>',
-	      \ 'noremap'
-	      \)
+" 	" Change mappings.
+" 	call denite#custom#map(
+" 	      \ 'insert',
+" 	      \ '<C-j>',
+" 	      \ '<denite:move_to_next_line>',
+" 	      \ 'noremap'
+" 	      \)
+" 	call denite#custom#map(
+" 	      \ 'insert',
+" 	      \ '<C-k>',
+" 	      \ '<denite:move_to_previous_line>',
+" 	      \ 'noremap'
+" 	      \)
 
 " let g:deoplete#enable_at_startup = 1
 set statusline+=%#warningmsg#
@@ -454,3 +458,35 @@ let g:ale_lint_on_enter = 0
 
 " Search for a word in all files in project
 nnoremap <Leader>fp :Grepper<Space>-query<Space>
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+" for commands supplied by fzf
+nnoremap <leader>f :GFiles<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>fc :GFiles?<CR>
+nnoremap <leader>rg :Rg
+nnoremap <leader>r :History<CR>
+nnoremap <leader>rc :History:<CR>
