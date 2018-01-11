@@ -66,7 +66,7 @@ function mv
 end
 
 function rm
-	command grm --interactive --verbose $argv
+	trash $argv
 end
 
 function cp
