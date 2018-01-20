@@ -96,7 +96,8 @@ set -g status-justify centre # center align window list
 
 # By default, tmux advertises itself as screen without 256-color support.
 # Change that.
-set -g default-terminal "screen-256color"
+# As of tmux 2.1, this is now tmux, or tmux-256color
+# set -g default-terminal "screen-256color"
 
 # default statusbar colors
 set -g status-fg blue
