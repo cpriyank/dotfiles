@@ -3,65 +3,74 @@ unbind C-b
 set -g prefix C-a
 bind C-a send-prefix
 
-# Mouse support
+# https://wiki.archlinux.org/index.php/tmux#xterm-keys
+setw -g xterm-keys on
+# Mouse and scrolling support
 set -g mouse on
 
 # scrollback buffer
 set -g history-limit 4096
 
-# Start with window 0
-set -g base-index 0
+# Start with window 1
+set -g base-index 1
 
-# Start with pane 0
-set -g pane-base-index 0
+# Start with pane 1
+set -g pane-base-index 1
 
 # Resizing
-bind-key > resize-pane -R 10
-bind-key < resize-pane -U 10
+bind -r H resize-pane -L 2
+bind -r J resize-pane -D 2
+bind -r K resize-pane -U 2
+bind -r L resize-pane -R 2
 
 # Vi mode
 setw -g mode-keys vi
 unbind [
-bind Escape copy-mode
+bind Enter copy-mode
 unbind p
 bind p paste-buffer
-bind-key -T copy-mode-vi v send-keys -X begin-selection
-bind-key -T copy-mode-vi y send-keys -X copy-selection
+run -b 'tmux bind -t vi-copy v begin-selection 2> /dev/null || true'
+run -b 'tmux bind -T copy-mode-vi v send -X begin-selection 2> /dev/null || true'
+run -b 'tmux bind -t vi-copy y copy-selection 2> /dev/null || true'
+run -b 'tmux bind -T copy-mode-vi y send -X copy-selection-and-cancel 2> /dev/null || true'
+run -b 'tmux bind -t vi-copy Escape cancel 2> /dev/null || true'
+run -b 'tmux bind -T copy-mode-vi Escape send -X cancel 2> /dev/null || true'
+
+# copy to Mac OSX clipboard
+if -b 'command -v reattach-to-user-namespace > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | reattach-to-user-namespace pbcopy"'
+# copy to X11 clipboard
+if -b 'command -v xsel > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | xsel -i -b"'
+if -b '! command -v xsel > /dev/null 2>&1 && command -v xclip > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | xclip -i -selection clipboard >/dev/null 2>&1"'
+
+# -- buffers -------------------------------------------------------------------
+
+bind b list-buffers  # list paste buffers
+bind p paste-buffer  # paste from the top paste buffer
+bind P choose-buffer # choose which buffer to paste from
 
 # Window split bindings
 unbind %
-bind v split-window -v
+bind _ split-window -v
 unbind '"'
-bind h split-window -h
+bind - split-window -h
 
 # pane selection
-bind Left select-pane -L
-bind Right select-pane -R
-bind Up select-pane -U
-bind Down select-pane -D
+bind -r h select-pane -L
+bind -r j select-pane -D
+bind -r k select-pane -U
+bind -r l select-pane -R
 
-# pane/window movement
-bind-key j command-prompt -p "join pane from:" "join-pane -s '%%'"
-bind-key s command-prompt -p "send pane to:" "join-pane -t '%%'"
-bind-key S command-prompt -p "swap window with:" "swap-window -t ':%%'"
-bind-key m command-prompt -p "move window to:" "move-window -t ':%%'"
+# maximize current pane
+bind + run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
+
+# rename window
 bind-key , command-prompt -p "rename window to:" "rename-window '%%'"
 
 # quick view of processes
 bind '~' split-window "exec htop"
 
-# copy tmux buffer to clipboard
-bind C-y run "tmux show-buffer | xsel -b"
-# move x clipboard into tmux paste buffer
-bind C-p run "tmux set-buffer \"$(xsel -o)\"; tmux paste-buffer"
-bind B run "tmux capture-pane -S -2000; tmux save-buffer /tmp/tmux_buffer_\"$(date +%d%m%y)\"; tmux display-message \"  Buffer captured...\""
-
 # toggle last window
-bind-key C-a last-window
-
-# confirm before killing a window or the server
-bind-key k confirm kill-window
-bind-key K confirm kill-server
+bind-key Tab last-window
 
 # on-screen time for display-panes in ms
 set -g display-panes-time 2000
@@ -69,19 +78,21 @@ set -g display-panes-time 2000
 # enable wm window titles
 set -g set-titles on
 
-# enable auto renaming
+# enable auto window renaming from current program
 setw -g automatic-rename on
 
+# renumber windows when a window is closed
+set -g renumber-windows on
+
 # wm window title string (uses statusbar variables)
-set -g set-titles-string "tmux:#I [ #W ]"
+set -g set-titles-string "#h ❐ #S ● #I #W"
 
 # reload config without killing server
-bind R source-file ~/.tmux/conf \; display-message "  Config reloaded..."
+bind R source-file ~/.tmux/config \; display-message "  Config reloaded..."
 
-# border colours
+# border colors
 set -g pane-border-fg blue
 set -g pane-active-border-fg magenta
-set -g pane-active-border-bg default
 
 # statusbar --------------------------------------------------------------
 set -g window-status-format "#I:#W"
@@ -91,8 +102,12 @@ set -g status-keys vi
 bind-key -T edit-mode-vi Up send-keys -X history-up
 bind-key -T edit-mode-vi Down send-keys -X history-down
 
-set -g status-interval 5
+# redraw status line every 10 seconds
+set -g status-interval 10
 set -g status-justify centre # center align window list
+
+# clear both screen and history
+bind -n C-l send-keys C-l \; run 'sleep 0.1' \; clear-history 
 
 # By default, tmux advertises itself as screen without 256-color support.
 # Change that.
@@ -106,11 +121,15 @@ set -g status-bg default
 # listen for activity on all windows
 set -g bell-action any
 
+# activity
+set -g monitor-activity on
+set -g visual-activity off
+
 # bell colours
 set -g window-status-bell-bg default
 set -g window-status-bell-fg red
 set -g window-status-bell-attr bright
 
 # Status bar with or without X
-if '[ -n "$DISPLAY" ]' 'source-file ~/.tmux/inx'
-if '[ -z "$DISPLAY" ]' 'source-file ~/.tmux/xless'
+# if '[ -n "$DISPLAY" ]' 'source-file ~/.tmux/inx'
+# if '[ -z "$DISPLAY" ]' 'source-file ~/.tmux/xless'
