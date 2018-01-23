@@ -51,7 +51,6 @@ Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 " Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
 " CamelCase and snake_case motions
 Plug 'vim-scripts/camelcasemotion'
-" Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'}
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
@@ -89,8 +88,13 @@ Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'zchee/deoplete-go', { 'do': 'make'}
+function! BuildYCM(info)
+  if a:info.status == 'installed' || a:info.force
+    !./install.py --clang-completer --gocode-completer
+  endif
+endfunction
+Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'python', 'go'], 'do': function('BuildYCM') }
 " Plug 'JuliaEditorSupport/deoplete-julia'
-Plug 'roxma/nvim-completion-manager'
 Plug 'w0rp/ale'
 
 "" Visual
@@ -367,8 +371,6 @@ function! s:build_go_files()
     call go#cmd#Build(0)
   endif
 endfunction
-" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
@@ -377,34 +379,10 @@ autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
 let g:python2_host_prog =  '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
 
-" for vim-javacomplete2
-" autocmd FileType java setlocal omnifunc=javacomplete#Complete
-" nmap <F4> <Plug>(JavaComplete-Imports-Add)
-" imap <F4> <Plug>(JavaComplete-Imports-Add)
-" nmap <F5> <Plug>(JavaComplete-Imports-AddMissing)
-" imap <F5> <Plug>(JavaComplete-Imports-AddMissing)
-" nmap <F6> <Plug>(JavaComplete-Imports-RemoveUnused)
-" imap <F6> <Plug>(JavaComplete-Imports-RemoveUnused)
-
-
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)<Paste>
-
-" Airline
-" let g:airline_powerline_fonts = 1
-" let g:airline#extensions#tabline#enabled = 1
-" enable modified detection >
-" let g:airline_detect_modified=1
-"enable paste detection >
-" let g:airline_detect_paste=1
-
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-" let g:syntastic_javascript_checkers = ['xo']
 
 " Use github flavored markdown
 let vim_markdown_preview_github=1
@@ -441,6 +419,10 @@ nnoremap <silent> <leader>t :TagbarToggle<CR>
 " 	      \)
 
 " let g:deoplete#enable_at_startup = 1
+" set completeopt+=noinsert
+" set completeopt+=noselect
+" set completeopt-=preview " disable preview window at the bottom of the screen
+" inoremap <silent><expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -484,9 +466,18 @@ command! -bang -nargs=* Rg
   \   <bang>0)
 
 " for commands supplied by fzf
-nnoremap <leader>f :GFiles<CR>
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fg :GFiles<CR>
+nnoremap <leader>fgs :GFiles?<CR>
+nnoremap <leader>fl :Lines<CR>
+nnoremap <leader>fbl :BLines<CR>
 nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>fc :GFiles?<CR>
 nnoremap <leader>rg :Rg
 nnoremap <leader>r :History<CR>
 nnoremap <leader>rc :History:<CR>
+
+" Remapping Ultisnips trigger for YouCompleteMe
+let g:UltiSnipsExpandTrigger="<c-j>"
+
+" Accept completions with <Enter>
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
