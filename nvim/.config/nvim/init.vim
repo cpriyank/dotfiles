@@ -35,14 +35,13 @@ call plug#begin()
 "" Filesystem and project management
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 Plug 'airblade/vim-gitgutter' " shows a git diff in the 'gutter' (sign column)
-Plug 'majutsushi/tagbar'
-" async grep from vim
-Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'majutsushi/tagbar' " explore tags with <leader>t
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 "" Language specific
 Plug 'fatih/vim-go', {'for': 'go'}
 " Plug 'davidhalter/jedi-vim', {'for': 'python'}
-Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
 Plug 'octave.config/nvim', {'for': 'octave'}
 " Plug 'puppetlabs/puppet-syntax-vim'
 " Plug 'derekwyatt/vim-scala', {'for': 'scala'}
@@ -50,10 +49,9 @@ Plug 'octave.config/nvim', {'for': 'octave'}
 Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 " Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
 " CamelCase and snake_case motions
-Plug 'vim-scripts/camelcasemotion'
-Plug 'JamshedVesuna/vim-markdown-preview'
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go']}
+Plug 'JamshedVesuna/vim-markdown-preview', {'for': 'markdown'}
+Plug 'lervag/vimtex', {'for': 'tex'}
 
 " For web dev
 " Plug 'pangloss/vim-javascript', {'for': 'javascript'}
@@ -93,7 +91,7 @@ function! BuildYCM(info)
     !./install.py --clang-completer --gocode-completer
   endif
 endfunction
-Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'python', 'go'], 'do': function('BuildYCM') }
+Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'python', 'go', 'tex'], 'do': function('BuildYCM') }
 " Plug 'JuliaEditorSupport/deoplete-julia'
 Plug 'w0rp/ale'
 
@@ -427,8 +425,8 @@ set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-nmap <Leader>l <Plug>(Limelight)
-xmap <Leader>l <Plug>(Limelight)
+nmap <Leader>lt <Plug>(Limelight)
+xmap <Leader>lt <Plug>(Limelight)
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
@@ -481,3 +479,4 @@ let g:UltiSnipsExpandTrigger="<c-j>"
 
 " Accept completions with <Enter>
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+let g:ycm_autoclose_preview_window_after_completion = 1
