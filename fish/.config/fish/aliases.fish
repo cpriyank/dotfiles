@@ -153,3 +153,7 @@ end
 function grh
 	git reset HEAD -- $argv
 end
+
+function vpath
+  echo $PATH | tr -s " " "\n"
+end
