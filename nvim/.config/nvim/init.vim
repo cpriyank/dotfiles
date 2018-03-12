@@ -91,7 +91,7 @@ function! BuildYCM(info)
     !./install.py --clang-completer --gocode-completer
   endif
 endfunction
-Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'python', 'go', 'tex'], 'do': function('BuildYCM') }
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 " Plug 'JuliaEditorSupport/deoplete-julia'
 Plug 'w0rp/ale'
 
@@ -229,14 +229,14 @@ set nowrap " Don't wrap lines by default
 map <leader><leader> :b#<CR>
 
 " Jump to buffer number 1-9 with ,<N> or 1-99 with <N>gb
-let c = 1
-while c <= 99
-  if c < 10
-    execute "nnoremap <silent> <leader>" . c . " :" . c . "b<CR>"
-  endif
-  execute "nnoremap <silent> " . c . "gb :" . c . "b<CR>"
-  let c += 1
-endwhile
+" let c = 1
+" while c <= 99
+"   if c < 10
+"     execute "nnoremap <silent> <leader>" . c . " :" . c . "b<CR>"
+"   endif
+"   execute "nnoremap <silent> " . c . "gb :" . c . "b<CR>"
+"   let c += 1
+" endwhile
 
 
 " File type specific specs----------------------------------------------
@@ -337,6 +337,20 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 " Delete current buffer
 nmap <Leader>d :b#<bar>bd#<CR>
 
+" https://vi.stackexchange.com/questions/3897/how-to-label-tmux-tabs-with-the-name-of-the-file-edited-in-vim
+" On buffer read, file read or buffer new file event (see :help autocmd-events)
+" execute the next command:
+" call system()
+" Call a system function and pass it the text :
+" tmux rename-window 'vim | "  
+" Rename the current window with a string starting with vim |
+" . expand("%:t") 
+" Add to the string the filename (see this article for the formatting and this post for the expand insert)
+" . "'"
+" Add the final ' to close the command.
+autocmd BufReadPost,FileReadPost,BufNewFile,BufEnter * call system("tmux rename-window 'nvim| " . expand("%:t") . "'")
+autocmd VimLeave * call system("tmux setw automatic-rename")
+
 " Plugins and their respective configuration----------------------------
 " NERDTree
 let NERDTreeShowHidden = 1
@@ -352,7 +366,7 @@ let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
-autocmd FileType go nmap <leader>mb  <Plug>(go-build)
+" autocmd FileType go nmap <leader>mb  <Plug>(go-build)
 autocmd FileType go nmap <leader>mr  <Plug>(go-run)
 let g:go_list_type = "quickfix"
 
@@ -386,10 +400,10 @@ nmap ga <Plug>(EasyAlign)<Paste>
 let vim_markdown_preview_github=1
 
 " neovim-completion manager
-set shortmess+=c
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" set shortmess+=c
+" inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 let g:ale_sign_column_always = 1
 nnoremap <silent> <leader>t :TagbarToggle<CR>
 
@@ -425,10 +439,9 @@ set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-nmap <Leader>lt <Plug>(Limelight)
-xmap <Leader>lt <Plug>(Limelight)
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
+nnoremap <leader>vg :Goyo<CR>
 
 " Write this in your vimrc file
 let g:ale_lint_on_text_changed = 'never'
@@ -480,3 +493,9 @@ let g:UltiSnipsExpandTrigger="<c-j>"
 " Accept completions with <Enter>
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
 let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_filepath_completion_use_working_dir=1
+
+" build graphviz file
+autocmd FileType dot nmap <leader>mb :!dot -Tpng -Gdpi=600 % > (basename % .dot).png<CR>
+autocmd FileType dot nmap <leader>mv :!open (basename % .dot).png<CR>
+
