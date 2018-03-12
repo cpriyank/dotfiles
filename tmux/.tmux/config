@@ -1,7 +1,9 @@
+set-option -g default-shell /usr/local/bin/fish
 # Use C-a as prefix
 unbind C-b
 set -g prefix C-a
 bind C-a send-prefix
+bind C-a last-window
 
 # https://wiki.archlinux.org/index.php/tmux#xterm-keys
 setw -g xterm-keys on
@@ -68,6 +70,8 @@ bind + run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
 
 # rename window
 bind-key , command-prompt -p "rename window to:" "rename-window '%%'"
+# swap window
+bind-key S command-prompt -p "swap window with:" "swap-window -t ':%%'"
 
 # quick view of processes
 bind '~' split-window "exec htop"
@@ -100,6 +104,8 @@ set -g pane-active-border-fg magenta
 # statusbar --------------------------------------------------------------
 set -g window-status-format "#I:#W"
 set -g window-status-current-format "#I:#W"
+set-window-option -g window-status-current-bg default
+set-window-option -g window-status-current-fg cyan
 
 set -g status-keys vi
 bind-key -T edit-mode-vi Up send-keys -X history-up
