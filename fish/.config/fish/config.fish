@@ -10,6 +10,8 @@ end
 
 ### Some handy aliases
 source $HOME/.config/fish/aliases.fish
+# For music
+source $HOME/.config/fish/mpv.fish
 
 ### Language specific additions and paths
 source $HOME/.config/fish/go.fish
@@ -31,3 +33,6 @@ set -gx LESS_TERMCAP_se \e'[0m'
 set -gx LESS_TERMCAP_so \e'[01;44;33m'
 set -gx LESS_TERMCAP_ue \e'[0m'
 set -gx LESS_TERMCAP_us \e'[01;32m'
+
+# set -gx fish_user_paths ~/anaconda3/bin $fish_user_paths
+source $HOME/.config/fish/private.fish
