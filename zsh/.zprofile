@@ -1,4 +1,4 @@
-# If the shell is is a login shell, commands are read from /etc/profile and
+# If the shell is a login shell, commands are read from /etc/profile and
 # then from $ZDOTDIR/.zprofile.
 
 
