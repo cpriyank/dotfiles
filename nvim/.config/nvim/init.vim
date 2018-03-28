@@ -105,6 +105,7 @@ Plug 'junegunn/goyo.vim' " Distraction-free writing in Vim
 
 "" Misc
 Plug 'tpope/vim-unimpaired' " Handy bracket mappings
+Plug 'tpope/vim-abolish' " Mainly for converting cases
 Plug 'junegunn/vim-easy-align'
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 Plug 'chrisbra/CheckAttach' " Will always have your back
