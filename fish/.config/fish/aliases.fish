@@ -46,8 +46,12 @@ function xrr
 	xrdb ~/.Xresources
 end
 
-function tree
-	command tree -C $argv
+function t
+	if test -n $argv 
+		tree -C $argv 
+	else 
+		tree -C .
+	end
 end
 
 # cat files with syntax highlighting
@@ -154,6 +158,17 @@ function grh
 	git reset HEAD -- $argv
 end
 
+# pretty print the path
 function ppath
   echo $PATH | tr -s " " "\n"
+end
+
+# case insensitive rg
+function rgi
+  rg -i $argv
+end
+
+# case insensitive rg with $EDITOR
+function rgil
+	rg -l -i $argv | xargs $EDITOR
 end
