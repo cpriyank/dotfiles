@@ -228,16 +228,6 @@ set nowrap " Don't wrap lines by default
 " Switch between the last two files with double space
 map <leader><leader> :b#<CR>
 
-" Jump to buffer number 1-9 with ,<N> or 1-99 with <N>gb
-" let c = 1
-" while c <= 99
-"   if c < 10
-"     execute "nnoremap <silent> <leader>" . c . " :" . c . "b<CR>"
-"   endif
-"   execute "nnoremap <silent> " . c . "gb :" . c . "b<CR>"
-"   let c += 1
-" endwhile
-
 
 " File type specific specs----------------------------------------------
 " Use LaTeX rather than plain TeX.
@@ -337,6 +327,9 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 " Delete current buffer
 nmap <Leader>d :b#<bar>bd#<CR>
 
+" Delete current file and buffer
+nnoremap <leader>dd :call delete(expand('%')) \| bdelete!<CR>
+
 " https://vi.stackexchange.com/questions/3897/how-to-label-tmux-tabs-with-the-name-of-the-file-edited-in-vim
 " On buffer read, file read or buffer new file event (see :help autocmd-events)
 " execute the next command:
@@ -407,34 +400,6 @@ let vim_markdown_preview_github=1
 let g:ale_sign_column_always = 1
 nnoremap <silent> <leader>t :TagbarToggle<CR>
 
-" " Change file_rec command.
-" call denite#custom#var('file_rec', 'command',
-" 	\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-
-" nnoremap <leader>f :<C-u>Denite file_rec<CR>
-" nnoremap <leader>b :<C-u>Denite buffer<CR>
-" nnoremap <leader>fb :<C-u>DeniteBufferDir buffer<CR>
-" nnoremap <leader>bf :<C-u>DeniteBufferDir file_rec<CR>
-
-" 	" Change mappings.
-" 	call denite#custom#map(
-" 	      \ 'insert',
-" 	      \ '<C-j>',
-" 	      \ '<denite:move_to_next_line>',
-" 	      \ 'noremap'
-" 	      \)
-" 	call denite#custom#map(
-" 	      \ 'insert',
-" 	      \ '<C-k>',
-" 	      \ '<denite:move_to_previous_line>',
-" 	      \ 'noremap'
-" 	      \)
-
-" let g:deoplete#enable_at_startup = 1
-" set completeopt+=noinsert
-" set completeopt+=noselect
-" set completeopt-=preview " disable preview window at the bottom of the screen
-" inoremap <silent><expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -448,9 +413,6 @@ let g:ale_lint_on_text_changed = 'never'
 " You can disable this option too
 " if you don't want linters to run on opening a file
 let g:ale_lint_on_enter = 0
-
-" Search for a word in all files in project
-nnoremap <Leader>fp :Grepper<Space>-query<Space>
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -477,7 +439,7 @@ command! -bang -nargs=* Rg
   \   <bang>0)
 
 " for commands supplied by fzf
-nnoremap <leader>ff :Files<CR>
+nnoremap <leader>f :Files<CR>
 nnoremap <leader>fg :GFiles<CR>
 nnoremap <leader>fgs :GFiles?<CR>
 nnoremap <leader>fl :Lines<CR>
@@ -491,7 +453,8 @@ nnoremap <leader>rc :History:<CR>
 let g:UltiSnipsExpandTrigger="<c-j>"
 
 " Accept completions with <Enter>
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+" let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_filepath_completion_use_working_dir=1
 
