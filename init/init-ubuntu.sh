@@ -1,0 +1,1 @@
+sudo apt install vim stow tmux fish

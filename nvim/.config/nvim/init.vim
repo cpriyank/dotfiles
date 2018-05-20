@@ -35,14 +35,13 @@ call plug#begin()
 "" Filesystem and project management
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 Plug 'airblade/vim-gitgutter' " shows a git diff in the 'gutter' (sign column)
-Plug 'majutsushi/tagbar'
-" async grep from vim
-Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
+Plug 'majutsushi/tagbar' " explore tags with <leader>t
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 "" Language specific
 Plug 'fatih/vim-go', {'for': 'go'}
 " Plug 'davidhalter/jedi-vim', {'for': 'python'}
-Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
 Plug 'octave.config/nvim', {'for': 'octave'}
 " Plug 'puppetlabs/puppet-syntax-vim'
 " Plug 'derekwyatt/vim-scala', {'for': 'scala'}
@@ -50,10 +49,9 @@ Plug 'octave.config/nvim', {'for': 'octave'}
 Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 " Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
 " CamelCase and snake_case motions
-Plug 'vim-scripts/camelcasemotion'
-Plug 'JamshedVesuna/vim-markdown-preview'
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go']}
+Plug 'JamshedVesuna/vim-markdown-preview', {'for': 'markdown'}
+Plug 'lervag/vimtex', {'for': 'tex'}
 
 " For web dev
 " Plug 'pangloss/vim-javascript', {'for': 'javascript'}
@@ -93,7 +91,7 @@ function! BuildYCM(info)
     !./install.py --clang-completer --gocode-completer
   endif
 endfunction
-Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'python', 'go'], 'do': function('BuildYCM') }
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 " Plug 'JuliaEditorSupport/deoplete-julia'
 Plug 'w0rp/ale'
 
@@ -230,16 +228,6 @@ set nowrap " Don't wrap lines by default
 " Switch between the last two files with double space
 map <leader><leader> :b#<CR>
 
-" Jump to buffer number 1-9 with ,<N> or 1-99 with <N>gb
-let c = 1
-while c <= 99
-  if c < 10
-    execute "nnoremap <silent> <leader>" . c . " :" . c . "b<CR>"
-  endif
-  execute "nnoremap <silent> " . c . "gb :" . c . "b<CR>"
-  let c += 1
-endwhile
-
 
 " File type specific specs----------------------------------------------
 " Use LaTeX rather than plain TeX.
@@ -339,6 +327,23 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 " Delete current buffer
 nmap <Leader>d :b#<bar>bd#<CR>
 
+" Delete current file and buffer
+nnoremap <leader>dd :call delete(expand('%')) \| bdelete!<CR>
+
+" https://vi.stackexchange.com/questions/3897/how-to-label-tmux-tabs-with-the-name-of-the-file-edited-in-vim
+" On buffer read, file read or buffer new file event (see :help autocmd-events)
+" execute the next command:
+" call system()
+" Call a system function and pass it the text :
+" tmux rename-window 'vim | "  
+" Rename the current window with a string starting with vim |
+" . expand("%:t") 
+" Add to the string the filename (see this article for the formatting and this post for the expand insert)
+" . "'"
+" Add the final ' to close the command.
+autocmd BufReadPost,FileReadPost,BufNewFile,BufEnter * call system("tmux rename-window 'nvim| " . expand("%:t") . "'")
+autocmd VimLeave * call system("tmux setw automatic-rename")
+
 " Plugins and their respective configuration----------------------------
 " NERDTree
 let NERDTreeShowHidden = 1
@@ -354,7 +359,7 @@ let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
-autocmd FileType go nmap <leader>mb  <Plug>(go-build)
+" autocmd FileType go nmap <leader>mb  <Plug>(go-build)
 autocmd FileType go nmap <leader>mr  <Plug>(go-run)
 let g:go_list_type = "quickfix"
 
@@ -388,58 +393,26 @@ nmap ga <Plug>(EasyAlign)<Paste>
 let vim_markdown_preview_github=1
 
 " neovim-completion manager
-set shortmess+=c
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" set shortmess+=c
+" inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 let g:ale_sign_column_always = 1
 nnoremap <silent> <leader>t :TagbarToggle<CR>
 
-" " Change file_rec command.
-" call denite#custom#var('file_rec', 'command',
-" 	\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-
-" nnoremap <leader>f :<C-u>Denite file_rec<CR>
-" nnoremap <leader>b :<C-u>Denite buffer<CR>
-" nnoremap <leader>fb :<C-u>DeniteBufferDir buffer<CR>
-" nnoremap <leader>bf :<C-u>DeniteBufferDir file_rec<CR>
-
-" 	" Change mappings.
-" 	call denite#custom#map(
-" 	      \ 'insert',
-" 	      \ '<C-j>',
-" 	      \ '<denite:move_to_next_line>',
-" 	      \ 'noremap'
-" 	      \)
-" 	call denite#custom#map(
-" 	      \ 'insert',
-" 	      \ '<C-k>',
-" 	      \ '<denite:move_to_previous_line>',
-" 	      \ 'noremap'
-" 	      \)
-
-" let g:deoplete#enable_at_startup = 1
-" set completeopt+=noinsert
-" set completeopt+=noselect
-" set completeopt-=preview " disable preview window at the bottom of the screen
-" inoremap <silent><expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-nmap <Leader>l <Plug>(Limelight)
-xmap <Leader>l <Plug>(Limelight)
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
+nnoremap <leader>vg :Goyo<CR>
 
 " Write this in your vimrc file
 let g:ale_lint_on_text_changed = 'never'
 " You can disable this option too
 " if you don't want linters to run on opening a file
 let g:ale_lint_on_enter = 0
-
-" Search for a word in all files in project
-nnoremap <Leader>fp :Grepper<Space>-query<Space>
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -466,7 +439,7 @@ command! -bang -nargs=* Rg
   \   <bang>0)
 
 " for commands supplied by fzf
-nnoremap <leader>ff :Files<CR>
+nnoremap <leader>f :Files<CR>
 nnoremap <leader>fg :GFiles<CR>
 nnoremap <leader>fgs :GFiles?<CR>
 nnoremap <leader>fl :Lines<CR>
@@ -480,4 +453,12 @@ nnoremap <leader>rc :History:<CR>
 let g:UltiSnipsExpandTrigger="<c-j>"
 
 " Accept completions with <Enter>
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+" let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_filepath_completion_use_working_dir=1
+
+" build graphviz file
+autocmd FileType dot nmap <leader>mb :!dot -Tpng -Gdpi=600 % > (basename % .dot).png<CR>
+autocmd FileType dot nmap <leader>mv :!open (basename % .dot).png<CR>
+

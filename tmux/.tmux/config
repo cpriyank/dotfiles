@@ -1,7 +1,9 @@
+set-option -g default-shell /usr/local/bin/fish
 # Use C-a as prefix
 unbind C-b
 set -g prefix C-a
 bind C-a send-prefix
+bind C-a last-window
 
 # https://wiki.archlinux.org/index.php/tmux#xterm-keys
 setw -g xterm-keys on
@@ -36,6 +38,9 @@ run -b 'tmux bind -T copy-mode-vi y send -X copy-selection-and-cancel 2> /dev/nu
 run -b 'tmux bind -t vi-copy Escape cancel 2> /dev/null || true'
 run -b 'tmux bind -T copy-mode-vi Escape send -X cancel 2> /dev/null || true'
 
+# For nvim
+set-option -sg escape-time 10
+
 # copy to Mac OSX clipboard
 if -b 'command -v reattach-to-user-namespace > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | reattach-to-user-namespace pbcopy"'
 # copy to X11 clipboard
@@ -65,6 +70,8 @@ bind + run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
 
 # rename window
 bind-key , command-prompt -p "rename window to:" "rename-window '%%'"
+# swap window
+bind-key S command-prompt -p "swap window with:" "swap-window -t ':%%'"
 
 # quick view of processes
 bind '~' split-window "exec htop"
@@ -97,6 +104,8 @@ set -g pane-active-border-fg magenta
 # statusbar --------------------------------------------------------------
 set -g window-status-format "#I:#W"
 set -g window-status-current-format "#I:#W"
+set-window-option -g window-status-current-bg default
+set-window-option -g window-status-current-fg cyan
 
 set -g status-keys vi
 bind-key -T edit-mode-vi Up send-keys -X history-up
@@ -112,7 +121,7 @@ bind -n C-l send-keys C-l \; run 'sleep 0.1' \; clear-history
 # By default, tmux advertises itself as screen without 256-color support.
 # Change that.
 # As of tmux 2.1, this is now tmux, or tmux-256color
-# set -g default-terminal "screen-256color"
+set -g default-terminal "screen-256color"
 
 # default statusbar colors
 set -g status-fg blue
