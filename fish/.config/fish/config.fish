@@ -10,11 +10,11 @@ end
 
 ### Some handy aliases
 source $HOME/.config/fish/aliases.fish
-# For music
-source $HOME/.config/fish/mpv.fish
 
 ### Language specific additions and paths
-source $HOME/.config/fish/go.fish
+if test -e $HOME/.config/fish/go.fish
+	source $HOME/.config/fish/go.fish
+end
 
 ### Base16 Shell
 if status --is-interactive
@@ -22,8 +22,10 @@ if status --is-interactive
 end
 
 ### Pure prompt theme
-set fish_function_path $fish_function_path $HOME/.config/fish/functions/pure
-source $HOME/.config/fish/functions/pure/fish_prompt.fish
+if test -d $HOME/.config/fish/functions/pure
+	set fish_function_path $fish_function_path $HOME/.config/fish/functions/pure
+	source $HOME/.config/fish/functions/pure/fish_prompt.fish
+end
 
 ### Color 'less' output
 set -gx LESS_TERMCAP_mb \e'[01;31m'
@@ -35,4 +37,7 @@ set -gx LESS_TERMCAP_ue \e'[0m'
 set -gx LESS_TERMCAP_us \e'[01;32m'
 
 # set -gx fish_user_paths ~/anaconda3/bin $fish_user_paths
-source $HOME/.config/fish/private.fish
+# private config not under public source control
+if test -e $HOME/.config/fish/private.fish
+	source $HOME/.config/fish/private.fish
+end
