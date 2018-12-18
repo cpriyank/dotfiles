@@ -19,7 +19,6 @@ endif
 " But don’t create backups when editing files in certain directories
 set backupskip=/tmp/*,/private/tmp/*
 
-
 " Persistent Undo-------------------------------------------------------
 " Keep undo history across sessions, by storing in file.
 " Only works all the time!
@@ -27,7 +26,6 @@ if has('persistent_undo')
   set undodir=~/.config/nvim/undo
   set undofile
 endif
-
 
 " Begin adding plugins here. Managed by vim-plug-----------------------------
 call plug#begin()
@@ -41,42 +39,19 @@ Plug 'junegunn/fzf.vim'
 
 "" Language specific
 Plug 'fatih/vim-go', {'for': 'go'}
-" Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'octave.config/nvim', {'for': 'octave'}
-" Plug 'puppetlabs/puppet-syntax-vim'
 " Plug 'derekwyatt/vim-scala', {'for': 'scala'}
-" Plug 'honza/dockerfile.config/nvim'
 Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
-" Plug 'JuliaEditorSupport/julia-vim' " It is recommended not to load it on-demand
 " CamelCase and snake_case motions
-Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go']}
+Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go', 'C++']}
 Plug 'JamshedVesuna/vim-markdown-preview', {'for': 'markdown'}
 Plug 'lervag/vimtex', {'for': 'tex'}
 
-" For web dev
-" Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-" Plug 'othree/javascript-libraries-syntax.vim', {'for' : 'javascript'}
-" Plug 'vim-syntastic/syntastic'
-" Plug 'leafgarland/typescript-vim'
-" Plug 'sheerun/vim-json'
-" Autocomplete (npm install -g tern)
-" Plug 'carlitux/deoplete-ternjs', {'for': 'javascript'}
-" Autocomplete using flow (npm install -g flow-bin)
-" Plug 'steelsojka/deoplete-flow', {'for': 'javascript'}
-" JS Documentation comments
-" Plug 'heavenshell/vim-jsdoc', { 'on': ['JsDoc'] }
-" Plug 'othree/html5.vim', {'for': 'html'}
-" Plug 'sindresorhus/vim-xo' " jslint
-" Color highlighter
-" Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx'] }
-
 "" Snippets and abbreviations
-" Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
-" Track the engine.
+" Track the snippet engine.
 Plug 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
-
 
 "" Writing/editing helpers
 Plug 'tpope/vim-commentary' " Commenting helper
@@ -92,16 +67,14 @@ function! BuildYCM(info)
   endif
 endfunction
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-" Plug 'JuliaEditorSupport/deoplete-julia'
 Plug 'w0rp/ale'
 
 "" Visual
-" Plug 'vim-airline/vim-airline' " Pretty status line
-" Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'junegunn/limelight.vim' " Hyperfocus-writing in Vim.
 Plug 'junegunn/goyo.vim' " Distraction-free writing in Vim
+Plug 'junegunn/seoul256.vim' " Seoul256 colorscheme
 
 "" Misc
 Plug 'tpope/vim-unimpaired' " Handy bracket mappings
@@ -109,10 +82,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 Plug 'chrisbra/CheckAttach' " Will always have your back
 Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
-" Plug 'Shougo/denite.nvim' " Unite files, buffers, etc. sources
-" Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' } " Intelligent buffer closing
 call plug#end()
-
 
 " Essentials------------------------------------------------------------
 set encoding=utf-8 nobomb " BOM often causes trouble
@@ -198,12 +168,20 @@ set gcr=a:blinkon0 " Disable cursor blinking
 
 " Looks-----------------------------------------------------------------
 set background=dark
-set t_Co=256 " Use 256 colors
+" True color support. Neovim ignores t_Co
+set termguicolors
 
-let base16colorspace=256 " " Access colors present in 256 colorspace
+" let base16colorspace=256 " " Access colors present in 256 colorspace
+" seoul256 (light):
+"   Range:   252 (darkest) ~ 256 (lightest)
+"   Default: 253
+" seoul256 (dark):
+"   Range:   233 (darkest) ~ 239 (lightest)
+"   Default: 237
+let g:seoul256_background = 237
 
 try  " Don't use a color scheme if not found
-  colorscheme base16-monokai
+  colorscheme seoul256
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
@@ -227,11 +205,6 @@ set nowrap " Don't wrap lines by default
 " Custom shortcuts for moving around buffers----------------------------
 " Switch between the last two files with double space
 map <leader><leader> :b#<CR>
-
-
-" File type specific specs----------------------------------------------
-" Use LaTeX rather than plain TeX.
-let g:tex_flavor = "latex"
 
 
 " Vimprovments----------------------------------------------------------
@@ -284,6 +257,8 @@ augroup END
 " Move more naturally up/down when wrapping is enabled.
 nnoremap j gj
 nnoremap k gk
+" Save file with <leader>w in normal mode
+nnoremap <leader>w :w<CR>
 
 " Use jk (and the other default <C-[>) to go to the normal mode
 inoremap jk <ESC>
@@ -330,28 +305,21 @@ nmap <Leader>d :b#<bar>bd#<CR>
 " Delete current file and buffer
 nnoremap <leader>dd :call delete(expand('%')) \| bdelete!<CR>
 
-" https://vi.stackexchange.com/questions/3897/how-to-label-tmux-tabs-with-the-name-of-the-file-edited-in-vim
-" On buffer read, file read or buffer new file event (see :help autocmd-events)
-" execute the next command:
-" call system()
-" Call a system function and pass it the text :
-" tmux rename-window 'vim | "  
-" Rename the current window with a string starting with vim |
-" . expand("%:t") 
-" Add to the string the filename (see this article for the formatting and this post for the expand insert)
-" . "'"
-" Add the final ' to close the command.
-autocmd BufReadPost,FileReadPost,BufNewFile,BufEnter * call system("tmux rename-window 'nvim| " . expand("%:t") . "'")
-autocmd VimLeave * call system("tmux setw automatic-rename")
+" build graphviz file --------------------------------------------------------
+autocmd FileType dot nmap <leader>mb :!dot -Tpng -Gdpi=600 % > (basename % .dot).png<CR>
+autocmd FileType dot nmap <leader>mv :!open (basename % .dot).png<CR>
 
-" Plugins and their respective configuration----------------------------
+" Tagbar ---------------------------------------------------------------------
+nnoremap <silent> <leader>t :TagbarToggle<CR>
+
+" Plugins and their respective configuration----------------------------------
 " NERDTree
 let NERDTreeShowHidden = 1
 let NERDTreeMouseMode = 2
 let NERDTreeMinimalUI = 1
 map <leader>n :NERDTreeToggle<CR>
 
-" go specific and vim-go config ---------------------------------------------
+" go specific and vim-go config ----------------------------------------------
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_fields = 1
@@ -359,7 +327,8 @@ let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
-" autocmd FileType go nmap <leader>mb  <Plug>(go-build)
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
 autocmd FileType go nmap <leader>mr  <Plug>(go-run)
 let g:go_list_type = "quickfix"
 
@@ -377,43 +346,31 @@ function! s:build_go_files()
   endif
 endfunction
 
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
-
-" for python completion
+" for python completion ------------------------------------------------------
+" TODO: Use :terminal or system() to fix this for different platform
 let g:python2_host_prog =  '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
 
+" EasyAlign ------------------------------------------------------------------
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)<Paste>
 
-" Use github flavored markdown
-let vim_markdown_preview_github=1
-
-" neovim-completion manager
-" set shortmess+=c
-" inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-let g:ale_sign_column_always = 1
-nnoremap <silent> <leader>t :TagbarToggle<CR>
-
-set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
+" LimeLight and Goyo----------------------------------------------------------
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 nnoremap <leader>vg :Goyo<CR>
 
+" Ale-------------------------------------------------------------------------
+let g:ale_sign_column_always = 1
 " Write this in your vimrc file
 let g:ale_lint_on_text_changed = 'never'
 " You can disable this option too
 " if you don't want linters to run on opening a file
 let g:ale_lint_on_enter = 0
 
+" Fzf ------------------------------------------------------------------------
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -449,6 +406,7 @@ nnoremap <leader>rg :Rg
 nnoremap <leader>r :History<CR>
 nnoremap <leader>rc :History:<CR>
 
+" YCM-------------------------------------------------------------------------
 " Remapping Ultisnips trigger for YouCompleteMe
 let g:UltiSnipsExpandTrigger="<c-j>"
 
@@ -458,7 +416,6 @@ let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_filepath_completion_use_working_dir=1
 
-" build graphviz file
-autocmd FileType dot nmap <leader>mb :!dot -Tpng -Gdpi=600 % > (basename % .dot).png<CR>
-autocmd FileType dot nmap <leader>mv :!open (basename % .dot).png<CR>
-
+" Markdown--------------------------------------------------------------------
+" Use github flavored markdown
+let vim_markdown_preview_github=1
