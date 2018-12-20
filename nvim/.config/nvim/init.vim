@@ -34,7 +34,8 @@ call plug#begin()
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 Plug 'airblade/vim-gitgutter' " shows a git diff in the 'gutter' (sign column)
 Plug 'majutsushi/tagbar' " explore tags with <leader>t
-Plug '/usr/local/opt/fzf'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 "" Language specific
@@ -45,13 +46,10 @@ Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 " CamelCase and snake_case motions
 Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go', 'C++']}
 Plug 'JamshedVesuna/vim-markdown-preview', {'for': 'markdown'}
-Plug 'lervag/vimtex', {'for': 'tex'}
 
 "" Snippets and abbreviations
-" Track the snippet engine.
-Plug 'SirVer/ultisnips'
-" Snippets are separated from the engine. Add this if you want them:
-Plug 'honza/vim-snippets'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 
 "" Writing/editing helpers
 Plug 'tpope/vim-commentary' " Commenting helper
@@ -59,15 +57,21 @@ Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
 Plug 'tpope/vim-repeat' " repeat some of tpope plugin actions with '.'
 Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-jedi'
 " Plug 'zchee/deoplete-go', { 'do': 'make'}
-function! BuildYCM(info)
-  if a:info.status == 'installed' || a:info.force
-    !./install.py --clang-completer --gocode-completer
-  endif
-endfunction
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-Plug 'w0rp/ale'
+" function! BuildYCM(info)
+"   if a:info.status == 'installed' || a:info.force
+"     !./install.py --clang-completer --gocode-completer
+"   endif
+" endfunction
+" Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+" Plug 'w0rp/ale'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+" Plug 'ervandew/supertab' " all vim insert mode completions with Tab
 
 "" Visual
 Plug 'itchyny/lightline.vim'
@@ -77,6 +81,7 @@ Plug 'junegunn/goyo.vim' " Distraction-free writing in Vim
 Plug 'junegunn/seoul256.vim' " Seoul256 colorscheme
 
 "" Misc
+Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`¬
 Plug 'tpope/vim-unimpaired' " Handy bracket mappings
 Plug 'junegunn/vim-easy-align'
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
@@ -362,13 +367,18 @@ autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 nnoremap <leader>vg :Goyo<CR>
 
-" Ale-------------------------------------------------------------------------
-let g:ale_sign_column_always = 1
-" Write this in your vimrc file
-let g:ale_lint_on_text_changed = 'never'
-" You can disable this option too
-" if you don't want linters to run on opening a file
-let g:ale_lint_on_enter = 0
+" Lightline ------------------------------------------------------------------
+let g:lightline = {
+      \ 'colorscheme': 'seoul256',
+      \ }
+
+" " Ale-------------------------------------------------------------------------
+" let g:ale_sign_column_always = 1
+" " Write this in your vimrc file
+" let g:ale_lint_on_text_changed = 'never'
+" " You can disable this option too
+" " if you don't want linters to run on opening a file
+" let g:ale_lint_on_enter = 0
 
 " Fzf ------------------------------------------------------------------------
 " Customize fzf colors to match your color scheme
@@ -396,26 +406,49 @@ command! -bang -nargs=* Rg
   \   <bang>0)
 
 " for commands supplied by fzf
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>fg :GFiles<CR>
-nnoremap <leader>fgs :GFiles?<CR>
+nnoremap <leader>f :Files<CR>  " Files in current project
+nnoremap <leader>fg :GFiles<CR> " Git files
+nnoremap <leader>gst :GFiles?<CR> " Git status files
 nnoremap <leader>fl :Lines<CR>
 nnoremap <leader>fbl :BLines<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>rg :Rg
 nnoremap <leader>r :History<CR>
 nnoremap <leader>rc :History:<CR>
+" nnoremap <leader>fgg Commits<CR>
+" nnoremap <leader>fcb BCommits<CR>
 
-" YCM-------------------------------------------------------------------------
-" Remapping Ultisnips trigger for YouCompleteMe
-let g:UltiSnipsExpandTrigger="<c-j>"
+" " YCM-------------------------------------------------------------------------
+" " Remapping Ultisnips trigger for YouCompleteMe
+" let g:UltiSnipsExpandTrigger="<c-j>"
 
-" Accept completions with <Enter>
-" let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_filepath_completion_use_working_dir=1
+" " Accept completions with <Enter>
+" " let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+" let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
+" let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_filepath_completion_use_working_dir=1
 
-" Markdown--------------------------------------------------------------------
-" Use github flavored markdown
-let vim_markdown_preview_github=1
+" " Markdown--------------------------------------------------------------------
+" " Use github flavored markdown
+" let vim_markdown_preview_github=1
+" " display images automatically on buffer write
+" let vim_markdown_preview_toggle=2
+
+
+let g:LanguageClient_serverCommands = {
+			\ 'python': ['/usr/local/bin/pyls'],
+			\ 'cpp': ['clangd'],
+			\ }
+let g:deoplete#enable_at_startup = 1
+nnoremap <silent> gr :call LanguageClient_textDocument_rename()<CR>
+nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <leader>ls :call LanguageClient#textDocument_documentSymbol()<CR>
+nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+
+" neosnippets-----------------------------------------------------------------
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
