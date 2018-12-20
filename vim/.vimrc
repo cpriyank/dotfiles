@@ -8,37 +8,41 @@ set nocompatible
 
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible' " Sensible defaults
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'airblade/vim-gitgutter' " shows a git diff in the 'gutter' (sign column)
+Plug 'majutsushi/tagbar' " explore tags with <leader>t
 
 " Wrappers
-" Plug 'tpope/vim-fugitive' " Git wrapper
+Plug 'tpope/vim-fugitive' " Git wrapper
 
 "" Language specific
 Plug 'fatih/vim-go', {'for': 'go'}
-Plug 'klen/python-mode', {'for': 'python'}
 
 "" Snippets and abbreviations
-Plug 'mattn/emmet-vim', {'for': ['html', 'css']} " Expand abbreviations
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
-Plug 'Shougo/neocomplete.vim', {'for': 'go'}
+" Plug 'SirVer/ultisnips'
+" Plug 'honza/vim-snippets'
 
 "" Writing/editing helpers
 Plug 'tpope/vim-commentary' " Commenting helper
 Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
 Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
-
-Plug 'junegunn/goyo.vim' " Distraction free writing
-Plug 'junegunn/limelight.vim' " Hyperfocus writing
-Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-repeat' " repeat some of tpope plugin actions with '.'
+function! BuildYCM(info)
+  if a:info.status == 'installed' || a:info.force
+    !./install.py --clang-completer --gocode-completer
+  endif
+endfunction
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 
 " Visual
 Plug 'itchyny/lightline.vim' " Pretty status line
-Plug 'nathanaelkane/vim-indent-guides', {'on': 'IndentGuidesToggle'}
+Plug 'Yggdroot/indentLine'
+Plug 'junegunn/seoul256.vim' " Seoul256 colorscheme
 
 " Misc
 Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`
-Plug 'Raimondi/delimitMate' " Auto complete quotes, parens, brackets, etc
+Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 Plug 'tpope/vim-unimpaired' " Handy bracket mappings
 Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
 call plug#end()
@@ -77,16 +81,22 @@ endif
 " Many useful defaults are covered in tpop/vim-sensible plugin. This file has 
 " been edited to avoid redundancy while keeping desired overrides
 
-" This needs to be before selecting gruvbox colorscheme to ensure italics are
-" displayed correctly
-" let g:gruvbox_italic=1
-let base16colorspace=256  " Access colors present in 256 colorspace
+" let base16colorspace=256 " " Access colors present in 256 colorspace
+" seoul256 (light):
+"   Range:   252 (darkest) ~ 256 (lightest)
+"   Default: 253
+" seoul256 (dark):
+"   Range:   233 (darkest) ~ 239 (lightest)
+"   Default: 237
+let g:seoul256_background = 237
+
+" let base16colorspace=256  " Access colors present in 256 colorspace
 
 set background=dark
 set t_Co=256 " Use 256 colors
 
 try  " Don't use a color scheme if not found
- colorscheme base16-monokai
+ colorscheme seoul256
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
@@ -108,15 +118,17 @@ set nowrap " Don't wrap lines by default
 
 
 " Essentials------------------------------------------------------------
+set encoding=utf-8 nobomb " BOM often causes trouble
 set linespace=0 " No extra spaces between rows
 set spell " Show spelling mistakes by default
 set hidden " Allow switching buffers without saving
 set report=0 " Show all changes
 set clipboard=unnamed " Make yanks go to OS clipboard
-set esckeys " Allow cursor keys in insert mode
-set ttyfast " Optimize for fast terminal connections
-let mapleader=","     " Change default backslash mapleader. Easier to type
+" set esckeys " Allow cursor keys in insert mode
+let mapleader=" "  " Change default backslash mapleader. Easier to type
 set autochdir " Auto switch to current file's directory on opening new buffer
+set ruler " Show column and line number
+set lazyredraw " Don't force redraw when updating buffers
 
 " Ignore some files in tab completion
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
@@ -137,7 +149,6 @@ set sidescrolloff=3
 
 " Indentation-----------------------------------------------------------
 set expandtab " Expand tabs into spaces
-set smarttab " <Tab> inserts and <Bs> deletes shiftwidth places at line start
 set tabstop=2 " Make tabs as wide as two spaces
 set shiftwidth=2 " Apply the same for autoindent
 set softtabstop=2 " <TAB> and <BS> key results in 2 spaces as well
@@ -150,12 +161,21 @@ set colorcolumn=+1 " Highlight column at textwidth
 " set fo+=o
 " Only insert single space after a '.', '?' and '!' with a join command.
 set nojoinspaces
+set fo+=2 " Use the indent of the second line of a paragraph
+set fo+=1 " Don't break a line after a one-letter word
+set fo+=n " Recognize numbered lists
+set fo+=r " (in mail) comment leader after
 
 
 " Code folding----------------------------------------------------------
 set foldmethod=indent " Fold based on indent
 set foldnestmax=3 " Deepest fold level
 set nofoldenable " Don't fold by default
+
+
+" vimdiff options-------------------------------------------------------
+set diffopt=filler " Add vertical spaces to keep right and left aligned
+set diffopt+=iwhite " Ignore whitespaces
 
 
 " Search and/or Replace-------------------------------------------------
@@ -200,7 +220,6 @@ while c <= 99
   let c += 1
 endwhile
 
-
 " File type specific specs----------------------------------------------
 " Use LaTeX rather than plain TeX.
 let g:tex_flavor = "latex"
@@ -212,9 +231,13 @@ autocmd vimrc BufRead .vimrc,*.vim set keywordprg=:help
 " Move more naturally up/down when wrapping is enabled.
 nnoremap j gj
 nnoremap k gk
+" Save file with <leader>w in normal mode
+nnoremap <leader>w :w<CR>
 
 " Use jk (and the other default <C-[>) to go to the normal mode
 inoremap jk <ESC>
+" Use hh to complete the word in insert mode
+inoremap hh <C-p>
 
 " Toggle folding with <Space>
 nnoremap <Space> za
@@ -253,10 +276,11 @@ noremap ;' :%s:::cg<Left><Left><Left><Left>
 " Search and replace word under the cursor
 :nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
-" Plugins and their respective configuration----------------------------
-"" Indent Guides
-"let g:indent_guides_start_level = 2
-"let g:indent_guides_guide_size = 1
+" Delete current buffer
+nmap <Leader>d :b#<bar>bd#<CR>
+
+" Delete current file and buffer
+nnoremap <leader>dd :call delete(expand('%')) \| bdelete!<CR>
 
 
 " vim-go config
@@ -266,6 +290,7 @@ let g:go_highlight_fields = 1
 let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
+
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
