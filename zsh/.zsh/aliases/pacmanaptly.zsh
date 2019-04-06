@@ -27,13 +27,13 @@ if [[ -e /usr/bin/pacman ]] ; then
 	alias aurlist='pacman -Qm'
 
 	# Search AUR for matching strings
-	alias aurfind='pacaur -s'
+	alias aurfind='pacaur -Ss'
 
 	# Install an AUR package
-	alias aurin='pacaur -ay'
+	alias aurin='trizen -S'
 
 	# Upgrade AUR packages
-	alias aurupg='pacaur -u'
+	alias aurupg='trizen -Syu'
 
 elif [[ -e /usr/bin/apt-get ]] ; then
 
