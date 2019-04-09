@@ -1,0 +1,60 @@
+{
+    "workbench.colorTheme": "Monokai",
+    "editor.fontFamily": "'Fira Code Medium', 'Source Code Pro', 'Consolas', 'monospace', monospace",
+    "vim.leader": "<space>",
+
+    "vim.insertModeKeyBindings": [
+        {
+          "before": ["j", "k"],
+          "after": ["<Esc>"]
+        },
+      ],
+      "vim.normalModeKeyBindingsNonRecursive": [
+        {
+          "before": ["<leader>", "/"],
+          "commands": [":nohl"]
+        },
+        {
+            "before": [":"],
+            "commands": [
+                "workbench.action.showCommands",
+            ]
+        },
+        {
+            "before": ["<leader>", "w"],
+            "commands": [
+                "workbench.action.files.save",
+            ]
+        },
+        {
+            "before": ["j"],
+            "after": ["g", "j"]
+        },
+        {
+            "before": ["k"],
+            "after": ["g", "k"]
+        }
+      ],
+      "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "p",
+            ],
+            "after": [
+                "p",
+                "g",
+                "v",
+                "y"
+            ]
+        }
+    ],
+    "vim.handleKeys": {
+    "<C-a>": false,
+    },
+    "vim.hlsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.substituteGlobalFlag": true,
+    "vim.sneak": true,
+    "vim.sneakUseIgnorecaseAndSmartcase": true,
+    "vim.camelCaseMotion.enable": true
+}
