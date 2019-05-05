@@ -15,19 +15,13 @@ setxkbmap -option terminate:ctrl_alt_bksp
 # Swap Caps lock with left control
 setxkbmap -option ctrl:swapcaps
 
-# eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh) &
-# export GPG_AGENT_INFO SSH_AUTH_SOCK &
-# export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
-# exec awesome
 [[ -f ~/.Xresources ]] && xrdb ~/.Xresources
-# /usr/bin/lxpolkit &
-# udiskie -2 &
 pactl set-sink-volume 0 '20%' &
-xset -b &
+xset -b & # disable bell
+xset r rate 250 60 # faster key repeat rate
 compton --config ~/.config/compton.conf -b &
 xbacklight -set 10 &
-feh --randomize --bg-fill ~/Pictures/wallpapers/* &
 rofi &
-urxvtd -q -o -f &
 dunst &
+# xrandr --output DP2-2 --mode 1920x1080 --rate 60.00 --output DP2-1 --mode 1920x1080 --rate 60.00 --right-of DP2-2 --output eDP1 --off
 exec i3 # -V >> ~/.cache/i3/i3log-$(date +'%F-%k-%M-%S') 2>&1
