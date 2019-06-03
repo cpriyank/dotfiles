@@ -8,7 +8,6 @@ order += "cpu_temperature 0"
 order += "cpu_usage"
 order += "disk /home"
 order += "wireless wlp1s0"
-order += "mpd"
 order += "battery 1"
 order += "volume master"
 order += "time"
@@ -28,12 +27,6 @@ battery 1 {
 
 cpu_usage {
     format = "CPU: %usage"
-}
-
-mpd {
-		color_good = "#66cccc"
-    format_up = "%title"
-    format_down = " - "
 }
 
 cpu_temperature 0 {
