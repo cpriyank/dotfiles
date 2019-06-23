@@ -6,7 +6,7 @@ alias msal='mpc search album'
 
 alias v="$EDITOR"
 
-alias m='tmux -f ~/.tmux/config'
+alias m='tmux'
 alias a='tmux attach'
 
 # cat files with syntax highlighting. Requires Pygmentize
@@ -70,3 +70,5 @@ alias please='sudo $(fc -ln -1)'
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -name '*.DS_Store' -type f -ls"
+
+alias k="kak"
