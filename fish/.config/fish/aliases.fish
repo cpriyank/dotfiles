@@ -18,7 +18,7 @@ function l
 end
 
 function m
-	tmux -f ~/.tmux/config
+	tmux
 end
 
 function a
@@ -171,4 +171,8 @@ end
 # case insensitive rg with $EDITOR
 function rgil
 	rg -l -i $argv | xargs $EDITOR
+end
+
+function k
+  kak $argv
 end
