@@ -1,0 +1,5 @@
+[language.go]
+filetypes = ["go"]
+roots = ["Gopkg.toml", "go.mod", ".git", ".hg"]
+formatTool = "goimports"
+command = "gopls"
