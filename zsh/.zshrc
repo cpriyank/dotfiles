@@ -72,7 +72,6 @@ unset plugins
 
 
 ## Prompt---------------------------------------------------------------------
-#source ${ZDOTDIR:-${HOME}}/.zsh/prompt.zsh
 autoload -U promptinit && promptinit
 prompt pure
 # Enable fish-like syntax highlighting
@@ -112,10 +111,15 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 
-# . /home/tiniyo/torch/install/bin/torch-activate
 # In OS X autosuggestion config is maintained as a package in brew
 # source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# In arch, one might have to manage by oneself or zsh-autosuggestions
-# AUR package and source zsh file accordingly
+# In arch, one might have to manage by oneself install zsh-autosuggestions
+[[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] \
+	&& source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# export PATH="/home/tiniyo/miniconda3/bin:$PATH"
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+if command -v colorls 2>&1 >/dev/null; then
+	source $(dirname $(gem which colorls))/tab_complete.sh
+	# override some of existing aliases with colorls
+	source $HOME/.zsh/aliases/colorls.zsh
+fi

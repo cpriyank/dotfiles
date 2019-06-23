@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+curl --create-dirs -o ~/.zsh/plugs/z.sh "https://raw.githubusercontent.com/rupa/z/master/z.sh"
+gem install colorls
 echo "Will download vim-plug for vim now..."
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim

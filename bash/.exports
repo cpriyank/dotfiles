@@ -11,6 +11,7 @@ fi
 # https://wiki.archlinux.org/index.php/locale
 export LC_COLLATE=C
 
+# todo: don't do this by default
 if [[ ! -d $HOME/z/go ]]
 then
     mkdir -p $HOME/z/go
@@ -19,5 +20,4 @@ fi
 export GOPATH=$HOME/z/go
 PATH=$PATH:$GOPATH
 
-# export VDPAU_DRIVER=va_gl
-# export LIBVA_DRIVER_NAME=vdpau
+PATH=$PATH:$HOME/.gem/ruby/2.6.0/bin
