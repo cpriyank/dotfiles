@@ -6,3 +6,12 @@ They are called dotfiles because their names start with a '.' character. They ar
 Every time you login and/or open a program, your system looks for your dotfiles to apply your personal preferences, aliases, environment variable, and alike, and  applies those configurations.
 
 You can copy your dotfiles on new systems, and the relevant programs will work and behave in the same way as they did in the old system.
+
+## Programs included:
+Just have a look at names of directories in the root of this repo
+
+##Screenshots
+todo
+
+## References
+
