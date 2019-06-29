@@ -97,7 +97,7 @@ Plug 'junegunn/vim-after-object' " Target text *after* the designated characters
 Plug 'justinmk/vim-sneak' " motion enhancement
 Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go', 'C++']}
 Plug 'AndrewRadev/splitjoin.vim' " Split/join line(s) with gS and gJ
-Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`¬
+" Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`¬
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'deoplete-plugins/deoplete-jedi'
@@ -410,11 +410,11 @@ xnoremap jk <Esc>
 cnoremap jk <C-c>
 
 " Movement in insert mode
-inoremap <C-h> <C-o>h
-inoremap <C-l> <C-o>a
-inoremap <C-j> <C-o>j
-inoremap <C-k> <C-o>k
-inoremap <C-^> <C-o><C-^>
+" inoremap <C-h> <C-o>h
+" inoremap <C-l> <C-o>a
+" inoremap <C-j> <C-o>j
+" inoremap <C-k> <C-o>k
+" inoremap <C-^> <C-o><C-^>
 
 " Make Y behave like other capitals
 nnoremap Y y$
@@ -1270,9 +1270,12 @@ command! -bang -nargs=* Rg
   \   <bang>0)
 
 " for commands supplied by fzf
-nnoremap <leader>f :Files<CR>  " Files in current project
-nnoremap <leader>fg :GFiles<CR> " Git files
-nnoremap <leader>gst :GFiles?<CR> " Git status files
+" Files in current project
+nnoremap <leader>f :Files<CR>
+" Git files
+nnoremap <leader>fg :GFiles<CR>
+" Git status files
+nnoremap <leader>gst :GFiles?<CR>
 nnoremap <leader>fl :Lines<CR>
 nnoremap <leader>fbl :BLines<CR>
 nnoremap <leader>b :Buffers<CR>
@@ -1349,3 +1352,13 @@ let g:deoplete#enable_at_startup = 1
 "     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
 "     \ }
 " nnoremap <leader>ll :call LanguageClient_contextMenu()<CR>
+
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
