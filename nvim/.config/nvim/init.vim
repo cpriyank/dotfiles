@@ -33,6 +33,7 @@ endif
 " unlet! skip_defaults_vim
 " silent! source $VIMRUNTIME/defaults.vim
 
+let s:darwin = has('mac')
 
 " }}}
 " ============================================================================
@@ -54,7 +55,6 @@ augroup nerd_loader
 augroup END
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'justinmk/vim-gtfo' " goto terminal/files with got and gof
 
 " Colors
 Plug 'AlessandroYorba/Despacio'
@@ -68,7 +68,8 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'Yggdroot/indentLine'
+" TODO: Make this default rather than when enabled?
+Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
 autocmd! User indentLine doautocmd indentLine Syntax
 
 " Edit
@@ -90,7 +91,6 @@ Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-emoji'
 Plug 'junegunn/vim-pseudocl' " dependency of vim-fnr
 Plug 'junegunn/vim-fnr' " find and replace free of regex
-Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 Plug 'junegunn/vim-slash' " enhanced in buffer search
 Plug 'junegunn/vim-peekaboo' " extends \" and @ in normal mode and <CTRL-R> in insert mode so you can see the contents of the registers
 Plug 'junegunn/vim-after-object' " Target text *after* the designated characters
@@ -116,19 +116,12 @@ Plug 'Shougo/deoplete-clangx'
 " endfunction
 " Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp'], 'do': function('BuildYCM') }
 
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
-" Plug 'ervandew/supertab' " all vim insert mode completions with Tab
-
 " Plug 'SirVer/ultisnips'
 " Plug 'honza/vim-snippets'
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
 
 " Browsing
-Plug 'majutsushi/tagbar' " explore tags with <leader>t
+Plug 'justinmk/vim-gtfo'
+
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim' " Git commit browser
@@ -137,15 +130,13 @@ Plug 'airblade/vim-gitgutter' " Git diff in signing column
 
 " Lang
 Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
-" Plug 'rust-lang/rust.vim', {'for': 'rust'}
+Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'dag/vim-fish'
-Plug 'ap/vim-css-color', {'for': 'css'} " preview colors when editing
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'lyuts/vim-rtags', { 'for': ['c', 'cpp'] }
 
 " Lint
 Plug 'w0rp/ale'
-Plug 'vim-syntastic/syntastic'
 
 call plug#end()
 endif
@@ -209,9 +200,9 @@ set autoread " auto reload files changed outside vim
 set clipboard=unnamed " Make yanks go to OS clipboard
 
 set foldlevelstart=99
-set foldmethod=indent " Fold based on indent
-set foldnestmax=3 " Deepest fold level
-set nofoldenable " Don't fold by default
+" set foldmethod=indent " Fold based on indent
+" set foldnestmax=3 " Deepest fold level
+" set nofoldenable " Don't fold by default
 
 set grepformat=%f:%l:%c:%m,%f:%l:%m
 set completeopt=menuone,preview
@@ -250,11 +241,6 @@ if has('termguicolors')
   set termguicolors
 endif
 
-if has('mac')
-	let g:python2_host_prog =  '/usr/local/bin/python2'
-	let g:python3_host_prog = '/usr/local/bin/python3'
-endif
-
 function! s:statusline_expr()
   let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
   let ro  = "%{&readonly ? '[RO] ' : ''}"
@@ -274,7 +260,6 @@ set synmaxcol=1000 " syntax highlighting limit (in columns) for long lines
 " ctags
 set tags=./tags;/
 
-" TODO: investigate
 set complete-=i " don't complete from included files
 
 " mouse
@@ -294,15 +279,6 @@ set nostartofline
 " gf opens file under cursor in the same window. isfname controls what can be
 " part of the file
 set isfname-==
-
-" let base16colorspace=256 " " Access colors present in 256 colorspace
-" seoul256 (light):
-"   Range:   252 (darkest) ~ 256 (lightest)
-"   Default: 253
-" seoul256 (dark):
-"   Range:   233 (darkest) ~ 239 (lightest)
-"   Default: 237
-let g:seoul256_background = 234
 
 if has('gui_running')
   set guifont=Menlo:h14 columns=80 lines=40
@@ -331,7 +307,6 @@ set wildignore+=*/vendor/*,*/.git/*,*/.hg/*,*/.svn/*,*/log/*,*/tmp/*
 nnoremap j gj
 nnoremap k gk
 
-" Page up and down with Ctrl-D or Ctrl-U
 noremap <C-F> <C-D>
 noremap <C-B> <C-U>
 
@@ -340,6 +315,8 @@ nnoremap <leader>o o<esc>
 nnoremap <leader>O O<esc>
 
 " Save
+inoremap <C-s>     <C-O>:update<cr>
+nnoremap <C-s>     :update<cr>
 nnoremap <leader>w :update<cr>
 
 " Quit
@@ -347,58 +324,10 @@ nnoremap <Leader>q :q<cr>
 nnoremap <Leader>Q :qa!<cr>
 
 " Tags
-" Jumping to tags (Thanks to Paul Irish){{{
-augroup jump_to_tags
-  autocmd!
-
-  " Basically, <c-]> jumps to tags (like normal) and <c-\> opens the tag in a new
-  " split instead.
-  "
-  " Both of them will align the destination line to the upper middle part of the
-  " screen.  Both will pulse the cursor line so you can see where the hell you
-  " are.  <c-\> will also fold everything in the buffer and then unfold just
-  " enough for you to see the destination line.
-  nnoremap <c-]> <c-]>mzzvzz15<c-e>`z:Pulse<cr>
-  nnoremap <c-\> <c-w>v<c-]>mzzMzvzz15<c-e>`z:Pulse<cr>
-
-  " Pulse Line (thanks Steve Losh)
-  function! s:Pulse() " {{{
-    redir => old_hi
-    silent execute 'hi CursorLine'
-    redir END
-    let old_hi = split(old_hi, '\n')[0]
-    let old_hi = substitute(old_hi, 'xxx', '', '')
-
-    let steps = 8
-    let width = 1
-    let start = width
-    let end = steps * width
-    let color = 233
-
-    for i in range(start, end, width)
-      execute "hi CursorLine ctermbg=" . (color + i)
-      redraw
-      sleep 6m
-    endfor
-    for i in range(end, start, -1 * width)
-      execute "hi CursorLine ctermbg=" . (color + i)
-      redraw
-      sleep 6m
-    endfor
-
-    execute 'hi ' . old_hi
-  endfunction " }}}
-
-  command! -nargs=0 Pulse call s:Pulse()
-augroup END
-" }}}
-
-" TODO:
-" nnoremap <C-]> g<C-]>
-" nnoremap g[ :pop<cr>
+nnoremap <C-]> g<C-]>
+nnoremap g[ :pop<cr>
 
 " Jump list (to newer position)
-" TODO
 nnoremap <C-p> <C-i>
 
 " <leader>n | NERD Tree
@@ -422,6 +351,16 @@ nnoremap Y y$
 " qq to record, Q to replay
 nnoremap Q @q
 
+" Strip trailing whitespace (,ss)
+function! StripWhitespace()
+	let save_cursor = getpos(".")
+	let old_query = getreg('/')
+	:%s/\s\+$//e
+	call setpos('.', save_cursor)
+	call setreg('/', old_query)
+endfunction
+noremap <leader>ss :call StripWhitespace()<CR>
+
 noremap <leader>W :w !sudo tee % > /dev/null<CR> " Save a file as root (,W)
 
 " When editing a file, always jump to the last known cursor position, except
@@ -432,11 +371,32 @@ autocmd nviminit BufReadPost *
   \   exe "normal g`\"" |
   \ endif
 
-" Select last inserted text
+" Zoom
+function! s:zoom()
+  if winnr('$') > 1
+    tab split
+  elseif len(filter(map(range(tabpagenr('$')), 'tabpagebuflist(v:val + 1)'),
+                  \ 'index(v:val, '.bufnr('').') >= 0')) > 1
+    tabclose
+  endif
+endfunction
+nnoremap <silent> <leader>z :call <sid>zoom()<cr>
+
+" Last inserted text
 nnoremap g. :normal! `[v`]<cr><left>
 
 " ----------------------------------------------------------------------------
-" Go up and down in Quickfix list for jumping to next/prev errors TODO
+" nvim
+" ----------------------------------------------------------------------------
+if has('nvim')
+  tnoremap <a-a> <esc>a
+  tnoremap <a-b> <esc>b
+  tnoremap <a-d> <esc>d
+  tnoremap <a-f> <esc>f
+endif
+
+" ----------------------------------------------------------------------------
+" Quickfix
 " ----------------------------------------------------------------------------
 nnoremap ]q :cnext<cr>zz
 nnoremap [q :cprev<cr>zz
@@ -444,13 +404,13 @@ nnoremap ]l :lnext<cr>zz
 nnoremap [l :lprev<cr>zz
 
 " ----------------------------------------------------------------------------
-" Next and previous Buffers
+" Buffers
 " ----------------------------------------------------------------------------
 nnoremap ]b :bnext<cr>
 nnoremap [b :bprev<cr>
 
 " ----------------------------------------------------------------------------
-" Next and previous Tabs
+" Tabs
 " ----------------------------------------------------------------------------
 nnoremap ]t :tabn<cr>
 nnoremap [t :tabp<cr>
@@ -462,7 +422,7 @@ nnoremap <tab>   <c-w>w
 nnoremap <S-tab> <c-w>W
 
 " ----------------------------------------------------------------------------
-" Send selection to tmux panes
+" tmux
 " ----------------------------------------------------------------------------
 function! s:tmux_send(content, dest) range
   let dest = empty(a:dest) ? input('To which pane? ') : a:dest
@@ -566,7 +526,7 @@ else
 endif
 
 " ----------------------------------------------------------------------------
-" Markdown/rst headings TODO
+" Markdown headings
 " ----------------------------------------------------------------------------
 nnoremap <leader>1 m`yypVr=``
 nnoremap <leader>2 m`yypVr-``
@@ -575,7 +535,7 @@ nnoremap <leader>4 m`^i#### <esc>``5l
 nnoremap <leader>5 m`^i##### <esc>``6l
 
 " ----------------------------------------------------------------------------
-" Moving lines or selection in normal mode
+" Moving lines
 " ----------------------------------------------------------------------------
 nnoremap <silent> <C-k> :move-2<cr>
 nnoremap <silent> <C-j> :move+<cr>
@@ -592,6 +552,18 @@ xnoremap > >gv
 " <Leader>c Close quickfix/location window
 " ----------------------------------------------------------------------------
 nnoremap <leader>c :cclose<bar>lclose<cr>
+
+" ----------------------------------------------------------------------------
+" Readline-style key bindings in command-line (excerpt from rsi.vim)
+" ----------------------------------------------------------------------------
+cnoremap        <C-A> <Home>
+cnoremap        <C-B> <Left>
+cnoremap <expr> <C-D> getcmdpos()>strlen(getcmdline())?"\<Lt>C-D>":"\<Lt>Del>"
+cnoremap <expr> <C-F> getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
+cnoremap        <M-b> <S-Left>
+cnoremap        <M-f> <S-Right>
+silent! exe "set <S-Left>=\<Esc>b"
+silent! exe "set <S-Right>=\<Esc>f"
 
 " ----------------------------------------------------------------------------
 " #gi / #gpi | go to next/previous indentation level
@@ -618,18 +590,29 @@ nnoremap <silent> gi :<c-u>call <SID>go_indent(v:count1, 1)<cr>
 nnoremap <silent> gpi :<c-u>call <SID>go_indent(v:count1, -1)<cr>
 
 " ----------------------------------------------------------------------------
-" #!! followed by return key inserts env based on filetype
+" <leader>bs | buf-search
+" ----------------------------------------------------------------------------
+nnoremap <leader>bs :cex []<BAR>bufdo vimgrepadd @@g %<BAR>cw<s-left><s-left><right>
+
+" ----------------------------------------------------------------------------
+" #!! | Shebang
 " ----------------------------------------------------------------------------
 inoreabbrev <expr> #!! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' '.&filetype)
 
 " ----------------------------------------------------------------------------
 " <leader>ij | Open in IntelliJ
 " ----------------------------------------------------------------------------
-if has('mac')
+if s:darwin
   nnoremap <silent> <leader>ij
   \ :call job_start(['/Applications/IntelliJ IDEA.app/Contents/MacOS/idea', expand('%:p')],
   \ {'in_io': 'null', 'out_io': 'null', 'err_io': 'null'})<cr>
 endif
+
+" ----------------------------------------------------------------------------
+" Heytmux
+" ----------------------------------------------------------------------------
+
+xnoremap <leader>ht :Heytmux<cr>
 
 " }}}
 " ============================================================================
@@ -637,15 +620,67 @@ endif
 " ============================================================================
 
 " ----------------------------------------------------------------------------
-" :NL command prepends numbers to selected non-empty lines
+" :NL
 " ----------------------------------------------------------------------------
 command! -range=% -nargs=1 NL
   \ <line1>,<line2>!nl -w <args> -s '. ' | perl -pe 's/^.{<args>}..$//'
 
 " ----------------------------------------------------------------------------
-" :Chomp to strip whitespace
+" :Chomp
 " ----------------------------------------------------------------------------
 command! Chomp %s/\s\+$// | normal! ``
+
+" ----------------------------------------------------------------------------
+" :Count
+" ----------------------------------------------------------------------------
+command! -nargs=1 Count execute printf('%%s/%s//gn', escape(<q-args>, '/')) | normal! ``
+
+" ----------------------------------------------------------------------------
+" :M
+" ----------------------------------------------------------------------------
+command! M execute printf('!bundle exec m %s:%d', expand('%'), line('.'))
+
+" ----------------------------------------------------------------------------
+" :CopyRTF
+" ----------------------------------------------------------------------------
+function! s:colors(...)
+  return filter(map(filter(split(globpath(&rtp, 'colors/*.vim'), "\n"),
+        \                  'v:val !~ "^/usr/"'),
+        \           'fnamemodify(v:val, ":t:r")'),
+        \       '!a:0 || stridx(v:val, a:1) >= 0')
+endfunction
+
+function! s:copy_rtf(line1, line2, ...)
+  let [ft, cs, nu] = [&filetype, g:colors_name, &l:nu]
+  let lines = getline(1, '$')
+
+  tab new
+  setlocal buftype=nofile bufhidden=wipe nonumber
+  let &filetype = ft
+  call setline(1, lines)
+  doautocmd BufNewFile filetypedetect
+
+  execute 'colo' get(a:000, 0, 'seoul256-light')
+  hi Normal ctermbg=NONE guibg=NONE
+
+  let lines = getline(a:line1, a:line2)
+  let indent = repeat(' ', min(map(filter(copy(lines), '!empty(v:val)'), 'len(matchstr(v:val, "^ *"))')))
+  call setline(a:line1, map(lines, 'substitute(v:val, indent, "", "")'))
+
+  call tohtml#Convert2HTML(a:line1, a:line2)
+  g/^\(pre\|body\) {/s/background-color: #[0-9]*; //
+  silent %write !textutil -convert rtf -textsizemultiplier 1.3 -stdin -stdout | ruby -e 'puts STDIN.read.sub(/\\\n}$/m, "\n}")' | pbcopy
+
+  bd!
+  tabclose
+
+  let &l:nu = nu
+  execute 'colorscheme' cs
+endfunction
+
+if s:darwin
+  command! -range=% -nargs=? -complete=customlist,s:colors CopyRTF call s:copy_rtf(<line1>, <line2>, <f-args>)
+endif
 
 " ----------------------------------------------------------------------------
 " :Root | Change directory to the root of the Git repository
@@ -680,17 +715,13 @@ function! s:run_this_script(output)
     execute prefix.file.rdr
   elseif &filetype == 'ruby'
     execute prefix.'/usr/bin/env ruby '.file.rdr
-  elseif &filetype == 'python'
-    execute prefix.'/usr/bin/env python '.file.rdr
-  elseif &filetype == 'tex'
-    execute prefix.'latex '.file. '; [ $? -eq 0 ] && xdvi '. expand('%:r').rdr
   elseif &filetype == 'tex'
     execute prefix.'latex '.file. '; [ $? -eq 0 ] && xdvi '. expand('%:r').rdr
   elseif &filetype == 'dot'
     let svg = expand('%:r') . '.svg'
     let png = expand('%:r') . '.png'
     " librsvg >> imagemagick + ghostscript
-    execute 'silent !dot -Tsvg -Gdpi=600 '.file.' -o '.svg.' && '
+    execute 'silent !dot -Tsvg '.file.' -o '.svg.' && '
           \ 'rsvg-convert -z 2 '.svg.' > '.png.' && open '.png.rdr
   else
     return
@@ -730,6 +761,19 @@ function! s:rotate_colors()
   echo name
 endfunction
 nnoremap <silent> <F8> :call <SID>rotate_colors()<cr>
+
+" ----------------------------------------------------------------------------
+" :Shuffle | Shuffle selected lines
+" ----------------------------------------------------------------------------
+function! s:shuffle() range
+ruby << RB
+  first, last = %w[a:firstline a:lastline].map { |e| VIM::evaluate(e).to_i }
+  (first..last).map { |l| $curbuf[l] }.shuffle.each_with_index do |line, i|
+    $curbuf[first + i] = line
+  end
+RB
+endfunction
+command! -range Shuffle <line1>,<line2>call s:shuffle()
 
 " ----------------------------------------------------------------------------
 " Syntax highlighting in code snippets
@@ -789,7 +833,35 @@ function! s:file_type_handler()
 endfunction
 
 " ----------------------------------------------------------------------------
-" :A TODO
+" SaveMacro / LoadMacro
+" ----------------------------------------------------------------------------
+function! s:save_macro(name, file)
+  let content = eval('@'.a:name)
+  if !empty(content)
+    call writefile(split(content, "\n"), a:file)
+    echom len(content) . " bytes save to ". a:file
+  endif
+endfunction
+command! -nargs=* SaveMacro call <SID>save_macro(<f-args>)
+
+function! s:load_macro(file, name)
+  let data = join(readfile(a:file), "\n")
+  call setreg(a:name, data, 'c')
+  echom "Macro loaded to @". a:name
+endfunction
+command! -nargs=* LoadMacro call <SID>load_macro(<f-args>)
+
+" ----------------------------------------------------------------------------
+" HL | Find out syntax group
+" ----------------------------------------------------------------------------
+function! s:hl()
+  " echo synIDattr(synID(line('.'), col('.'), 0), 'name')
+  echo join(map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")'), '/')
+endfunction
+command! HL call <SID>hl()
+
+" ----------------------------------------------------------------------------
+" :A
 " ----------------------------------------------------------------------------
 function! s:a(cmd)
   let name = expand('%:r')
@@ -815,19 +887,174 @@ command! A call s:a('e')
 command! AV call s:a('botright vertical split')
 
 " ----------------------------------------------------------------------------
+" Todo
+" ----------------------------------------------------------------------------
+function! s:todo() abort
+  let entries = []
+  for cmd in ['git grep -niI -e TODO -e FIXME -e XXX 2> /dev/null',
+            \ 'grep -rniI -e TODO -e FIXME -e XXX * 2> /dev/null']
+    let lines = split(system(cmd), '\n')
+    if v:shell_error != 0 | continue | endif
+    for line in lines
+      let [fname, lno, text] = matchlist(line, '^\([^:]*\):\([^:]*\):\(.*\)')[1:3]
+      call add(entries, { 'filename': fname, 'lnum': lno, 'text': text })
+    endfor
+    break
+  endfor
+
+  if !empty(entries)
+    call setqflist(entries)
+    copen
+  endif
+endfunction
+command! Todo call s:todo()
+
+" ----------------------------------------------------------------------------
+" ConnectChrome
+" ----------------------------------------------------------------------------
+if s:darwin
+  function! s:connect_chrome(bang)
+    augroup connect-chrome
+      autocmd!
+      if !a:bang
+        autocmd BufWritePost <buffer> call system(join([
+        \ "osascript -e 'tell application \"Google Chrome\"".
+        \               "to tell the active tab of its first window\n",
+        \ "  reload",
+        \ "end tell'"], "\n"))
+      endif
+    augroup END
+  endfunction
+  command! -bang ConnectChrome call s:connect_chrome(<bang>0)
+endif
+
+" ----------------------------------------------------------------------------
+" AutoSave
+" ----------------------------------------------------------------------------
+function! s:autosave(enable)
+  augroup autosave
+    autocmd!
+    if a:enable
+      autocmd TextChanged,InsertLeave <buffer>
+            \  if empty(&buftype) && !empty(bufname(''))
+            \|   silent! update
+            \| endif
+    endif
+  augroup END
+endfunction
+
+command! -bang AutoSave call s:autosave(<bang>1)
+
+" ----------------------------------------------------------------------------
+" TX
+" ----------------------------------------------------------------------------
+command! -nargs=1 TX
+  \ call system('tmux split-window -d -l 16 '.<q-args>)
+cnoremap !! TX<space>
+command! GP TX git push
+
+" ----------------------------------------------------------------------------
+" EX | chmod +x
+" ----------------------------------------------------------------------------
+command! EX if !empty(expand('%'))
+         \|   write
+         \|   call system('chmod +x '.expand('%'))
+         \|   silent e
+         \| else
+         \|   echohl WarningMsg
+         \|   echo 'Save the file first'
+         \|   echohl None
+         \| endif
+
+" ----------------------------------------------------------------------------
+" Profile
+" ----------------------------------------------------------------------------
+function! s:profile(bang)
+  if a:bang
+    profile pause
+    noautocmd qall
+  else
+    profile start /tmp/profile.log
+    profile func *
+    profile file *
+  endif
+endfunction
+command! -bang Profile call s:profile(<bang>0)
+
+" ----------------------------------------------------------------------------
+" call LSD()
+" ----------------------------------------------------------------------------
+function! LSD()
+  syntax clear
+
+  for i in range(16, 255)
+    execute printf('highlight LSD%s ctermfg=%s', i - 16, i)
+  endfor
+
+  let block = 4
+  for l in range(1, line('$'))
+    let c = 1
+    let max = len(getline(l))
+    while c < max
+      let stride = 4 + reltime()[1] % 8
+      execute printf('syntax region lsd%s_%s start=/\%%%sl\%%%sc/ end=/\%%%sl\%%%sc/ contains=ALL', l, c, l, c, l, min([c + stride, max]))
+      let rand = abs(reltime()[1] % (256 - 16))
+      execute printf('hi def link lsd%s_%s LSD%s', l, c, rand)
+      let c += stride
+    endwhile
+  endfor
+endfunction
+
+
+" ----------------------------------------------------------------------------
+" Open FILENAME:LINE:COL
+" ----------------------------------------------------------------------------
+function! s:goto_line()
+  let tokens = split(expand('%'), ':')
+  if len(tokens) <= 1 || !filereadable(tokens[0])
+    return
+  endif
+
+  let file = tokens[0]
+  let rest = map(tokens[1:], 'str2nr(v:val)')
+  let line = get(rest, 0, 1)
+  let col  = get(rest, 1, 1)
+  bd!
+  silent execute 'e' file
+  execute printf('normal! %dG%d|', line, col)
+endfunction
+
+autocmd vimrc BufNewFile * nested call s:goto_line()
+
+
+" ----------------------------------------------------------------------------
+" co? : Toggle options (inspired by unimpaired.vim)
+" ----------------------------------------------------------------------------
+function! s:map_change_option(...)
+  let [key, opt] = a:000[0:1]
+  let op = get(a:, 3, 'set '.opt.'!')
+  execute printf("nnoremap co%s :%s<bar>set %s?<cr>", key, op, opt)
+endfunction
+
+call s:map_change_option('p', 'paste')
+call s:map_change_option('n', 'number')
+call s:map_change_option('w', 'wrap')
+call s:map_change_option('h', 'hlsearch')
+call s:map_change_option('m', 'mouse', 'let &mouse = &mouse == "" ? "a" : ""')
+call s:map_change_option('t', 'textwidth',
+    \ 'let &textwidth = input("textwidth (". &textwidth ."): ")<bar>redraw')
+call s:map_change_option('b', 'background',
+    \ 'let &background = &background == "dark" ? "light" : "dark"<bar>redraw')
+
+" ----------------------------------------------------------------------------
 " <Leader>?/! | Google it / Feeling lucky
 " ----------------------------------------------------------------------------
 function! s:goog(pat, lucky)
   let q = '"'.substitute(a:pat, '["\n]', ' ', 'g').'"'
   let q = substitute(q, '[[:punct:] ]',
        \ '\=printf("%%%02X", char2nr(submatch(0)))', 'g')
-  if has('mac')
-    call system(printf('open "https://www.google.com/search?%sq=%s"',
+  call system(printf('open "https://www.google.com/search?%sq=%s"',
                    \ a:lucky ? 'btnI&' : '', q))
-  elseif has('unix')
-    call system(printf('xdg-open "https://www.google.com/search?%sq=%s"',
-                   \ a:lucky ? 'btnI&' : '', q))
-  endif
 endfunction
 
 nnoremap <leader>? :call <SID>goog(expand("<cWORD>"), 0)<cr>
@@ -858,8 +1085,8 @@ noremap         <Plug>(TOC) <nop>
 inoremap <expr> <Plug>(TOC) exists('#textobj_undo_empty_change')?"\<esc>":''
 
 " ----------------------------------------------------------------------------
-" expand vim objects in visual and operator pending mode
-" try v followed by ii, ai, or io in normal mode
+" ?ii / ?ai | indent-object
+" ?io       | strictly-indent-object
 " ----------------------------------------------------------------------------
 function! s:indent_len(str)
   return type(a:str) == 1 ? len(matchstr(a:str, '^\s*')) : 0
@@ -1058,6 +1285,62 @@ onoremap <silent> a~ :<C-U>execute "normal va~"<cr>
 " ============================================================================
 
 " ----------------------------------------------------------------------------
+" vim-plug extension
+" ----------------------------------------------------------------------------
+function! s:plug_gx()
+  let line = getline('.')
+  let sha  = matchstr(line, '^  \X*\zs\x\{7,9}\ze ')
+  let name = empty(sha) ? matchstr(line, '^[-x+] \zs[^:]\+\ze:')
+                      \ : getline(search('^- .*:$', 'bn'))[2:-2]
+  let uri  = get(get(g:plugs, name, {}), 'uri', '')
+  if uri !~ 'github.com'
+    return
+  endif
+  let repo = matchstr(uri, '[^:/]*/'.name)
+  let url  = empty(sha) ? 'https://github.com/'.repo
+                      \ : printf('https://github.com/%s/commit/%s', repo, sha)
+  call netrw#BrowseX(url, 0)
+endfunction
+
+function! s:scroll_preview(down)
+  silent! wincmd P
+  if &previewwindow
+    execute 'normal!' a:down ? "\<c-e>" : "\<c-y>"
+    wincmd p
+  endif
+endfunction
+
+function! s:plug_doc()
+  let name = matchstr(getline('.'), '^- \zs\S\+\ze:')
+  if has_key(g:plugs, name)
+    for doc in split(globpath(g:plugs[name].dir, 'doc/*.txt'), '\n')
+      execute 'tabe' doc
+    endfor
+  endif
+endfunction
+
+function! s:setup_extra_keys()
+  " PlugDiff
+  nnoremap <silent> <buffer> J :call <sid>scroll_preview(1)<cr>
+  nnoremap <silent> <buffer> K :call <sid>scroll_preview(0)<cr>
+  nnoremap <silent> <buffer> <c-n> :call search('^  \X*\zs\x')<cr>
+  nnoremap <silent> <buffer> <c-p> :call search('^  \X*\zs\x', 'b')<cr>
+  nmap <silent> <buffer> <c-j> <c-n>o
+  nmap <silent> <buffer> <c-k> <c-p>o
+
+  " gx
+  nnoremap <buffer> <silent> gx :call <sid>plug_gx()<cr>
+
+  " helpdoc
+  nnoremap <buffer> <silent> H  :call <sid>plug_doc()<cr>
+endfunction
+
+autocmd vimrc FileType vim-plug call s:setup_extra_keys()
+
+let g:plug_window = '-tabnew'
+let g:plug_pwindow = 'vertical rightbelow new'
+
+" ----------------------------------------------------------------------------
 " MatchParen delay
 " ----------------------------------------------------------------------------
 let g:matchparen_insert_timeout=5
@@ -1073,6 +1356,36 @@ nmap gcc <Plug>CommentaryLine
 " ----------------------------------------------------------------------------
 nmap     <Leader>g :Gstatus<CR>gg<c-n>
 nnoremap <Leader>d :Gdiff<CR>
+
+" ----------------------------------------------------------------------------
+" vim-ruby
+" ----------------------------------------------------------------------------
+" ft-ruby-syntax
+let ruby_operators = 1
+let ruby_space_errors = 1
+let ruby_fold = 1
+let ruby_no_expensive = 1
+let ruby_spellcheck_strings = 1
+
+" ft-ruby-omni
+" let rubycomplete_buffer_loading = 1
+" let rubycomplete_classes_in_global = 1
+" let rubycomplete_load_gemfile = 1
+
+" ----------------------------------------------------------------------------
+" matchit.vim
+" ----------------------------------------------------------------------------
+runtime macros/matchit.vim
+
+" ----------------------------------------------------------------------------
+" ack.vim
+" ----------------------------------------------------------------------------
+if executable('ag')
+  let &grepprg = 'ag --nogroup --nocolor --column'
+else
+  let &grepprg = 'grep -rn $* *'
+endif
+command! -nargs=1 -bar Grep execute 'silent! grep! <q-args>' | redraw! | copen
 
 " ----------------------------------------------------------------------------
 " vim-after-object
@@ -1127,13 +1440,22 @@ xmap <Leader>ga   <Plug>(LiveEasyAlign)
 " ----------------------------------------------------------------------------
 " vim-github-dashboard
 " ----------------------------------------------------------------------------
-let g:github_dashboard = { 'username': 'cpriyank' }
+let g:github_dashboard = { 'username': 'junegunn' }
 
 " ----------------------------------------------------------------------------
 " indentLine
 " ----------------------------------------------------------------------------
 let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#616161'
+
+" ----------------------------------------------------------------------------
+" vim-signify
+" ----------------------------------------------------------------------------
+let g:signify_vcs_list = ['git']
+let g:signify_skip_filetype = { 'journal': 1 }
+let g:signify_sign_add          = '│'
+let g:signify_sign_change       = '│'
+let g:signify_sign_changedelete = '│'
 
 " ----------------------------------------------------------------------------
 " vim-slash
@@ -1143,7 +1465,7 @@ if has('timers') && !has('nvim')
 endif
 
 " ----------------------------------------------------------------------------
-" vim-emoji :dog: :cat: :rabbit:! TODO
+" vim-emoji :dog: :cat: :rabbit:!
 " ----------------------------------------------------------------------------
 command! -range EmojiReplace <line1>,<line2>s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g
 
@@ -1186,6 +1508,7 @@ nnoremap <Leader>G :Goyo<CR>
 " ALE
 " ----------------------------------------------------------------------------
 let g:ale_linters = {'java': [], 'yaml': [], 'scala': [], 'clojure': []}
+let g:ale_fixers = {'ruby': ['rubocop']}
 let g:ale_lint_delay = 1000
 let g:ale_sign_warning = '──'
 let g:ale_sign_error = '══'
@@ -1194,7 +1517,7 @@ nmap ]a <Plug>(ale_next_wrap)
 nmap [a <Plug>(ale_previous_wrap)
 
 " ----------------------------------------------------------------------------
-" gv.vim / gl.vim TODO
+" gv.vim / gl.vim
 " ----------------------------------------------------------------------------
 function! s:gv_expand()
   let line = getline('.')
@@ -1206,13 +1529,13 @@ endfunction
 autocmd! FileType GV nnoremap <buffer> <silent> + :call <sid>gv_expand()<cr>
 
 " ----------------------------------------------------------------------------
-" undotree TODO
+" undotree
 " ----------------------------------------------------------------------------
 let g:undotree_WindowLayout = 2
 nnoremap U :UndotreeToggle<CR>
 
 " ----------------------------------------------------------------------------
-" switch.vim TODO
+" switch.vim
 " ----------------------------------------------------------------------------
 let g:switch_mapping = '-'
 let g:switch_custom_definitions = [
@@ -1220,7 +1543,76 @@ let g:switch_custom_definitions = [
 \ ]
 
 " ----------------------------------------------------------------------------
-" splitjoin TODO
+" clojure
+" ----------------------------------------------------------------------------
+function! s:lisp_maps()
+  nnoremap <buffer> <leader>a[ vi[<c-v>$:EasyAlign\ g/^\S/<cr>gv=
+  nnoremap <buffer> <leader>a{ vi{<c-v>$:EasyAlign\ g/^\S/<cr>gv=
+  nnoremap <buffer> <leader>a( vi(<c-v>$:EasyAlign\ g/^\S/<cr>gv=
+  nnoremap <buffer> <leader>rq :silent update<bar>Require<cr>
+  nnoremap <buffer> <leader>rQ :silent update<bar>Require!<cr>
+  nnoremap <buffer> <leader>rt :silent update<bar>RunTests<cr>
+  nmap     <buffer> <leader>*  cqp<c-r><c-w><cr>
+  nmap     <buffer> <c-]>      <Plug>FireplaceDjumpzz
+  imap     <buffer> <c-j><c-n> <c-o>(<right>.<space><left><tab>
+endfunction
+
+function! s:figwheel()
+  call system('tmux send-keys -t right C-u "(figwheel-sidecar.repl-api/start-figwheel!)" Enter')
+  call input('Press enter when ready.')
+  redraw!
+  Piggieback (figwheel-sidecar.repl-api/repl-env)
+endfunction
+
+function! s:chestnut()
+  " https://github.com/clojure/clojurescript-site/blob/master/content/tools/repls.adoc
+  " nashorn / browser / node
+  new | setlocal buftype=nofile bufhidden=hide noswapfile filetype=clojure
+  Eval (go)
+  bd
+  call system('open --background http://localhost:10555/')
+  Piggieback (fw-sys/repl-env (:figwheel-system system))
+  call system('osascript -e ''activate application "iTerm2"''')
+  redraw!
+endfunction
+
+augroup vimrc
+  autocmd FileType lisp,clojure,scheme RainbowParentheses
+  autocmd FileType lisp,clojure,scheme call <sid>lisp_maps()
+
+  " Clojure
+  autocmd FileType clojure xnoremap <buffer> <silent> <cr>         "cy:Eval <c-r>c<cr>
+  autocmd FileType clojure xnoremap <buffer> <silent> <leader><cr> "cy:Eval (require 'clojure.pprint)(clojure.pprint/pprint <c-r>c)<cr>
+  autocmd FileType clojure nmap     <buffer> <Enter>      cpp
+
+  " Ruby
+  autocmd FileType ruby set iskeyword+=!
+
+  " Figwheel / Chestnut
+  autocmd BufReadPost *.cljs command! -buffer Figwheel call s:figwheel()
+  autocmd BufReadPost *.cljs command! -buffer Chestnut call s:chestnut()
+augroup END
+
+let g:clojure_maxlines = 60
+
+set lispwords+=match
+let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
+
+" let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
+let g:paredit_smartjump = 1
+
+" vim-cljfmt
+let g:clj_fmt_autosave = 0
+autocmd vimrc BufWritePre *.clj call cljfmt#AutoFormat()
+autocmd vimrc BufWritePre *.cljc call cljfmt#AutoFormat()
+
+" ----------------------------------------------------------------------------
+" vim-markdown
+" ----------------------------------------------------------------------------
+" let g:markdown_fenced_languages = ['sh', 'ruby', 'clojure', 'vim', 'java', 'gnuplot']
+
+" ----------------------------------------------------------------------------
+" splitjoin
 " ----------------------------------------------------------------------------
 let g:splitjoin_split_mapping = ''
 let g:splitjoin_join_mapping = ''
@@ -1228,10 +1620,59 @@ nnoremap gss :SplitjoinSplit<cr>
 nnoremap gsj :SplitjoinJoin<cr>
 
 " ----------------------------------------------------------------------------
+" vimawesome.com
+" ----------------------------------------------------------------------------
+function! VimAwesomeComplete() abort
+  let prefix = matchstr(strpart(getline('.'), 0, col('.') - 1), '[.a-zA-Z0-9_/-]*$')
+  echohl WarningMsg
+  echo 'Downloading plugin list from VimAwesome'
+  echohl None
+ruby << EOF
+  require 'json'
+  require 'open-uri'
+
+  query = VIM::evaluate('prefix').gsub('/', '%20')
+  items = 1.upto(max_pages = 3).map do |page|
+    Thread.new do
+      url  = "http://vimawesome.com/api/plugins?page=#{page}&query=#{query}"
+      data = open(url).read
+      json = JSON.parse(data, symbolize_names: true)
+      json[:plugins].map do |info|
+        pair = info.values_at :github_owner, :github_repo_name
+        next if pair.any? { |e| e.nil? || e.empty? }
+        {word: pair.join('/'),
+         menu: info[:category].to_s,
+         info: info.values_at(:short_desc, :author).compact.join($/)}
+      end.compact
+    end
+  end.each(&:join).map(&:value).inject(:+)
+  VIM::command("let cands = #{JSON.dump items}")
+EOF
+  if !empty(cands)
+    inoremap <buffer> <c-v> <c-n>
+    augroup _VimAwesomeComplete
+      autocmd!
+      autocmd CursorMovedI,InsertLeave * iunmap <buffer> <c-v>
+            \| autocmd! _VimAwesomeComplete
+    augroup END
+
+    call complete(col('.') - strchars(prefix), cands)
+  endif
+  return ''
+endfunction
+
+autocmd vimrc FileType vim inoremap <buffer> <c-x><c-v> <c-r>=VimAwesomeComplete()<cr>
+
+" ----------------------------------------------------------------------------
 " YCM
 " ----------------------------------------------------------------------------
 " autocmd vimrc FileType c,cpp,go nnoremap <buffer> ]d :YcmCompleter GoTo<CR>
 " autocmd vimrc FileType c,cpp    nnoremap <buffer> K  :YcmCompleter GetType<CR>
+
+" ----------------------------------------------------------------------------
+" gruvbox
+" ----------------------------------------------------------------------------
+let g:gruvbox_contrast_dark = 'soft'
 
 " ----------------------------------------------------------------------------
 " Tagbar
@@ -1245,7 +1686,16 @@ nnoremap <silent> <leader>t :TagbarToggle<CR>
 " ============================================================================
 " FZF {{{
 " ============================================================================
-" Customize fzf colors to match your color scheme
+
+if has('nvim') || has('gui_running')
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+endif
+
+" Hide statusline of terminal buffer
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -1285,6 +1735,7 @@ nnoremap <leader>rc :History:<CR>
 " nnoremap <leader>fgg Commits<CR>
 " nnoremap <leader>fcb BCommits<CR>
 
+
 " }}}
 " ============================================================================
 " AUTOCMD {{{
@@ -1306,6 +1757,10 @@ augroup vimrc
   au FileType gitcommit setlocal completefunc=emoji#complete
   au FileType gitcommit nnoremap <buffer> <silent> cd :<C-U>Gcommit --amend --date="$(date)"<CR>
 
+  " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
+  au BufNewFile,BufRead,InsertLeave * silent! match ExtraWhitespace /\s\+$/
+  au InsertEnter * silent! match ExtraWhitespace /\s\+\%#\@<!$/
+
   " Unset paste on InsertLeave
   au InsertLeave * silent! set nopaste
 
@@ -1322,6 +1777,22 @@ augroup vimrc
     au VimLeave * call system('tmux set-window automatic-rename on')
   endif
 augroup END
+
+" build and view graphviz file
+autocmd FileType dot nmap <leader>mb :!dot -Tpng -Gdpi=600 % > (basename % .dot).png<CR>
+autocmd FileType dot nmap <leader>mv :!open (basename % .dot).png<CR>
+
+" ----------------------------------------------------------------------------
+" Help in new tabs
+" ----------------------------------------------------------------------------
+function! s:helptab()
+  if &buftype == 'help'
+    wincmd T
+    nnoremap <buffer> q :q<cr>
+  endif
+endfunction
+autocmd vimrc BufEnter *.txt call s:helptab()
+
 
 " }}}
 " ============================================================================
