@@ -176,3 +176,41 @@ end
 function k
   kak $argv
 end
+
+function cdf --description 'Change to directory opened by Finder'
+  if [ -x /usr/bin/osascript ]
+    set -l target (osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
+    if [ "$target" != "" ]
+      cd "$target"; pwd
+    else
+      echo 'No Finder window found' >&2
+    end
+  end
+end
+
+function cdls
+   cd $argv
+   ls -ahl
+end
+
+function cleanlatex --description 'pdflatex with cleanup'
+	set texfile (basename $argv .tex)
+	pdflatex $argv
+	rm "$texfile".log
+	rm "$texfile".aux
+end
+
+function f --description "find shorthand"
+	grc find . -name "$argv" 2>&1 | grep -v 'Permission denied'
+end
+
+function g --wraps git
+        git $argv;
+end
+
+function update --description "update brew, pip packages"
+   brew update
+	 brew cleanup
+	 # toolbox update
+	 pip3 install --upgrade pip
+end
