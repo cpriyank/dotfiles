@@ -5,6 +5,7 @@
 # Don't add anything to $path if it's there already ('-U means unique').
 typeset -gU path
 export GOPATH=$HOME/z/go
+export XDG_CONFIG_HOME=$HOME/.config
 path=($path ~/bin $GOPATH/bin ~/.local/bin)
 
 cdpath=(~/ ~/z/)
