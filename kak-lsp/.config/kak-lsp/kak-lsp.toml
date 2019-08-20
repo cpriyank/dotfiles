@@ -1,5 +1,18 @@
 [language.go]
 filetypes = ["go"]
 roots = ["Gopkg.toml", "go.mod", ".git", ".hg"]
-formatTool = "goimports"
 command = "gopls"
+args = ["check", "format"]
+
+[language.c_cpp]
+filetypes = ["c", "cpp"]
+roots = ["compile_flags.txt", "compile_commands.json"]
+command = "clangd"
+offset_encoding = "utf-8"
+[language.c_cpp.initialization_options]
+offsetEncoding = ["utf-8"]
+
+[language.python]
+filetypes = ["py"]
+roots = ["requirements.txt", ".git"]
+command = "pyls"
