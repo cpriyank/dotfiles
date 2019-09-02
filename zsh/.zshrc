@@ -30,7 +30,6 @@ setopt HIST_IGNORE_SPACE
 
 
 ## Keybindings----------------------------------------------------------------
-bindkey '^R' history-incremental-search-backward
 bindkey -M viins 'jk' vi-cmd-mode
 
 
@@ -41,7 +40,7 @@ zstyle :compinstall filename "${ZDOTDIR:-${HOME}}/.zshrc"
 
 autocompfiles=(${ZDOTDIR:-${HOME}}/.zsh/autocomplete/*)
 for file in ${autocompfiles}; do
-	source $file
+  source $file
 done
 unset autocompfiles
 
@@ -50,7 +49,7 @@ source ~/.exports
 ## Aliases and functions------------------------------------------------------
 aliasfiles=(${ZDOTDIR:-${HOME}}/.zsh/aliases/*)
 for file in ${aliasfiles}; do
-	source $file
+  source $file
 done
 unset aliasfiles
 
@@ -63,22 +62,10 @@ unset aliasfiles
 autoload -U ${fpath[1]}/*(:t)
 
 
-# Source plugins
-plugins=(${ZDOTDIR:-${HOME}}/.zsh/plugs/*)
-for file in ${plugins}; do
-	source $file
-done
-unset plugins
-
-
 ## Prompt---------------------------------------------------------------------
 autoload -U promptinit && promptinit
+# TODO: use directly from upstream as a plugin
 prompt pure
-# Enable fish-like syntax highlighting
-case $(uname) in
-    "Linux") source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ;;
-    "Darwin") source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ;;
-esac
 
 ## Misc options---------------------------------------------------------------
 # If LOCAL_OPTIONS is set in a function (or was already set before
@@ -110,16 +97,9 @@ zle -N self-insert url-quote-magic
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-
-# In OS X autosuggestion config is maintained as a package in brew
-# source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# In arch, one might have to manage by oneself install zsh-autosuggestions
-[[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] \
-	&& source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-if command -v colorls 2>&1 >/dev/null; then
-	source $(dirname $(gem which colorls))/tab_complete.sh
-	# override some of existing aliases with colorls
-	source $HOME/.zsh/aliases/colorls.zsh
-fi
+# Source plugins
+plugins=(${ZDOTDIR:-${HOME}}/.zsh/plugs/*)
+for file in ${plugins}; do
+  source $file
+done
+unset plugins
