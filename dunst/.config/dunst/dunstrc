@@ -1,5 +1,5 @@
 [global]
-    font = Cantarell 11
+    font = Cantarell, Noto Color Emoji, AR PL UKai CN, AR PL Ukai TW 11
 
     # Allow a small subset of html markup:
     #   <b>bold</b>
