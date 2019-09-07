@@ -1,6 +1,6 @@
 {
     "workbench.colorTheme": "Monokai",
-    "editor.fontFamily": "'Fira Code Medium', 'Source Code Pro', 'Consolas', 'monospace', monospace",
+    "editor.fontFamily": "'Inconsolata-g', 'Source Code Pro Semibold', 'SauceCodePro Nerd Font', 'Noto Color Emoji', 'monospace', monospace",
     "vim.leader": "<space>",
 
     "vim.insertModeKeyBindings": [
@@ -56,5 +56,11 @@
     "vim.substituteGlobalFlag": true,
     "vim.sneak": true,
     "vim.sneakUseIgnorecaseAndSmartcase": true,
-    "vim.camelCaseMotion.enable": true
+    "vim.camelCaseMotion.enable": true,
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-vscode.csharp"
+    },
+    "cSpell.userWords": [
+        "Repos"
+    ]
 }
