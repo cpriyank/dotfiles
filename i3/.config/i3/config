@@ -1,6 +1,5 @@
 # Super key as $mod
-set $mod Mod1
-set $Alt Mod4
+set $mod Mod4
 
 font pango:Cantarell 9
 
@@ -8,23 +7,18 @@ font pango:Cantarell 9
 bindsym $mod+F2 exec rofi -show run
 
 # change container layout (stacked, tabbed, default)
-bindsym $mod+s layout stacking
-bindsym $mod+a layout tabbed
-bindsym $mod+d layout default
+# bindsym $mod+s layout stacking
+# bindsym $mod+a layout tabbed
+# bindsym $mod+d layout default
 
 # change focus between tiling / floating windows
 bindsym $mod+Space focus mode_toggle
 
 # Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
+# floating_modifier $mod
 
 # kill focused window
 bindsym $mod+x kill
-bindsym $mod+F4 kill
-# The middle button over a titlebar also kills the window
-bindsym --release button2 kill
-# The middle button and a modifer over any part of the window kills the window
-bindsym --whole-window $mod+button2 kill
 
 # change focus
 bindsym $mod+j focus down
@@ -38,7 +32,7 @@ bindsym $mod+Shift+K move up
 bindsym $mod+Shift+L move right
 bindsym $mod+Shift+H move left
 
-# Resize a focused window by $mod+r followed by a shortcur key
+# Resize a focused window by $mod+r followed by a shortcut key
 mode "resize" {
 # Changes are applied on key press
   bindsym h resize shrink width 10 px or 10 ppt
@@ -59,13 +53,7 @@ bindsym $mod+c split h
 bindsym $mod+v split v
 
 # Toggle between vertical and horizontal split layout
-bindsym $mod+t layout toggle split
-
-# Enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen
-
-# Reload the configuration file. I rarely use this.
-bindsym $mod+semicolon reload
+# bindsym $mod+t layout toggle split
 
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
@@ -82,7 +70,7 @@ mode "$mode_system" {
   bindsym Return mode "default"
   bindsym Escape mode "default"
 }
-bindsym $Alt+x mode "$mode_system"
+bindsym $mod+Shift+x mode "$mode_system"
 
 # Pulse Audio controls
 # For PulseAudio
@@ -102,9 +90,13 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 -time 0
 bindsym --release Print exec --no-startup-id scrot
 bindsym --release Shift+Print exec --no-startup-id scrot -s
 
+# name the workspaces (icons require fontawesome)
+set $tag1  "1:  "
+set $tag2  "2:  "
+
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
+bindsym $mod+1 workspace $tag1
+bindsym $mod+2 workspace $tag2
 bindsym $mod+3 workspace 3
 bindsym $mod+4 workspace 4
 bindsym $mod+5 workspace 5
@@ -115,8 +107,8 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+1 move container to workspace $tag1
+bindsym $mod+Shift+2 move container to workspace $tag2
 bindsym $mod+Shift+3 move container to workspace 3
 bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
@@ -125,10 +117,6 @@ bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
-
-# switch to next and previous workspaces
-bindsym $mod+left workspace prev
-bindsym $mod+right workspace next
 
 # scratchpad
 bindsym $mod+o move scratchpad
@@ -145,13 +133,8 @@ new_window 1pixel
 
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
-for_window [class="(?i)^gimp$"] floating enable
-# for_window [class="(?i)^viewnior$"] floating enable
-
-# programs with specific workspaces
-# assign [class="(?i)^firefox$"] 1
-# assign [class="(?i)^thunar$"] 2
-# assign [class="(?i)^chromium$"] 3
+# for_window [class="(?i)^gimp$"] floating enable
+for_window [class="(?i)^viewnior$"] floating enable
 
 #
 # Window Navigation (From slackword.net)
@@ -171,20 +154,35 @@ hide_edge_borders both
 #
 # Launchers
 #
-bindsym $Alt+j exec urxvtc -e vifm
-bindsym $Alt+u exec firefox
-bindsym $Alt+y exec firefox --private-window
-bindsym $Alt+Return exec --no-startup-id urxvtc
-bindsym $Alt+z exec --no-startup-id urxvtc
-bindsym $Alt+n exec --no-startup-id urxvtc
-bindsym $Alt+p exec --no-startup-id xterm -e fish
-bindsym $Alt+h exec transmission-gtk
-bindsym $Alt+k exec inox
-bindsym $Alt+i exec inox --incognito
+# bindsym $Alt+j exec alacritty -e vifm
+bindsym $mod+u exec firefox
+bindsym $mod+y exec firefox --private-window
+bindsym $mod+Return exec --no-startup-id alacritty
+# bindsym $mod+h exec transmission-gtk
+bindsym $mod+g exec chromium
+bindsym $mod+i exec chromium --incognito
+# bindsym $mod+s exec textsuggest
 
-bindsym $mod+w [class="(?i)firefox"] focus
-bindsym $mod+e [class="(?i)urxvt" title="(?i)nvim"] focus
-bindsym $mod+z [class="(?i)zathura"] focus
+
+# ASAKUSA THEME
+
+# set color variables
+# optional theme colorscheme
+
+# theme colors
+set $dark    #312c32
+set $light   #feffff
+set $skyblue #98dafc
+set $red     #e05038
+set $orange #e6af4b
+
+# set window colors
+#class                 border   background text indicator
+client.focused          $dark $dark $light  $skyblue
+client.unfocused        $light    $light    $dark $red
+client.focused_inactive $light    $light    $dark $red
+client.urgent           $red     $red     $dark  $red
+client.background       $dark
 
 #
 # i3bar
@@ -193,24 +191,20 @@ bar {
     status_command i3status --config ~/.config/i3/i3status
     position top
     mode hide
-    modifier $Alt
+    modifier $mod
     colors {
-        background      #2d2d2d
-        statusline      #dedede
-        separator       #2d2d2d
+        background      $dark
+        statusline      $light
+        separator       $dark
 
-        focused_workspace  #d64937 #d64937 #dedede
-        active_workspace   #2d2d2d #5f676a #dedede
-        inactive_workspace #2d2d2d #2d2d2d #eeeeee
-        urgent_workspace   #333333 #900000 #ffffff
+
+    #type              border   background font
+    focused_workspace  $skyblue $skyblue   $dark
+    active_workspace   $dark    $dark      $light
+    inactive_workspace $dark    $dark      $light
+    urgent_workspace   $red     $red       $dark
     }
 }
-
-# <clientclass>             <border> <background>   <text>
-client.focused              #d64937     #d64937     #dedede
-client.unfocused            #333333     #333333     #dedede
-client.focused_inactive     #333333     #333333     #dedede
-client.urgent               #383a3b     #383a3b     #ee0000
 
 # autostart applications, then switch back to workspace 3
 # (Being a command-line utility, i3-msg does not support startup notifications,
@@ -221,4 +215,6 @@ client.urgent               #383a3b     #383a3b     #ee0000
 # opens in focused workspace rather than the one where exec command was issued)
 # exec --no-startup-id i3-msg 'workspace 1; exec TZ=UTC firefox;'
 exec clipit
-# exec --no-startup-id i3-msg 'workspace 2; exec thunar; workspace 3'
+exec_always --no-startup-id xmodmap -e "keysym Menu = Super_R"
+exec --no-startup-id i3-msg "workspace $tag1; exec firefox"
+exec --no-startup-id i3-msg "workspace $tag2; exec alacritty"
