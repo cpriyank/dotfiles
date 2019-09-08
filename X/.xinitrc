@@ -10,6 +10,7 @@ if [[ -d /etc/X11/xinit/xinitrc.d ]]; then
   unset f
 fi
 
+# TODO: ensure the utils exist on the system
 # enable restart X
 setxkbmap -option terminate:ctrl_alt_bksp
 # Swap Caps lock with left control
@@ -19,7 +20,8 @@ setxkbmap -option ctrl:swapcaps
 pactl set-sink-volume 0 '20%' &
 xset -b & # disable bell
 xset r rate 250 60 # faster key repeat rate
-compton --config ~/.config/compton.conf -b &
+[[ -e $XDG_CONFIG_HOME/compton.conf ]] && compton --config ~/.config/compton.conf -b &
+[[ -e $HOME/Pictures ]] && feh --randomize --bg-fill ~/Pictures/* &
 xbacklight -set 10 &
 rofi &
 dunst &
