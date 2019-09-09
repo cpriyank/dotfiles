@@ -134,7 +134,6 @@ new_window 1pixel
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
 # for_window [class="(?i)^gimp$"] floating enable
-for_window [class="(?i)^viewnior$"] floating enable
 
 #
 # Window Navigation (From slackword.net)
