@@ -4,7 +4,11 @@ alias ncmpc='command ncmpc --config ~/.config/ncmpc/config'
 alias msar='mpc search artist'
 alias msal='mpc search album'
 
-alias v="$EDITOR"
+# ${foo+x} which is a parameter expansion
+# more on this https://stackoverflow.com/questions/3601515/how-to-check-if-a-variable-is-set-in-bash
+if [[ -z ${EDITOR+x} ]]; then
+	alias v="$EDITOR"
+fi
 
 alias m='tmux'
 alias a='tmux attach'
@@ -25,7 +29,6 @@ alias pong='ping -c 3 www.google.com'
 
 alias xrr='xrdb ~/.Xresources'
 
-alias matlab='matlab -nosplash -nodesktop'
 alias tree='tree -C'
 
 # Make du readable
@@ -53,7 +56,7 @@ alias asong='youtube-dl -f 251'
 # just play audio from a video file or url
 alias p='mpv --no-video'
 
-# Redshift aliases. For saving eyes, seriously.
+# Redshift aliases. For saving eyes
 # Gandhinagar coordinates
 alias shantib='redshift -o -l 23.22:72.68'
 # Seattle coordinates  
@@ -65,6 +68,6 @@ alias ashanti='redshift -x'
 alias please='sudo $(fc -ln -1)'
 
 # Recursively delete `.DS_Store` files
-alias cleanup="find . -name '*.DS_Store' -type f -ls"
+alias cleands="find . -name '*.DS_Store' -type f -ls"
 
 alias k="kak"
