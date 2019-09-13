@@ -1,5 +1,15 @@
 # Readline config: Mostly from Arch Wiki, Matthias Bynes, and Paul Irish
 set editing-mode vi
+# echo which vi mode you are in (cmd) or (ins)
+set show-mode-in-prompt on
+# Different cursor shape based on vi mode
+$if term=linux
+  set vi-ins-mode-string \1\e[?0c\2
+  set vi-cmd-mode-string \1\e[?8c\2
+$else
+  set vi-ins-mode-string \1\e[6 q\2
+  set vi-cmd-mode-string \1\e[2 q\2
+$endif
 
 # Perform file completion in a case insensitive fashion
 set completion-ignore-case on
@@ -53,5 +63,10 @@ set mark-symlinked-directories On
 set colored-completion-prefix On
 # Color the common prefix in menu-complete
 set menu-complete-display-prefix On
+
+# For tab completion, let single tab perform both steps: partially complete the word
+# and show all possible completions if it is still ambiguous
+set show-all-if-ambiguous on
+
 # Delete until previous slash with C-b
 bind \\C-b:unix-filename-rubout
