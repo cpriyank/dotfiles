@@ -1,3 +1,8 @@
+vscode/.config/Code\ -\ OSS/
+!vscode/.config/Code\ -\ OSS/User/settings.json
+nvim/.config/nvim/.netrwhist
+nvim/.config/nvim/ftplugin/
+systemd/.config/systemd/user/default.target.wants/
 aria2/.aria2/dht.dat
 gnupg/*
 !gnupg/.gnupg/gpg.conf
