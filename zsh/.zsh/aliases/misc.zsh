@@ -9,10 +9,6 @@ alias v="$EDITOR"
 alias m='tmux'
 alias a='tmux attach'
 
-# cat files with syntax highlighting. Requires Pygmentize
-# installed via pip
-alias c="pygmentize -O style=monokai -f console256 -g"
-
 # Allow alias expansion after `sudo`
 alias sudo='sudo '
 
