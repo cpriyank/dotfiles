@@ -5,8 +5,9 @@ alias msar='mpc search artist'
 alias msal='mpc search album'
 
 # ${foo+x} which is a parameter expansion
+# '-n' means True if its argument string has non­zero length'
 # more on this https://stackoverflow.com/questions/3601515/how-to-check-if-a-variable-is-set-in-bash
-if [[ -z ${EDITOR+x} ]]; then
+if [[ -n ${EDITOR+x} ]]; then
 	alias v="$EDITOR"
 fi
 
