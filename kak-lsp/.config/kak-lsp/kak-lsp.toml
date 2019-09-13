@@ -3,16 +3,20 @@ filetypes = ["go"]
 roots = ["Gopkg.toml", "go.mod", ".git", ".hg"]
 command = "gopls"
 args = ["check", "format"]
+[language.go.initialization_options]
+formatTool = "goimports"
 
 [language.c_cpp]
 filetypes = ["c", "cpp"]
-roots = ["compile_flags.txt", "compile_commands.json"]
-command = "clangd"
-offset_encoding = "utf-8"
+roots = ["compile_commands.json","compile_commands.txt", ".cquery", ".git"]
+command = "cquery"
 [language.c_cpp.initialization_options]
 offsetEncoding = ["utf-8"]
+formatTool = "clang-format"
 
 [language.python]
 filetypes = ["py"]
 roots = ["requirements.txt", ".git"]
 command = "pyls"
+[language.python.initialization_options]
+formatTool = "black"

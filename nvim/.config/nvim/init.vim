@@ -8,7 +8,7 @@
 " Create nviminit autocmd group and remove any existing autocmds,
 " in case init.vim is re-sourced.
 augroup nviminit
-	autocmd!
+  autocmd!
 augroup END
 
 " Keep clutter under one roof
@@ -16,7 +16,7 @@ set backupdir=~/.config/nvim/backup " Centralize backups
 set directory=~/.config/nvim/swap " Centralize swaps
 
 if exists("&undodir") " Keen undo history in one place
-	set undodir=~/.config/nvim/undo
+  set undodir=~/.config/nvim/undo
 endif
 
 " But don’t create backups when editing files in certain directories
@@ -43,18 +43,19 @@ let s:darwin = has('mac')
 silent! if plug#begin('~/.local/share/nvim/plugged')
 
 " File/project management
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-augroup nerd_loader
-  autocmd!
-  autocmd VimEnter * silent! autocmd! FileExplorer
-  autocmd BufEnter,BufNew *
-        \  if isdirectory(expand('<amatch>'))
-        \|   call plug#load('nerdtree')
-        \|   execute 'autocmd! nerd_loader'
-        \| endif
-augroup END
+" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+" augroup nerd_loader
+"   autocmd!
+"   autocmd VimEnter * silent! autocmd! FileExplorer
+"   autocmd BufEnter,BufNew *
+"         \  if isdirectory(expand('<amatch>'))
+"         \|   call plug#load('nerdtree')
+"         \|   execute 'autocmd! nerd_loader'
+"         \| endif
+" augroup END
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'justinmk/vim-gtfo' " (xdg-)open terminal/tmux pane/file manager of current directory with got and gof
 
 " Colors
 Plug 'AlessandroYorba/Despacio'
@@ -78,9 +79,9 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-commentary'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-Plug 'vim-scripts/ReplaceWithRegister'
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'AndrewRadev/switch.vim'
+Plug 'vim-scripts/ReplaceWithRegister' " replace selection or motion with register with gr
+Plug 'AndrewRadev/splitjoin.vim' "gS and gJ to split/join single/multiple lines
+" Plug 'AndrewRadev/switch.vim'
 Plug 'junegunn/vim-online-thesaurus'
 Plug 'sgur/vim-editorconfig'
 if exists('##TextYankPost')
@@ -99,25 +100,17 @@ Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go', 'C++']}
 Plug 'AndrewRadev/splitjoin.vim' " Split/join line(s) with gS and gJ
 " Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`¬
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'deoplete-plugins/deoplete-jedi'
-Plug 'deoplete-plugins/deoplete-go'
-Plug 'Shougo/deoplete-clangx'
-" Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
+" Plug 'ervandew/supertab' " all vim insert mode completions with Tab
 
-" function! BuildYCM(info)
-"   if a:info.status == 'installed' || a:info.force
-"     !./install.py --clang-completer --gocode-completer
-"   endif
-" endfunction
-" Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp'], 'do': function('BuildYCM') }
+" Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/neosnippet-snippets'
 
-" Plug 'SirVer/ultisnips'
-" Plug 'honza/vim-snippets'
+" Plug 'zxqfl/tabnine-vim'
+Plug 'Shougo/neoinclude.vim'
+Plug 'jsfaint/coc-neoinclude'
+" Use release branch
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sheerun/vim-polyglot'
 
 " Browsing
 Plug 'justinmk/vim-gtfo'
@@ -134,9 +127,13 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'dag/vim-fish'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'lyuts/vim-rtags', { 'for': ['c', 'cpp'] }
+" NOTE: This is prebuilt, you can also build yourself by yarn and node
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } , 'for': 'markdown'}
+Plug 'derekwyatt/vim-scala'
 
 " Lint
-Plug 'w0rp/ale'
+" Plug 'dense-analysis/ale'
+" Plug 'vim-syntastic/syntastic'
 
 call plug#end()
 endif
@@ -163,6 +160,10 @@ autocmd nviminit InsertLeave * :set relativenumber
 set report=0 " Show all changed lines
 " set autochdir " Auto switch to current file's directory on opening new buffer
 " set ruler " Show column and line number on the statusline
+set tabstop=2
+set softtabstop=2 " <TAB> and <BS> key results in 2 spaces as well
+set shiftwidth=2
+set expandtab smarttab
 set autoindent
 set smartindent
 set lazyredraw  " Don't force redraw when updating buffers
@@ -179,10 +180,6 @@ set hidden " Allow switching buffers without saving
 set gdefault ignorecase smartcase " 'g' flag for search and replace
 set wildmenu
 set wildmode=full
-set tabstop=2
-set softtabstop=2 " <TAB> and <BS> key results in 2 spaces as well
-set shiftwidth=2
-set expandtab smarttab
 " Start scrolling three lines before the horizontal window border
 set scrolloff=5
 " Start scrolling three lines before the vertical window border
@@ -284,7 +281,7 @@ if has('gui_running')
   set guifont=Menlo:h14 columns=80 lines=40
   silent! colo seoul256-light
 else
-  silent! colo seoul256
+  silent! colo despacio
 endif
 
 " Ignore some files in tab completion
@@ -331,7 +328,7 @@ nnoremap g[ :pop<cr>
 nnoremap <C-p> <C-i>
 
 " <leader>n | NERD Tree
-nnoremap <leader>n :NERDTreeToggle<cr>
+" nnoremap <leader>n :NERDTreeToggle<cr>
 
 " jk | Escaping!
 inoremap jk <Esc>
@@ -353,11 +350,11 @@ nnoremap Q @q
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
-	let save_cursor = getpos(".")
-	let old_query = getreg('/')
-	:%s/\s\+$//e
-	call setpos('.', save_cursor)
-	call setreg('/', old_query)
+  let save_cursor = getpos(".")
+  let old_query = getreg('/')
+  :%s/\s\+$//e
+  call setpos('.', save_cursor)
+  call setreg('/', old_query)
 endfunction
 noremap <leader>ss :call StripWhitespace()<CR>
 
@@ -408,6 +405,8 @@ nnoremap [l :lprev<cr>zz
 " ----------------------------------------------------------------------------
 nnoremap ]b :bnext<cr>
 nnoremap [b :bprev<cr>
+nnoremap <leader>bn :bnext<cr>
+nnoremap <leader>bp :bprev<cr>
 
 " ----------------------------------------------------------------------------
 " Tabs
@@ -1507,14 +1506,22 @@ nnoremap <Leader>G :Goyo<CR>
 " ----------------------------------------------------------------------------
 " ALE
 " ----------------------------------------------------------------------------
-let g:ale_linters = {'java': [], 'yaml': [], 'scala': [], 'clojure': []}
-let g:ale_fixers = {'ruby': ['rubocop']}
+let g:ale_linters = {'java': [], 'yaml': [], 'scala': [], 'clojure': [], 'cpp': ['cquery', 'clangtidy', 'cppcheck', 'cpplint', 'clang', 'clangd']}
 let g:ale_lint_delay = 1000
 let g:ale_sign_warning = '──'
 let g:ale_sign_error = '══'
+let g:ale_cpp_clangtidy_options = '-Wall -Wextra -std=c++17 -x c++'
+let g:ale_cpp_clangcheck_options = '-- -Wall -Wextra std=c++17 -x c++'
 
 nmap ]a <Plug>(ale_next_wrap)
 nmap [a <Plug>(ale_previous_wrap)
+
+" Set this variable to 1 to fix files when you save them.
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'python': ['yapf'],
+\}
 
 " ----------------------------------------------------------------------------
 " gv.vim / gl.vim
@@ -1620,54 +1627,40 @@ nnoremap gss :SplitjoinSplit<cr>
 nnoremap gsj :SplitjoinJoin<cr>
 
 " ----------------------------------------------------------------------------
-" vimawesome.com
+" vim-go
 " ----------------------------------------------------------------------------
-function! VimAwesomeComplete() abort
-  let prefix = matchstr(strpart(getline('.'), 0, col('.') - 1), '[.a-zA-Z0-9_/-]*$')
-  echohl WarningMsg
-  echo 'Downloading plugin list from VimAwesome'
-  echohl None
-ruby << EOF
-  require 'json'
-  require 'open-uri'
-
-  query = VIM::evaluate('prefix').gsub('/', '%20')
-  items = 1.upto(max_pages = 3).map do |page|
-    Thread.new do
-      url  = "http://vimawesome.com/api/plugins?page=#{page}&query=#{query}"
-      data = open(url).read
-      json = JSON.parse(data, symbolize_names: true)
-      json[:plugins].map do |info|
-        pair = info.values_at :github_owner, :github_repo_name
-        next if pair.any? { |e| e.nil? || e.empty? }
-        {word: pair.join('/'),
-         menu: info[:category].to_s,
-         info: info.values_at(:short_desc, :author).compact.join($/)}
-      end.compact
-    end
-  end.each(&:join).map(&:value).inject(:+)
-  VIM::command("let cands = #{JSON.dump items}")
-EOF
-  if !empty(cands)
-    inoremap <buffer> <c-v> <c-n>
-    augroup _VimAwesomeComplete
-      autocmd!
-      autocmd CursorMovedI,InsertLeave * iunmap <buffer> <c-v>
-            \| autocmd! _VimAwesomeComplete
-    augroup END
-
-    call complete(col('.') - strchars(prefix), cands)
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
   endif
-  return ''
 endfunction
 
-autocmd vimrc FileType vim inoremap <buffer> <c-x><c-v> <c-r>=VimAwesomeComplete()<cr>
+autocmd FileType go nmap <leader>mb :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>mr  <Plug>(go-run)
+autocmd FileType go nmap <leader>mt  <Plug>(go-test)
+autocmd FileType go nmap <Leader>mc <Plug>(go-coverage-toggle)
+autocmd FileType go nmap <Leader>mh <Plug>(go-info)
+autocmd FileType go nmap <Leader>mi :GoImport
+let g:go_auto_type_info = 1
+let g:go_fmt_command = "goimports"
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_auto_sameids = 1
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 
-" ----------------------------------------------------------------------------
-" YCM
-" ----------------------------------------------------------------------------
-" autocmd vimrc FileType c,cpp,go nnoremap <buffer> ]d :YcmCompleter GoTo<CR>
-" autocmd vimrc FileType c,cpp    nnoremap <buffer> K  :YcmCompleter GetType<CR>
+" let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+" let g:UltiSnipsExpandTrigger="<c-j>"
 
 " ----------------------------------------------------------------------------
 " gruvbox
@@ -1745,6 +1738,9 @@ augroup vimrc
   au BufWritePost vimrc,.vimrc nested if expand('%') !~ 'fugitive' | source % | endif
 
   " File types
+  " Configuration for vim-scala
+  au BufRead,BufNewFile *.sbt set filetype=scala
+
   au BufNewFile,BufRead *.icc               set filetype=cpp
   au BufNewFile,BufRead *.pde               set filetype=java
   au BufNewFile,BufRead *.coffee-processing set filetype=coffee
@@ -1763,6 +1759,9 @@ augroup vimrc
 
   " Unset paste on InsertLeave
   au InsertLeave * silent! set nopaste
+
+  " https://vi.stackexchange.com/questions/7258/how-do-i-prevent-vim-from-hiding-symbols-in-markdown-and-json
+  autocmd FileType json,markdown,latex set conceallevel=0
 
   " Close preview window
   if exists('##CompleteDone')
@@ -1819,17 +1818,150 @@ let g:deoplete#enable_at_startup = 1
 "     \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
 "     \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
 "     \ 'python': ['pyls'],
-" 		\ 'go': ['gopls']
+"     \ 'go': ['gopls']
 "     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
 "     \ }
 " nnoremap <leader>ll :call LanguageClient_contextMenu()<CR>
 
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " For conceal markers.
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
+
+" let g:mkdp_auto_start = 1 " Preview markdown on opening
+let g:mkdp_refresh_slow = 0 " Preview update on entering normal mode
+autocmd FileType markdown nmap <leader>mv <Plug>MarkdownPreview
+
+
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" Better display for messages
+set cmdheight=2
+
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" Remap for rename current word
+nmap <leader>lr <Plug>(coc-rename)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>la  <Plug>(coc-codeaction-selected)
+nmap <leader>la  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>llc  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use <tab> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <S-TAB> <Plug>(coc-range-select-backword)
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Using CocList
+" Show all diagnostics
+" nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>lc  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>lf  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>lj  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>lk  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
