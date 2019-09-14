@@ -69,4 +69,4 @@ set menu-complete-display-prefix On
 set show-all-if-ambiguous on
 
 # Delete until previous slash with C-b
-bind \\C-b:unix-filename-rubout
+"\C-b": unix-filename-rubout
