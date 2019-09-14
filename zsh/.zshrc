@@ -30,6 +30,7 @@ setopt HIST_IGNORE_SPACE
 
 
 ## Keybindings----------------------------------------------------------------
+# 'jk' to enter normal mode just like vi
 bindkey -M viins 'jk' vi-cmd-mode
 
 
@@ -38,34 +39,12 @@ autoload -Uz compinit
 compinit
 zstyle :compinstall filename "${ZDOTDIR:-${HOME}}/.zshrc"
 
+# zsh specific autocomplete settings
 autocompfiles=(${ZDOTDIR:-${HOME}}/.zsh/autocomplete/*)
 for file in ${autocompfiles}; do
   source $file
 done
 unset autocompfiles
-
-
-source ~/.exports
-## Aliases and functions------------------------------------------------------
-aliasfiles=(${ZDOTDIR:-${HOME}}/.zsh/aliases/*)
-for file in ${aliasfiles}; do
-  source $file
-done
-unset aliasfiles
-
-# Path to function directory
-[[ $fpath = *${ZDOTDIR:-${HOME}}* ]] || fpath=(${ZDOTDIR:-${HOME}}/.zsh/functions $fpath)
-# Autoload all the functions. '(:t)' is a modifier that picks the
-# last part of a filename, everything after the last slash;
-# Parentheses is needed to tell the shell the ‘:t’ isn’t just part of the file
-# name.
-autoload -U ${fpath[1]}/*(:t)
-
-
-## Prompt---------------------------------------------------------------------
-autoload -U promptinit && promptinit
-# TODO: use directly from upstream as a plugin
-prompt pure
 
 ## Misc options---------------------------------------------------------------
 # If LOCAL_OPTIONS is set in a function (or was already set before
@@ -92,14 +71,18 @@ unsetopt beep
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
-
 ## Keybindings----------------------------------------------------------------
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-# Source plugins
-plugins=(${ZDOTDIR:-${HOME}}/.zsh/plugs/*)
-for file in ${plugins}; do
-  source $file
+# aliases, environment variables, functions, and other common files for bash and zsh
+common_shell_files="(${HOME}/.zsh/common_shell/*)"
+for file in ${common_shell_files}; do
+    [[ -r "$file" ]] && source "$file"
 done
-unset plugins
+unset common_shell_files
+unset file
+
+## Prompt---------------------------------------------------------------------
+autoload -U promptinit && promptinit
+prompt pure
