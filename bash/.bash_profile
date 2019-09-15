@@ -5,7 +5,7 @@ for file in ~/.{extra,bash_prompt,exports,functions}; do
     [[ -r "$file" ]] && source "$file"
 done
 unset file
-for file in ~/.zsh/aliases/*; do source $file; done
+# for file in ~/.zsh/aliases/*; do source $file; done
 
 # to help sublimelinter etc with finding my PATHS
 case $- in
@@ -13,15 +13,15 @@ case $- in
 esac
 
 # generic colouriser
-GRC=`which grc`
-if [ "$TERM" != dumb ] && [ -n "$GRC" ]
-    then
-        alias colourify="$GRC -es --colour=auto"
-        alias configure='colourify ./configure'
-        for app in {diff,make,gcc,g++,netstat,ping,traceroute}; do
-            alias "$app"='colourify '$app
-    done
-fi
+# GRC=`which grc`
+# if [ "$TERM" != dumb ] && [ -n "$GRC" ]
+#     then
+#         alias colourify="$GRC -es --colour=auto"
+#         alias configure='colourify ./configure'
+#         for app in {diff,make,gcc,g++,netstat,ping,traceroute}; do
+#             alias "$app"='colourify '$app
+#     done
+# fi
 
 ##
 ## gotta tune that bash_history…
@@ -90,6 +90,12 @@ shopt -s dirspell 2> /dev/null
 
 # Turn on recursive globbing (enables ** to recurse all directories)
 shopt -s globstar 2> /dev/null
+
+# source common shell aliases, environment variables, paths, etc
+for file in "$HOME/.zsh/common_shell_files/**/*.sh"
+do
+	source "$file"
+done
 
 # base16-shell theme
 source ~/.zsh/plugs/base16-monokai.dark.sh
