@@ -92,7 +92,7 @@ shopt -s dirspell 2> /dev/null
 shopt -s globstar 2> /dev/null
 
 # source common shell aliases, environment variables, paths, etc
-for file in "$HOME/.zsh/common_shell_files/**/*.sh"
+for file in $HOME/.zsh/common_shell_files/**/*.sh
 do
 	source "$file"
 done
