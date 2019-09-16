@@ -1,3 +1,0 @@
-# List files accessed within the last n (defaults to 1) days
-emulate -L zsh
-print -l -- *(a-${1:-1})

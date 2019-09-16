@@ -1,5 +1,0 @@
-# Find files that are newer than given file by issuing ls -l *(e:nt /rel/path:)
-if [[ -n $1 ]] ; then
-    local NTREF=${~1}
-fi
-[[ $REPLY -nt $NTREF ]]
