@@ -4,12 +4,8 @@ alias ncmpc='command ncmpc --config ~/.config/ncmpc/config'
 alias msar='mpc search artist'
 alias msal='mpc search album'
 
-# ${foo+x} which is a parameter expansion
-# '-n' means True if its argument string has non­zero length'
-# more on this https://stackoverflow.com/questions/3601515/how-to-check-if-a-variable-is-set-in-bash
-if [[ -n ${EDITOR+x} ]]; then
-	alias v="$EDITOR"
-fi
+# TODO: set environment variable here?
+alias v='$EDITOR'
 
 alias m='tmux'
 alias a='tmux attach'
@@ -60,7 +56,7 @@ alias p='mpv --no-video'
 # Redshift aliases. For saving eyes
 # Gandhinagar coordinates
 alias shantib='redshift -o -l 23.22:72.68'
-# Seattle coordinates  
+# Seattle coordinates
 alias shanti='redshift -o -l 47.61:-122.33 -t 4500:2800'
 # Reset color
 alias ashanti='redshift -x'
