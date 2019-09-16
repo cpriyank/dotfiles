@@ -1,32 +1,3 @@
-# Load our dotfiles like ~/.bash_prompt, etc…
-#   ~/.extra can be used for settings you don’t want to commit,
-#   Use it to configure your PATH, thus it being first in line.
-for file in ~/.{extra,bash_prompt,exports,functions}; do
-    [[ -r "$file" ]] && source "$file"
-done
-unset file
-# for file in ~/.zsh/aliases/*; do source $file; done
-
-# to help sublimelinter etc with finding my PATHS
-case $- in
-   *i*) source ~/.extra
-esac
-
-# generic colouriser
-# GRC=`which grc`
-# if [ "$TERM" != dumb ] && [ -n "$GRC" ]
-#     then
-#         alias colourify="$GRC -es --colour=auto"
-#         alias configure='colourify ./configure'
-#         for app in {diff,make,gcc,g++,netstat,ping,traceroute}; do
-#             alias "$app"='colourify '$app
-#     done
-# fi
-
-##
-## gotta tune that bash_history…
-##
-
 # Enable history expansion with space
 # E.g. typing !!<space> will replace the !! with your last command
 bind Space:magic-space
@@ -54,31 +25,26 @@ shopt -s cmdhist
 ##
 
 # bash completion.
-# TODO: Fix this for linux
-if  which brew > /dev/null && [ -f "$(brew --prefix)/share/bash-completion/bash_completion" ]; then
+# TODO: Test this for ubuntu and debian
+if  hash brew 2> /dev/null; then
+  if [[ -f "$(brew --prefix)/share/bash-completion/bash_completion" ]]; then
     source "$(brew --prefix)/share/bash-completion/bash_completion";
-elif [ -f /etc/bash_completion ]; then
-    source /etc/bash_completion;
-fi;
-
-# homebrew completion
-if  which brew > /dev/null; then
+  elif [[ -f /usr/share/bash-completion ]]; then
+    source "/usr/share/bash-completion"
     source "$(brew --prefix)/etc/bash_completion.d/brew"
-fi;
+    # hub completion
+  fi
 
-# hub completion
-if  which hub > /dev/null; then
+  if  which hub > /dev/null; then
     source "$(brew --prefix)/etc/bash_completion.d/hub.bash_completion.sh";
-fi;
+  fi
+
+fi
 
 # Enable tab completion for `g` by marking it as an alias for `git`
 if type __git_complete &> /dev/null; then
     __git_complete g __git_main
 fi;
-
-##
-## better `cd`'ing
-##
 
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
@@ -92,11 +58,8 @@ shopt -s dirspell 2> /dev/null
 # Turn on recursive globbing (enables ** to recurse all directories)
 shopt -s globstar 2> /dev/null
 
-# source common shell aliases, environment variables, paths, etc
-for file in $HOME/.zsh/common_shell_files/**/*.sh
-do
-	source "$file"
+# aliases, environment variables, functions, and other common files for bash and zsh
+for file in ${HOME}/.zsh/common_shell_files/**/*.sh; do
+  [[ -r "$file" ]] && source "$file"
 done
-
-# base16-shell theme
-source ~/.zsh/plugs/base16-monokai.dark.sh
+unset file
