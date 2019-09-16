@@ -1,0 +1,1 @@
+[[ -f ~/miniconda3/bin/activate ]] && source ~/miniconda3/bin/activate
