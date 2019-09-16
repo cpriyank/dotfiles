@@ -1,5 +1,5 @@
 # Use vi keybindings for line editing (Default if $EDITOR *contains* vi)------
-bindkey -v
+  bindkey -v
 
 
 ## Command history------------------------------------------------------------
@@ -71,18 +71,22 @@ unsetopt beep
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
-## Keybindings----------------------------------------------------------------
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
 # aliases, environment variables, functions, and other common files for bash and zsh
-common_shell_files="(${HOME}/.zsh/common_shell/*)"
-for file in ${common_shell_files}; do
-    [[ -r "$file" ]] && source "$file"
+for file in ${HOME}/.zsh/common_shell_files/**/*.sh; do
+  [[ -r "$file" ]] && source "$file"
 done
-unset common_shell_files
 unset file
 
-## Prompt---------------------------------------------------------------------
-autoload -U promptinit && promptinit
-prompt pure
+# Additional plugins specific to zsh
+plugins=(${ZDOTDIR:-${HOME}}/.zsh/plugs/*)
+for file in ${plugins}; do
+  source $file
+done
+unset plugins
+
+## Keybindings----------------------------------------------------------------
+# the file providing history-substring-search-* is currently inside
+# ${ZDOTDIR:-${HOME}}/.zsh/plugs/
+# which is sourced before executing this
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
