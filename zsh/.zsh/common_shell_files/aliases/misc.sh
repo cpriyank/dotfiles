@@ -34,11 +34,11 @@ alias da='du -sch'
 # Print path in easier to read, vertical format
 alias vpath='echo $PATH | tr -s ":" "\n"'
 
-alias rm='rm -i' # Also see RM_STAR_SILENT options of Zsh
+alias rm='rm -i -v' # Also see RM_STAR_SILENT options of Zsh
 
 # Warn on overwrite
-alias cp='cp -i'
-alias mv='mv -i'
+alias cp='cp -i -v'
+alias mv='mv -i -v'
 
 # Remove current empty directory nicely
 alias rmdir='cd ..; rmdir $OLDPWD || cd $OLDPWD'
