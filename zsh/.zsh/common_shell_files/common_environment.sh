@@ -13,3 +13,6 @@ fi
 
 # https://wiki.archlinux.org/index.php/locale
 export LC_COLLATE=C
+
+# always use color, even when piping (to awk, grep, etc)
+export CLICOLOR_FORCE=1
