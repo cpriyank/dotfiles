@@ -9,9 +9,9 @@ elif [[ -s tips ]]
 then
 	var=$(<tips)
 	notify-send -u critical "{${var}}"
-elif [[ -e `which fortune` ]]
+elif command -v fortune 2>/dev/null
 then
-	notify-send -u normal "`fortune -a`"
+	notify-send -u critical "`fortune dhammapada`"
 else
-	notify-send -a "Relax" -u normal "Look outside for a while"
+	notify-send -a "Relax" -u critical "Look outside for a while"
 fi
