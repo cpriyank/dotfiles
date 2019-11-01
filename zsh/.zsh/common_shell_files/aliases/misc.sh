@@ -66,5 +66,10 @@ alias please='sudo $(fc -ln -1)'
 
 # Recursively delete `.DS_Store` files
 alias cleands="find . -name '*.DS_Store' -type f -ls"
-
 alias k="kak"
+
+alias rg='rg --hidden --ignore-case'
+
+# Update installed Ruby gems, Homebrew, npm, and their installed packages
+alias brew_update="brew -v update; brew upgrade --force-bottle --cleanup; brew cleanup; brew cask cleanup; brew prune; brew doctor; npm-check -g -u"
+alias update_brew_npm_gem='brew_update; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update --no-document'
