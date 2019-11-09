@@ -1,10 +1,19 @@
 # Super key as $mod
 set $mod Mod4
+set $alt Mod1
 
-font pango:Cantarell 9
+font pango:Cantarell 15
+
+# This will disable all gaps (outer and inner) on the workspace whenever only one container is on the current workspace.
+# Requires i3-gaps
+smart_gaps on
+# inner gaps are gaps between two adjacent containers or a container and edge
+gaps inner 15
+# outer gaps are an additional spacing along the screen edges
+# gaps outer -2
 
 # Run programs with Alt + F2
-bindsym $mod+F2 exec rofi -show run
+bindsym $mod+F2 exec --no-startup-id rofi -show drun -show-icons
 
 # change container layout (stacked, tabbed, default)
 # bindsym $mod+s layout stacking
@@ -12,7 +21,7 @@ bindsym $mod+F2 exec rofi -show run
 # bindsym $mod+d layout default
 
 # change focus between tiling / floating windows
-bindsym $mod+Space focus mode_toggle
+bindsym $mod+space focus mode_toggle
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 # floating_modifier $mod
@@ -61,10 +70,10 @@ bindsym $mod+Shift+r restart
 # log out prompt
 set $mode_system (l)ock, (e)logout, (s)uspend, (h)ibernate, (q)uick hibernate, (r)eboot, Shift+(s)hutdown
 mode "$mode_system" {
-  bindsym l       exec --no-startup-id i3lock -i /home/tiniyo/Pictures/wallpapers/oath-word.png
+  bindsym l       exec --no-startup-id xsecurelock
   bindsym e       exec --no-startup-id i3-msg exit && pkill X, mode "default"
-  bindsym s       exec --no-startup-id i3lock && notify-send "SYSTEM: Suspending..." && systemctl suspend, mode "default"
-  bindsym h       exec --no-startup-id i3lock && notify-send "SYSTEM: Hibernating..." && systemctl hibernate, mode "default"
+  bindsym s       exec --no-startup-id xsecurelock && notify-send "SYSTEM: Suspending..." && systemctl suspend, mode "default"
+  bindsym h       exec --no-startup-id xsecurelock && notify-send "SYSTEM: Hibernating..." && systemctl hibernate, mode "default"
   bindsym r       exec --no-startup-id systemctl reboot, mode "default"
   bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
   bindsym Return mode "default"
@@ -91,12 +100,14 @@ bindsym --release Print exec --no-startup-id scrot
 bindsym --release Shift+Print exec --no-startup-id scrot -s
 
 # name the workspaces (icons require fontawesome)
-set $tag1  "1:  "
-set $tag2  "2:  "
+set $firefox  "1:  "
+set $terminal  "2:  "
+set $development  "e: "
+set $teams "Teams: "
 
 # switch to workspace
-bindsym $mod+1 workspace $tag1
-bindsym $mod+2 workspace $tag2
+bindsym $mod+1 workspace $firefox
+bindsym $mod+2 workspace $terminal
 bindsym $mod+3 workspace 3
 bindsym $mod+4 workspace 4
 bindsym $mod+5 workspace 5
@@ -105,10 +116,12 @@ bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
+bindsym $mod+t workspace $teams
+bindsym $mod+e workspace $development
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $tag1
-bindsym $mod+Shift+2 move container to workspace $tag2
+bindsym $mod+Shift+1 move container to workspace $firefox
+bindsym $mod+Shift+2 move container to workspace $terminal
 bindsym $mod+Shift+3 move container to workspace 3
 bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
@@ -133,19 +146,25 @@ new_window 1pixel
 
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
+# for_window [title="Microsoft Teams Notification"] floating enable
+for_window [title="Open Folder"] floating disable
 # for_window [class="(?i)^gimp$"] floating enable
+
+# assign [title="(?i)Teams"] $teams
 
 #
 # Window Navigation (From slackword.net)
 #
 # switch back and forth between the last two workspaces
-bindsym $mod+Tab workspace back_and_forth
+# bindsym $mod+Tab workspace back_and_forth
+bindsym $mod+Tab exec rofi --no-startup-id -show window -show-icons
+bindsym $alt+Tab exec rofi --no-startup-id -show window -show-icons
 # Assume you are on workspace "1: www" and switch to "2: IM" using mod+2
 # because somebody sent you a message. You don’t need to remember where you
 # came from now, you can just press $mod+2 again to switch back to "1: www".
-workspace_auto_back_and_forth yes
+# workspace_auto_back_and_forth yes
 # Move window back and forth
-bindsym $mod+Shift+Tab move container to workspace back_and_forth; workspace back_and_forth
+# bindsym $mod+Shift+Tab move container to workspace back_and_forth; workspace back_and_forth
 
 # Hide edge borders (vertical , horizontal, or both)
 hide_edge_borders both
@@ -156,14 +175,13 @@ hide_edge_borders both
 # bindsym $Alt+j exec alacritty -e vifm
 bindsym $mod+u exec firefox
 bindsym $mod+y exec firefox --private-window
-bindsym $mod+Return exec --no-startup-id alacritty
+bindsym $mod+Return exec --no-startup-id kitty
 # bindsym $mod+h exec transmission-gtk
 bindsym $mod+g exec chromium
 bindsym $mod+i exec chromium --incognito
 # bindsym $mod+s exec textsuggest
+bindsym $mod+n exec xsecurelock
 
-
-# ASAKUSA THEME
 
 # set color variables
 # optional theme colorscheme
@@ -213,7 +231,7 @@ bar {
 # cannot be matched onto the workspace on which the command was started and
 # opens in focused workspace rather than the one where exec command was issued)
 # exec --no-startup-id i3-msg 'workspace 1; exec TZ=UTC firefox;'
-exec clipit
-exec_always --no-startup-id xmodmap -e "keysym Menu = Super_R"
-exec --no-startup-id i3-msg "workspace $tag1; exec firefox"
-exec --no-startup-id i3-msg "workspace $tag2; exec alacritty"
+exec --no-startup-id i3-msg "workspace $firefox; exec firefox"
+exec --no-startup-id i3-msg "workspace $terminal; exec kitty"
+# exec --no-startup-id i3-msg "workspace $teams; exec teams-insiders"
+# exec --no-startup-id i3-msg "workspace $development; exec code"
