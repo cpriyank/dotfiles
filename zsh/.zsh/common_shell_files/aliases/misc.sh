@@ -32,7 +32,7 @@ alias tree='tree -C'
 alias da='du -sch'
 
 # Print path in easier to read, vertical format
-alias vpath='echo $PATH | tr -s ":" "\n"'
+alias ppath='echo $PATH | tr -s ":" "\n"'
 
 alias rm='rm -i -v' # Also see RM_STAR_SILENT options of Zsh
 
