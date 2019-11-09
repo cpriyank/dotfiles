@@ -1,0 +1,16 @@
+configuration {
+	modi: "drun";
+	width: 50;
+	lines: 5;
+	columns: 1;
+	font: "Lato 30";
+	bw: 1;
+	padding: 2;
+	yoffset: -2;
+	xoffset: 0;
+	fixed-num-lines: false;
+	show-icons: true;
+	icon-theme: "Papirus";
+	terminal: "xterm";
+	theme: "petrichor";
+}

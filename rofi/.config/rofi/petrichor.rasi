@@ -1,0 +1,104 @@
+/* * hand crafted theme by priyank chaudhary to match i3wm colors */
+/* * see https://github.com/davatorium/rofi/blob/next/doc/rofi-theme.5.markdown */
+/* * for customization options */
+* {
+	dark   : #312c32;
+	light  : #feffff;
+	skyblue: #98dafc;
+	red    : #e05038;
+	orange : #e6af4b;
+	spacing: 0;
+	background-color: transparent;
+}
+
+window {
+	transparency: "real";
+	/*fullscreen: true;*/
+	background-color: #312c3299; /* @dark  + 99 for opacity */
+}
+
+mainbox {
+	children: [inputbar, message, listview];
+	spacing: 30px;
+	/*margin: 20%;*/
+	padding: 30px 0;
+	border: 1px;
+	border-color: @dark;
+}
+
+inputbar {
+	padding: 0 30px;
+	children: [prompt, textbox-prompt-colon, entry, case-indicator];
+}
+
+/* this is disabled so config options won't matter */
+prompt {
+	enabled: false;
+	text-color: @light;
+}
+
+/* this is disabled so config options won't matter */
+textbox-prompt-colon {
+	enabled: false;
+	expand: false;
+	str: ":";
+	margin: 0 1ch 0 0;
+	text-color: @light;
+}
+
+entry {
+	text-color: @skyblue;
+}
+
+case-indicator {
+	text-color: @orange;
+}
+
+button, textbox {
+	background-color: @dark;
+	text-color: @light;
+	padding: 5px;
+}
+
+button selected {
+	background-color: @skyblue;
+}
+
+listview {
+	scrollbar: true;
+	margin: 0 10px 0 30px;
+}
+
+scrollbar {
+	background-color: @dark;
+	handle-color: @skyblue;
+	handle-width: 10px;
+	border: 0 1px;
+	border-color: @dark;
+	margin: 0 0 0 20px;
+}
+
+element {
+	padding: 5px;
+	highlight: bold underline;
+}
+
+element normal {
+	background-color: transparent;
+}
+
+element selected {
+	background-color: @skyblue;
+}
+
+element normal normal, element selected normal, element alternate normal {
+	text-color: @dark;
+}
+
+element normal urgent, element selected urgent, element alternate urgent {
+	text-color: @red;
+}
+
+element normal active, element selected active, element alternate active {
+	text-color: @orange;
+}
