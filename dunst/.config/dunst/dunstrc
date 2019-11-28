@@ -66,7 +66,8 @@
     # screen width minus the width defined in within the geometry option.
     geometry = ""
 
-		corner_radius = 5
+    # rounded corners
+		# corner_radius = 5
 
     # Shrink window if it's smaller than the width.  Will be ignored if
     # width is 0.
