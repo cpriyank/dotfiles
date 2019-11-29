@@ -2,18 +2,17 @@
 set $mod Mod4
 set $alt Mod1
 
-font pango:Cantarell 15
+font pango:"Ubuntu" 11
 
-# This will disable all gaps (outer and inner) on the workspace whenever only one container is on the current workspace.
-# Requires i3-gaps
-smart_gaps on
+# This will disable all gaps (outer and inner) on the workspace whenever only one container is on the current workspace. (Requires i3-gaps)
+# smart_gaps on
 # inner gaps are gaps between two adjacent containers or a container and edge
 gaps inner 15
 # outer gaps are an additional spacing along the screen edges
 # gaps outer -2
 
 # Run programs with Alt + F2
-bindsym $mod+F2 exec --no-startup-id rofi -show drun -show-icons
+bindsym $mod+space exec --no-startup-id rofi -show drun -show-icons
 
 # change container layout (stacked, tabbed, default)
 # bindsym $mod+s layout stacking
@@ -21,7 +20,7 @@ bindsym $mod+F2 exec --no-startup-id rofi -show drun -show-icons
 # bindsym $mod+d layout default
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $alt+space focus mode_toggle
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 # floating_modifier $mod
@@ -96,14 +95,12 @@ bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 -time 0
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 -time 0
 
 # Screenshot
-bindsym --release Print exec --no-startup-id scrot
-bindsym --release Shift+Print exec --no-startup-id scrot -s
+bindsym --release Print exec --no-startup-id scrot && notify-send "  :: screenshot taken ::"
+bindsym --release Shift+Print exec --no-startup-id scrot -s && notify-send "  :: screenshot taken ::" notify-send "  :: screenshot taken ::"
 
 # name the workspaces (icons require fontawesome)
 set $firefox  "1:  "
-set $terminal  "2:  "
-set $development  "e: "
-set $teams "Teams: "
+set $development  "2:  "
 
 # switch to workspace
 bindsym $mod+1 workspace $firefox
@@ -116,8 +113,6 @@ bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
-bindsym $mod+t workspace $teams
-bindsym $mod+e workspace $development
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $firefox
@@ -233,5 +228,4 @@ bar {
 # exec --no-startup-id i3-msg 'workspace 1; exec TZ=UTC firefox;'
 exec --no-startup-id i3-msg "workspace $firefox; exec firefox"
 exec --no-startup-id i3-msg "workspace $terminal; exec kitty"
-# exec --no-startup-id i3-msg "workspace $teams; exec teams-insiders"
 # exec --no-startup-id i3-msg "workspace $development; exec code"
