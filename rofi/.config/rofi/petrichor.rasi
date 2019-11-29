@@ -92,7 +92,7 @@ element selected {
 }
 
 element normal normal, element selected normal, element alternate normal {
-	text-color: @dark;
+	text-color: @light;
 }
 
 element normal urgent, element selected urgent, element alternate urgent {
