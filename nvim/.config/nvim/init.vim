@@ -127,8 +127,6 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'dag/vim-fish'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'lyuts/vim-rtags', { 'for': ['c', 'cpp'] }
-" NOTE: This is prebuilt, you can also build yourself by yarn and node
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } , 'for': 'markdown'}
 Plug 'derekwyatt/vim-scala'
 
 " Lint
@@ -1614,11 +1612,6 @@ autocmd vimrc BufWritePre *.clj call cljfmt#AutoFormat()
 autocmd vimrc BufWritePre *.cljc call cljfmt#AutoFormat()
 
 " ----------------------------------------------------------------------------
-" vim-markdown
-" ----------------------------------------------------------------------------
-" let g:markdown_fenced_languages = ['sh', 'ruby', 'clojure', 'vim', 'java', 'gnuplot']
-
-" ----------------------------------------------------------------------------
 " splitjoin
 " ----------------------------------------------------------------------------
 let g:splitjoin_split_mapping = ''
@@ -1832,11 +1825,6 @@ let g:deoplete#enable_at_startup = 1
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
-
-" let g:mkdp_auto_start = 1 " Preview markdown on opening
-let g:mkdp_refresh_slow = 0 " Preview update on entering normal mode
-autocmd FileType markdown nmap <leader>mv <Plug>MarkdownPreview
-
 
 
 " Some servers have issues with backup files, see #649
