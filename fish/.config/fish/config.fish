@@ -9,8 +9,14 @@ else
 end
 
 ### Some handy aliases
-source $HOME/.config/fish/aliases.fish
-source $HOME/.config/fish/mpv.fish
+# Language specific additions and paths
+if test -e $HOME/.config/fish/mpv.fish
+	source $HOME/.config/fish/mpv.fish
+end
+
+if test -e $HOME/.config/fish/aliases.fish
+	source $HOME/.config/fish/aliases.fish
+end
 
 # Language specific additions and paths
 if test -e $HOME/.config/fish/go.fish
