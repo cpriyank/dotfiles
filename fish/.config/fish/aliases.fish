@@ -214,3 +214,9 @@ function update --description "update brew, pip packages"
 	 # toolbox update
 	 pip3 install --upgrade pip
 end
+
+# TODO: lack of consistency in fish aliases/abbrs
+if type -q lsd
+	abbr --add --global l lsd
+	abbr --add --global la lsd -al
+end

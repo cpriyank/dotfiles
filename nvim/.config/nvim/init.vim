@@ -1511,8 +1511,8 @@ let g:ale_sign_error = '══'
 let g:ale_cpp_clangtidy_options = '-Wall -Wextra -std=c++17 -x c++'
 let g:ale_cpp_clangcheck_options = '-- -Wall -Wextra std=c++17 -x c++'
 
-nmap ]a <Plug>(ale_next_wrap)
-nmap [a <Plug>(ale_previous_wrap)
+" nmap ]a <Plug>(ale_next_wrap)
+" nmap [a <Plug>(ale_previous_wrap)
 
 " Set this variable to 1 to fix files when you save them.
 let g:ale_fix_on_save = 1
@@ -1826,6 +1826,37 @@ if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
 
+" TODO: reliably detect if Typora is installed
+if s:darwin
+	autocmd FileType markdown nnoremap <leader>mv !open -a Typora %<CR>
+endif
+autocmd BufRead,BufNewFile *.md :Goyo 80
+autocmd BufRead,BufNewFile *.md :g/^Example/d
+" autocmd FileType markdown InsertLeave * normal gwap<CR>
+" function! s:auto_goyo()
+  " if &ft == 'markdown'
+  "   Goyo 80
+  " else
+  "   let bufnr = bufnr('%')
+  "   Goyo!
+  "   execute 'b '.bufnr
+  " endif
+" endfunction
+
+" augroup goyo_markdown
+  " autocmd!
+  " autocmd BufNewFile,BufRead * call s:auto_goyo()
+" augroup END
+autocmd FileType markdown nnoremap <leader>h1 0i# <Esc>
+autocmd FileType markdown nnoremap <leader>h2 0i## <Esc>
+autocmd FileType markdown nnoremap <leader>h3 0i### <Esc>
+autocmd FileType markdown nnoremap <leader>h4 0i##### <Esc>
+autocmd FileType markdown nnoremap <leader>hq 0i> <Esc>
+autocmd FileType markdown vnoremap <leader>hq 0i> <Esc>
+autocmd FileType markdown nnoremap <leader>bf o<CR>## Brute Force<CR><CR>
+autocmd FileType markdown nnoremap <leader>kk o<CR>## Key Insight<CR><CR>
+autocmd FileType markdown nnoremap <leader>pp o<CR>```python<CR><CR>```<Esc>ki
+autocmd FileType markdown nnoremap <leader>eq o<CR>$$<CR><CR>$$<Esc>ki
 
 " Some servers have issues with backup files, see #649
 set nobackup

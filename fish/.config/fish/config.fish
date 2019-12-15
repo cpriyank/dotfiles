@@ -18,9 +18,9 @@ if test -e $HOME/.config/fish/go.fish
 end
 
 # Base16 Shell
-# if status --is-interactive; and test -e $HOME/.config/base16-shell/scripts/base16-monokai.sh
-#   eval sh $HOME/.config/base16-shell/scripts/base16-monokai.sh
-# end
+if status --is-interactive; and test -e $HOME/.config/base16-shell/scripts/base16-monokai.sh
+  eval sh $HOME/.config/base16-shell/scripts/base16-gruvbox-dark-hard.sh
+end
 
 ### Color 'less' output
 set -gx LESS_TERMCAP_mb \e'[01;31m'
@@ -37,15 +37,15 @@ if test -e $HOME/.config/fish/private.fish
 	source $HOME/.config/fish/private.fish
 end
 
+if command --search --quiet "starship"
+	eval (starship init fish)
+end
+
+if test -e $HOME/.dircolors
+	eval (gdircolors --c-shell $HOME/.dircolors)
+end
+
 if test -e /usr/local/opt/llvm/bin
 	set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths
 end
-
-# THEME PURE #
-if test -e $HOME/.config/fish/functions/theme-pure/functions
-	set fish_function_path /Users/pika/.config/fish/functions/theme-pure/functions/ $fish_function_path
-end
-
-if test -e $HOME/.config/fish/functions/theme-pure/conf.d/pure.fish
-	source $HOME/.config/fish/functions/theme-pure/conf.d/pure.fish
-end
+set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
