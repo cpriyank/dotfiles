@@ -30,10 +30,10 @@ if [[ -e /usr/bin/pacman ]] ; then
 	alias aurfind='pacaur -Ss'
 
 	# Install an AUR package
-	alias aurin='trizen -S'
+	alias aurin='yay -S'
 
 	# Upgrade AUR packages
-	alias aurupg='trizen -Syu'
+	alias aurupg='yay -Syu'
 
 elif [[ -e /usr/bin/apt-get ]] ; then
 
