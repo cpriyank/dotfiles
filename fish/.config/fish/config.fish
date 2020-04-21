@@ -37,7 +37,7 @@ set -gx LESS_TERMCAP_so \e'[01;44;33m'
 set -gx LESS_TERMCAP_ue \e'[0m'
 set -gx LESS_TERMCAP_us \e'[01;32m'
 
-# set -gx fish_user_paths ~/anaconda3/bin $fish_user_paths
+set -gx fish_user_paths ~/anaconda3/bin $fish_user_paths
 # private config not under public source control
 if test -e $HOME/.config/fish/private.fish
 	source $HOME/.config/fish/private.fish
@@ -47,8 +47,12 @@ if command --search --quiet "starship"
 	eval (starship init fish)
 end
 
-if test -e $HOME/.dircolors
+if command --search --quiet gdircolors ;and test -e $HOME/.dircolors
 	eval (gdircolors --c-shell $HOME/.dircolors)
+end
+
+if command --search --quiet dircolors ;and test -e $HOME/.dircolors
+	eval (dircolors --c-shell $HOME/.dircolors)
 end
 
 if test -e /usr/local/opt/llvm/bin
