@@ -19,7 +19,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-gtfo' " (xdg-)open terminal/tmux pane/file manager of current directory with got and gof
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKeyVisual', 'WhichKey!', 'WhichKeyVisual!'] } " Show keybinds in a popup
-Plug 'mhinz/vim-startify' " :startify, :SSave, :SLoad, and nice startup screen
+" Plug 'mhinz/vim-startify' " :startify, :SSave, :SLoad, and nice startup screen
 
 " Colors
 Plug 'AlessandroYorba/Despacio'
@@ -44,6 +44,7 @@ Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable', 'for': 'python' }
 autocmd! User indentLine doautocmd indentLine Syntax
 " Plug 'liuchengxu/eleline.vim'
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " semantic highlight for Python
+Plug 'romainl/vim-cool' " disables search highlighting when you are done searching and re-enables it when you search again.
 
 " Edit
 Plug 'tpope/vim-repeat'
@@ -53,6 +54,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-eunuch' " :Rename, Delete, Chmod, Mkdir, SudoWrite, SudoEdit, Move commands
+Plug 'rhysd/clever-f.vim' " Extended f, F, t and T key mappings for Vim
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'vim-scripts/ReplaceWithRegister' " replace selection or motion with register with gr
 Plug 'AndrewRadev/splitjoin.vim' "gS and gJ to split/join single/multiple lines
@@ -69,6 +71,7 @@ Plug 'junegunn/vim-peekaboo' " extends \" and @ in normal mode and <CTRL-R> in i
 Plug 'junegunn/vim-after-object' " Target text *after* the designated characters
 Plug 'justinmk/vim-sneak' " motion enhancement
 let g:sneak#label = 1
+" motion within camel and snake case with ",w"
 Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go', 'C++']}
 Plug 'AndrewRadev/splitjoin.vim' " Split/join line(s) with gS and gJ
 " Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`¬
@@ -99,6 +102,7 @@ Plug 'liuchengxu/vista.vim' " Viewer & Finder for LSP symbols and tags
 " TODO: this can be removed in favor of vista.vim
 Plug 'lyuts/vim-rtags', { 'for': ['c', 'cpp'] }
 Plug 'derekwyatt/vim-scala'
+Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'] }
 
 Plug 'ryanoasis/vim-devicons' " Has to be loaded last
 set guifont=SauceCodePro\ Nerd\ Font\ 12
