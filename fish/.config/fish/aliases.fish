@@ -118,6 +118,18 @@ function cleanup
 end
 
 ### Git specific
+# git root
+function gr --description "Jump to the git root"
+	set -l repo_info (command git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree --short HEAD ^/dev/null)
+  	test -n "$repo_info"; or return
+
+	set -l cd_up_path (command git rev-parse --show-cdup)
+
+	if test -n $cd_up_path
+		cd $cd_up_path
+	end
+end
+
 function ga
 	git add $argv
 end
@@ -219,4 +231,28 @@ end
 if type -q lsd
 	abbr --add --global l lsd
 	abbr --add --global la lsd -al
+end
+
+function md --wraps mkdir -d "Create a directory and cd into it"
+  command mkdir -p $argv
+  if test $status = 0
+    switch $argv[(count $argv)]
+      case '-*'
+      case '*'
+        cd $argv[(count $argv)]
+        return
+    end
+  end
+end
+
+function fuck -d 'Correct your previous console command'
+    set -l exit_code $status
+    set -l eval_script (mktemp 2>/dev/null ; or mktemp -t 'thefuck')
+    set -l fucked_up_commandd $history[1]
+    thefuck $fucked_up_commandd > $eval_script
+    . $eval_script
+    rm $eval_script
+    if test $exit_code -ne 0
+        history --delete $fucked_up_commandd
+    end
 end
