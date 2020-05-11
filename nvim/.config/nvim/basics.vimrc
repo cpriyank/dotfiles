@@ -15,7 +15,7 @@ highlight clear SignColumn  " SignColumn should match background
 set report=0 " Show all changed lines with messages like ~1 line less, 1 line yanked
 " set autochdir " Auto switch to current file's directory on opening new buffer
 set tabstop=2
-" set softtabstop=2 " <TAB> and <BS> key results in 2 spaces as well
+set softtabstop=2 " <TAB> and <BS> key results in 2 spaces as well
 set shiftwidth=2
 set expandtab " smarttab "Default in neovim
 " set autoindent "Default in neovim
