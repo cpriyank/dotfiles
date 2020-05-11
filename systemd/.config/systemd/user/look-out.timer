@@ -2,7 +2,7 @@
 Description=Reminder to look far and outside to reduce eyestrain
 
 [Timer]
-OnStartupSec=3min
+OnStartupSec=30min
 OnUnitActiveSec=30min
 Unit=look-out.service
 
