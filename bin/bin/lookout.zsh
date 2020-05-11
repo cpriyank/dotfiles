@@ -5,17 +5,15 @@ if [[ -s todo ]]
 then
 	var=$(<todo)
 	notify-send -u critical "{${var}}"
-	xsecurelock
 elif [[ -s tips ]]
 then
 	var=$(<tips)
 	notify-send -u critical "{${var}}"
-	xsecurelock
 elif command -v fortune 2>/dev/null
 then
 	notify-send -u critical "`fortune dhammapada`"
-	xsecurelock
 else
-	# notify-send -a "Relax" -u critical "Look outside for a while"
-	xsecurelock
+	mpv --audio-display=no "$HOME/bin/minutes.mp3"
+	notify-send -a "Relax" -u critical "Look outside for a while"
+	notify-send -a "Breathe" -u normal -i '/usr/share/icons/elementary/apps/128/internet-web-browser.svg' "Breathe for a minute"
 fi
