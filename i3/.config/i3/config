@@ -2,7 +2,7 @@
 set $mod Mod4
 set $alt Mod1
 
-font pango:"Ubuntu" 11
+font pango:"Sans" 11
 
 # This will disable all gaps (outer and inner) on the workspace whenever only one container is on the current workspace. (Requires i3-gaps)
 # smart_gaps on
@@ -10,9 +10,6 @@ font pango:"Ubuntu" 11
 gaps inner 15
 # outer gaps are an additional spacing along the screen edges
 # gaps outer -2
-
-# Run programs with Alt + F2
-bindsym $mod+space exec --no-startup-id rofi -show drun -show-icons
 
 # change container layout (stacked, tabbed, default)
 # bindsym $mod+s layout stacking
@@ -141,19 +138,15 @@ new_window 1pixel
 
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
-# for_window [title="Microsoft Teams Notification"] floating enable
+# Teams notification spawns a full window if we don't allow it to float
+for_window [title="Microsoft Teams Notification"] floating enable
 for_window [title="Open Folder"] floating disable
-# for_window [class="(?i)^gimp$"] floating enable
-
-# assign [title="(?i)Teams"] $teams
 
 #
 # Window Navigation (From slackword.net)
 #
 # switch back and forth between the last two workspaces
 # bindsym $mod+Tab workspace back_and_forth
-bindsym $mod+Tab exec rofi --no-startup-id -show window -show-icons
-bindsym $alt+Tab exec rofi --no-startup-id -show window -show-icons
 # Assume you are on workspace "1: www" and switch to "2: IM" using mod+2
 # because somebody sent you a message. You don’t need to remember where you
 # came from now, you can just press $mod+2 again to switch back to "1: www".
@@ -167,15 +160,22 @@ hide_edge_borders both
 #
 # Launchers
 #
-# bindsym $Alt+j exec alacritty -e vifm
+bindsym $mod+f exec alacritty -e vifm
 bindsym $mod+u exec firefox
 bindsym $mod+y exec firefox --private-window
-bindsym $mod+Return exec --no-startup-id kitty
+bindsym $mod+Return exec --no-startup-id alacritty
+bindsym $mod+t exec --no-startup-id i3-sensible-terminal # failsafe terminal
 # bindsym $mod+h exec transmission-gtk
 bindsym $mod+g exec chromium
 bindsym $mod+i exec chromium --incognito
 # bindsym $mod+s exec textsuggest
 bindsym $mod+n exec xsecurelock
+# Run programs with Mod Key + space
+bindsym $mod+space exec --no-startup-id rofi -show drun -show-icons
+
+# Alt + Tab to show open windows
+bindsym $mod+Tab exec rofi --no-startup-id -show window -show-icons
+bindsym $alt+Tab exec rofi --no-startup-id -show window -show-icons
 
 
 # set color variables
@@ -227,5 +227,4 @@ bar {
 # opens in focused workspace rather than the one where exec command was issued)
 # exec --no-startup-id i3-msg 'workspace 1; exec TZ=UTC firefox;'
 exec --no-startup-id i3-msg "workspace $firefox; exec firefox"
-exec --no-startup-id i3-msg "workspace $terminal; exec kitty"
-# exec --no-startup-id i3-msg "workspace $development; exec code"
+exec --no-startup-id i3-msg "workspace $terminal; exec alacritty"
