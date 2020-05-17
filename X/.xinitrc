@@ -25,12 +25,12 @@ setxkbmap -option altwin:menu_win
 [[ -f ~/.Xresources ]] && xrdb ~/.Xresources &
 pactl set-sink-volume 0 '20%' &
 xset -b & # disable bell
-xset r rate 250 60 & # faster key repeat rate
-[[ -e $XDG_CONFIG_HOME/compton.conf ]] && compton --config ~/.config/compton.conf -b &
-[[ -e $HOME/Pictures ]] && feh --randomize --bg-fill ~/Pictures/* &
+xset r rate 400 100 & # faster key repeat rate
+[[ -e $XDG_CONFIG_HOME/picom.conf ]] && compton --config ~/.config/picom.conf -b &
+[[ -e $HOME/Pictures/wallpapers ]] && feh --randomize --bg-fill ~/Pictures/wallpapers/* &
 xbacklight -set 10 &
 dunst &
-copyq &
+clipit &
 # xrandr --output DP2 --dpi 110 --mode 3840x1600 --output eDP1 --mode 1920x1080 --rate 60.05 --same-as DP2
 xrandr --output DP-2 --mode 3840x1600 --rate 59.99 --output eDP-1 --off &
 redshift -o -l 47.61:-122.33 -t 4500:2800 &
