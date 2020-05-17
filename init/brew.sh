@@ -75,6 +75,8 @@ brew install grep
 # brew install xpdf
 # brew install xz
 
+brew install z # jump around directories
+
 # Install other useful binaries.
 # brew install ack
 #brew install exiv2

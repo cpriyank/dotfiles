@@ -1,7 +1,7 @@
 echo "Will install a few packages now..."
 # make sure that i3, compton, dunst, pulseaudio-alsa, alsa-utils feh, and rofi are installed
 sudo pacman -S i3 compton dunst pulseaudio-alsa alsa-utils feh rofi xsel\
-	neovim xorg-xinit redshift stow bat fzf
+	neovim xorg-xinit redshift stow bat fzf z
 cd ~/.dotfiles
 stow X bin colors compton dunst i3 nvim spacemacs systemd zathura zsh
 git submodules update --init
