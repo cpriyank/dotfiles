@@ -1,4 +1,6 @@
-### Environment variables
+###############################################################################
+### Environment variables {{{
+###############################################################################
 # Set EDITOR. Hope I won't have to resort to pico
 if command --search --quiet "nvim"
 	set -gx EDITOR nvim
@@ -7,23 +9,12 @@ else if command --search --quiet "vim"
 else
 	set -gx EDITOR nano
 end
+#}}}
 
-### Some handy aliases
-# Language specific additions and paths
-if test -e $HOME/.config/fish/mpv.fish
-	source $HOME/.config/fish/mpv.fish
-end
-
-if test -e $HOME/.config/fish/aliases.fish
-	source $HOME/.config/fish/aliases.fish
-end
-
-# Language specific additions and paths
-if test -e $HOME/.config/fish/go.fish
-	source $HOME/.config/fish/go.fish
-end
-
-# Base16 Shell
+###############################################################################
+## Colors {{{
+###############################################################################
+### Base16 Shell colors
 if status --is-interactive; and test -e $HOME/.config/base16-shell/scripts/base16-monokai.sh
   eval sh $HOME/.config/base16-shell/scripts/base16-gruvbox-dark-hard.sh
 end
@@ -37,16 +28,7 @@ set -gx LESS_TERMCAP_so \e'[01;44;33m'
 set -gx LESS_TERMCAP_ue \e'[0m'
 set -gx LESS_TERMCAP_us \e'[01;32m'
 
-set -gx fish_user_paths ~/anaconda3/bin $fish_user_paths
-# private config not under public source control
-if test -e $HOME/.config/fish/private.fish
-	source $HOME/.config/fish/private.fish
-end
-
-if command --search --quiet "starship"
-	eval (starship init fish)
-end
-
+### color ls output
 if command --search --quiet gdircolors ;and test -e $HOME/.dircolors
 	eval (gdircolors --c-shell $HOME/.dircolors)
 end
@@ -54,8 +36,36 @@ end
 if command --search --quiet dircolors ;and test -e $HOME/.dircolors
 	eval (dircolors --c-shell $HOME/.dircolors)
 end
+#}}}
 
-if test -e /usr/local/opt/llvm/bin
-	set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths
+###############################################################################
+### Prompt {{{
+###############################################################################
+# starship prompt. requires https://starship.rs/guide/#%F0%9F%9A%80-installation
+if command --search --quiet "starship"
+	starship init fish | source
 end
-set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+#}}}
+
+### Some handy aliases
+if test -e $HOME/.config/fish/aliases.fish
+	source $HOME/.config/fish/aliases.fish
+end
+
+# Other custom paths
+for custom_path in $HOME/.config/fish/paths/*.fish
+      source $custom_path
+end
+
+# private config not under public source control
+if test -e $HOME/.config/fish/private.fish
+	source $HOME/.config/fish/private.fish
+end
+
+# Start X at login
+if status is-login
+    if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
+        exec startx -- -keeptty
+    end
+end
+
