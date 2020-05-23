@@ -54,28 +54,23 @@ function t
 	end
 end
 
-# cat files with syntax highlighting
-function c
-	pygmentize -O style=monokai -f console256 -g $argv
-end
-
 # Make du readable
 function da
 	du -sch $argv
 end
 
 # Warn on overwrite
-function mv
-	command gmv --interactive --verbose $argv
-end
+# function mv
+	# command gmv --interactive --verbose $argv
+# end
 
 function rm
 	trash $argv
 end
 
-function cp
-	command gcp --interactive --verbose $argv
-end
+# function cp
+	# command gcp --interactive --verbose $argv
+# end
 
 ### Download video by URL from STDIN
 function apo
@@ -256,3 +251,38 @@ function fuck -d 'Correct your previous console command'
         history --delete $fucked_up_commandd
     end
 end
+
+alias pacupg='sudo pacman -Syu'
+alias pacin='sudo pacman -S'
+alias pacins='sudo pacman -U'
+alias pacrem='sudo pacman -Rns'
+alias pacref='sudo pacman -Syy'
+
+# Delete the lock file /var/lib/pacman/db.lck
+alias pacunlock='sudo rm /var/lib/pacman/db.lck'
+
+# Package search and info from remote repos
+alias pacrinfo='pacman -Si'
+alias pacrfind='pacman -Ss'
+
+# Same as above for local repos
+alias paclinfo='pacman -Qi'
+alias paclfind='pacman -Qs'
+
+# Remove orphaned packages
+alias pacrorf='sudo pacman -Rns (pacman -Qtdq)'
+
+# List all explicitly installed packages not in base and base-devel
+alias paclist='expac -HM "%011m\t%-20n\t%10d" ( comm -23 <(pacman -Qqen|sort) <(pacman -Qqg base base-devel|sort) ) | sort -n'
+
+# List packages installed from AUR
+alias aurlist='pacman -Qm'
+
+# Search AUR for matching strings
+alias aurfind='pacaur -Ss'
+
+# Install an AUR package
+alias aurin='yay -S'
+
+# Upgrade AUR packages. See archlinux news before upgrading
+alias aurupg='yay -Syu -w --answerclean None --answerdiff None --answeredit None'
