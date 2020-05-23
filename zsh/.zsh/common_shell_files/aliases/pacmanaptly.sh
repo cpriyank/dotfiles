@@ -32,8 +32,8 @@ if [[ -e /usr/bin/pacman ]] ; then
 	# Install an AUR package
 	alias aurin='yay -S'
 
-	# Upgrade AUR packages
-	alias aurupg='yay -Syu'
+	# Upgrade AUR packages. See archlinux news before upgrading
+	alias aurupg='yay -Syu -w --answerclean None --answerdiff None --answeredit None'
 
 elif [[ -e /usr/bin/apt-get ]] ; then
 
