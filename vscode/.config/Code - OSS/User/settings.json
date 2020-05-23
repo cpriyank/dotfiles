@@ -51,16 +51,15 @@
     "vim.handleKeys": {
     "<C-a>": false,
     },
+    "vim.easymotion": true,
+    "vim.replaceWithRegister": true,
     "vim.hlsearch": true,
     "vim.useSystemClipboard": true,
-    "vim.substituteGlobalFlag": true,
-    "vim.sneak": true,
-    "vim.sneakUseIgnorecaseAndSmartcase": true,
+    "vim.gdefault": true,
+    "vim.highlightedyank.enable": true,
+    "vim.enableNeovim": true,
+    "vim.neovimPath": "/usr/bin/nvim",
     "vim.camelCaseMotion.enable": true,
-    "[csharp]": {
-        "editor.defaultFormatter": "ms-vscode.csharp"
-    },
-    "cSpell.userWords": [
-        "Repos"
-    ]
+    "C_Cpp.updateChannel": "Insiders",
+    "markdown.preview.fontFamily": "-apple-system, BlinkMacSystemFont, serif, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif"
 }
