@@ -1,6 +1,6 @@
 " FUNCTIONS & COMMANDS {{{
 " -----------------------------------------------------------------------------
-" TODO: Strip trailing whitespace
+" Strip trailing whitespace
 " -----------------------------------------------------------------------------
 function! StripWhitespace()
   let save_cursor = getpos(".")
@@ -21,7 +21,6 @@ endfunction
 " ----------------------------------------------------------------------------
 " :Root | Change directory to the root of the Git repository
 " ----------------------------------------------------------------------------
-"  TODO: Rename
 function! s:root()
   let root = systemlist('git rev-parse --show-toplevel')[0]
   if v:shell_error
@@ -33,7 +32,7 @@ function! s:root()
 endfunction
 command! Root call s:root()
 " ----------------------------------------------------------------------------
-" TODO: Open corresponding header or source file
+" Open corresponding header or source file
 " ----------------------------------------------------------------------------
 function! s:a(cmd)
   let name = expand('%:r')
