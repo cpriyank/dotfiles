@@ -76,7 +76,8 @@ set formatoptions+=1 " Don't break a line after a one-letter word
 set formatoptions+=2 " Use the indent of the second line of a paragraph
 " set formatoptions+=n " Recognize numbered lists
 " set formatoptions+=c " Format comments. This is default
-" set formatoptions+=r " (in mail) comment leader after. This is default
+set formatoptions+=r " in insert mode, auto-insert comment character after <Enter>
+set formatoptions+=o " in normal mode, auto-insert comment character after 'o'/'O'
 " set formatoptions+=l " Don't break lines that are already long. This is default
 let &showbreak = '↳ '
 set breakindent
