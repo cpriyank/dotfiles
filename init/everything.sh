@@ -405,8 +405,6 @@ git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shel
 pip3 install Pygments
 # mutt required?
 # mkdir ~/.local/mutt/{mail,cache,temp}
-if command -v gem; then
-	gem install colorls
 fiecho "Will install a few packages now..."
 command -v sudo >/dev/null 2>&1 || { echo >&2 "sudo is not installed. Install sudo, visudo from shell and allow login to your group. Aborting."; exit 1; }
 # make sure that i3, compton, dunst, pulseaudio-alsa, alsa-utils feh, and rofi are installed
