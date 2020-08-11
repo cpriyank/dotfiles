@@ -130,11 +130,15 @@ bindsym $mod+m scratchpad show
 #
 # window rules
 #
-for_window [window_role="pop-up"] floating enable
-for_window [window_role="task_dialog"] floating enable
 
 # no border at all
 new_window 1pixel
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+
+# Threshold max window size, depends on your display size
+floating_maximum_size 1920 1080
 
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
@@ -169,7 +173,7 @@ bindsym $mod+t exec --no-startup-id i3-sensible-terminal # failsafe terminal
 bindsym $mod+g exec chromium
 bindsym $mod+i exec chromium --incognito
 # bindsym $mod+s exec textsuggest
-bindsym $mod+n exec xsecurelock
+# bindsym $mod+n exec xsecurelock
 # Run programs with Mod Key + space
 bindsym $mod+space exec --no-startup-id rofi -show drun -show-icons
 
