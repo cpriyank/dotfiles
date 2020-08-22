@@ -23,16 +23,18 @@ setxkbmap -option ctrl:swapcaps
 setxkbmap -option altwin:menu_win
 
 [[ -f ~/.Xresources ]] && xrdb ~/.Xresources &
-pactl set-sink-volume 0 '20%' &
+pactl set-sink-volume 0 '50%' &
 xset -b & # disable bell
 xset r rate 400 100 & # faster key repeat rate
-[[ -e $XDG_CONFIG_HOME/picom.conf ]] && compton --config ~/.config/picom.conf -b &
-[[ -e $HOME/Pictures/wallpapers ]] && feh --randomize --bg-fill ~/Pictures/wallpapers/* &
+# [[ -e ~/.config/picom.conf ]] && picom --config ~/.config/picom.conf -b &
+# [[ -e ~/Pictures/wallpapers ]] && feh --randomize --bg-fill ~/Pictures/wallpapers/* &
 xbacklight -set 10 &
-dunst &
-clipit &
+# dunst &
+# clipit &
+stretchly &
 # xrandr --output DP2 --dpi 110 --mode 3840x1600 --output eDP1 --mode 1920x1080 --rate 60.05 --same-as DP2
-xrandr --output DP-2 --mode 3840x1600 --rate 59.99 --output eDP-1 --off &
+# xrandr --output DP-2 --mode 3840x1600 --rate 59.99 --output eDP-1 --off &
 redshift -o -l 47.61:-122.33 -t 4500:2800 &
 # Remember that lines following a command using exec would be ignored
-exec i3 # -V >> ~/.cache/i3/i3log-$(date +'%F-%k-%M-%S') 2>&1
+# exec i3 # -V >> ~/.cache/i3/i3log-$(date +'%F-%k-%M-%S') 2>&1
+exec startplasma-x11
