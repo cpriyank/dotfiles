@@ -7,7 +7,6 @@ typeset -gU path
 export GOPATH=$HOME/z/go
 path=($path ~/bin $GOPATH/bin ~/.local/bin)
 
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 # export VDPAU_DRIVER=va_gl
 #export LIBVA_DRIVER_NAME=vdpau
 
