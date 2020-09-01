@@ -138,7 +138,7 @@ for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 
 # Threshold max window size, depends on your display size
-floating_maximum_size 1920 1080
+# floating_maximum_size 1920 1080
 
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
