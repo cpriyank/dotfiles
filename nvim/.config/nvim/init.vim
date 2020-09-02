@@ -83,9 +83,7 @@ Plug 'jsfaint/coc-neoinclude'
 " Use release branch
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
-
-" Browsing
-Plug 'justinmk/vim-gtfo'
+Plug 'honza/vim-snippets'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -103,9 +101,10 @@ Plug 'liuchengxu/vista.vim' " Viewer & Finder for LSP symbols and tags
 Plug 'lyuts/vim-rtags', { 'for': ['c', 'cpp'] }
 Plug 'derekwyatt/vim-scala'
 Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'] }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 Plug 'ryanoasis/vim-devicons' " Has to be loaded last
-set guifont=SauceCodePro\ Nerd\ Font\ 12
+set guifont=SauceCodePro\ Nerd\ Font\ 12 " nerd fonts are required for vim-devicons
 
 call plug#end()
 endif
