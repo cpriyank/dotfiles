@@ -11,6 +11,8 @@ augroup general_config
   autocmd InsertEnter * :set norelativenumber
   autocmd InsertLeave * :set relativenumber
 
+  autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+
   " When editing a file, always jump to the last known cursor position, except
   " for commit messages, invalid position, or when inside an event
   " handler (happens when dropping a file on gvim).
@@ -22,84 +24,71 @@ augroup general_config
 augroup END
 " }}}
 
-" ----------------------------------------------------------------------------
-" plugin_vim_which_key {{{
-" ----------------------------------------------------------------------------
-augroup plugin_vim_which_key
+" Jumping to tags {{{
+augroup jump_to_tags
   autocmd!
-  let g:which_key_vertical = 1 " show all entries in a single column
-  autocmd! FileType which_key
-  autocmd FileType which_key set laststatus=0 noshowmode noruler
-        \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-  autocmd User vim-which-key call which_key#register('<Space>', 'g:which_key_map')
-  nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-  vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
-  " Show commands provided by vim-unimpaired
-  nnoremap <silent> [ :<c-u>WhichKey  '['<CR>
-  let g:which_key_map = {}
-  let g:which_key_map.b = {
-        \ 'name' : '+buffer' ,
-        \ '1' : ['b1'        , 'buffer 1']        ,
-        \ '2' : ['b2'        , 'buffer 2']        ,
-        \ 'b' : ['Buffers'        , 'fzf-buffer']        ,
-        \ 'd' : [',d'        , 'delete-buffer']   ,
-        \ 'l' : ['blast'     , 'last-buffer']     ,
-        \ 'n' : ['bnext'     , 'next-buffer']     ,
-        \ 'p' : ['bprevious' , 'previous-buffer'] ,
-        \ 's' : ['w' , 'save-buffer'] ,
-        \ 't' : ['Btags' , 'buffer-tag-search'] ,
-        \ 'S' : ['wall' , 'save-all-buffers'] ,
-        \ 'z' : ['<Plug>(zoom-toggle)' , 'zoom-buffer'] ,
-        \ '?' : ['Buffers'   , 'fzf-buffer']      ,
-        \ }
-  " ----------------------------------------------------------------------------
-  " <Leader>c Close quickfix/location window
-  " ----------------------------------------------------------------------------
+
+  " Basically, <c-]> jumps to tags (like normal) and <c-\> opens the tag in a new
+  " split instead.
+  "
+  " Both of them will align the destination line to the upper middle part of the
+  " screen.  Both will pulse the cursor line so you can see where the hell you
+  " are.  <c-\> will also fold everything in the buffer and then unfold just
+  " enough for you to see the destination line.
+  nnoremap <c-]> <c-]>mzzvzz15<c-e>`z:Pulse<cr>
+  nnoremap <c-\> <c-w>v<c-]>mzzMzvzz15<c-e>`z:Pulse<cr>
+
+  " Pulse Line (thanks Steve Losh)
+  function! s:Pulse() " {{{
+    redir => old_hi
+    silent execute 'hi CursorLine'
+    redir END
+    let old_hi = split(old_hi, '\n')[0]
+    let old_hi = substitute(old_hi, 'xxx', '', '')
+
+    let steps = 8
+    let width = 1
+    let start = width
+    let end = steps * width
+    let color = 233
+
+    for i in range(start, end, width)
+      execute "hi CursorLine ctermbg=" . (color + i)
+      redraw
+      sleep 6m
+    endfor
+    for i in range(end, start, -1 * width)
+      execute "hi CursorLine ctermbg=" . (color + i)
+      redraw
+      sleep 6m
+    endfor
+
+    execute 'hi ' . old_hi
+  endfunction " }}}
+
+  command! -nargs=0 Pulse call s:Pulse()
+augroup END
+" }}}
+
+" ----------------------------------------------------------------------------
+" mappings bound to <leader> key {{{
+" ----------------------------------------------------------------------------
+augroup leader_mappings
+  autocmd!
   nnoremap <leader>c :cclose<bar>lclose<cr>
-  let g:which_key_map.e = {
-        \ 'name' : '+errors',
-        \ }
-  let g:which_key_map.f = {
-        \ 'name' : '+file/fzf',
-        \ 'f' : ['Files', 'fzf-files'],
-        \ 'g' : ['GFiles', 'fzf-git-files'],
-        \ 'r' : ['History', 'fzf-recent-files'],
-        \ 's' : ['w', 'save-file'],
-        \ 'S' : ['wall', 'save-all-files'],
-        \ }
-  let g:which_key_map.g = {
-        \ 'name' : '+git',
-        \ 'b' : ['BCommits', 'buffer-commits'],
-        \ '?' : ['Commits', 'fzf-commits'],
-        \ }
-  let g:which_key_map.j = {
-        \ 'name' : '+jump',
-        \ }
-  let g:which_key_map.l = {
-        \ 'name' : '+lsp',
-        \ 'l' : ['<Plug>(coc-codeaction-selected)<CR>', 'code-action'],
-        \ 'f' : ['<Plug>(coc-fix-current)', 'quickfix'],
-        \ 'e' : ['CocCommand#python.execInTerminal<CR>', 'execute-current-file'],
-        \ }
-  let g:which_key_map.q = {
-        \ 'name' : '+quit',
-        \ 'q' : ['wq', 'save-and-quit'],
-        \ 'Q' : ['qall!', 'quit-all'],
-        \ }
-  let g:which_key_map.r = {
-        \ 'name' : '+ripgrep/refactor/replace',
-        \ 'g' : ['Rg', 'search-with-rg'],
-        \ 'c' : ['<Plug>(coc-rename)', 'coc-rename'],
-        \ 'r' : ['<Plug>(FNR)', 'replace-under-cursor'],
-        \ }
-  " send selection to other buffer
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :wq<CR>
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>bb :Buffers<CR>
+nnoremap <leader>fg :GFiles<CR>
+nnoremap <leader>fr :History<CR>
+nnoremap <leader>se :CocCommand snippets.editSnippets<CR>
+nnoremap <leader>ss :call StripWhitespace()<CR>
+nnoremap <leader>sr :%s:::g<Left><Left><Left>
+ " send selection to other buffer
   " vnoremap <leader>sp y<C-w>wp<C-w>w<CR>
   xnoremap <leader>sp y<C-w>wp<C-w>w<CR>
-  let g:which_key_map.s = {
-        \ 'name' : '+search/selection/strip',
-        \ 'r' : ['Rg', 'with-ripgrep'],
-        \ 's' : ['StripWhitespace()', 'strip-whitespace'],
-        \ }
+
   " " ----------------------------------------------------------------------------
   " tmux
   " ----------------------------------------------------------------------------
@@ -126,38 +115,49 @@ augroup plugin_vim_which_key
   call s:tmux_map('<leader>to', '.top-right')
   call s:tmux_map('<leader>tn', '.bottom-left')
   call s:tmux_map('<leader>t.', '.bottom-right')
-  " note that tt, th, tj, tk, tl, ty, to, tn, t. are reserved by tmux_map
-  let g:which_key_map.t = {
-        \ 'name' : '+tag/toggle/todo',
-        \ 'j' : ['g<C-]>', 'jump-to-tag'],
-        \ 'n' : ['g[', 'next-tag'],
-        \ '?' : ['Tags', 'search-tags'],
-        \ 's' : ['Todo', 'show-todo'],
-        \ }
-  let g:which_key_map['w'] = {
-        \ 'name' : '+windows' ,
-        \ 'w' : ['<C-W>w'     , 'other-window']          ,
-        \ 'd' : ['<C-W>c'     , 'delete-window']         ,
-        \ '-' : ['<C-W>s'     , 'split-window-below']    ,
-        \ '|' : ['<C-W>v'     , 'split-window-right']    ,
-        \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
-        \ 'h' : ['<C-W>h'     , 'window-left']           ,
-        \ 'j' : ['<C-W>j'     , 'window-below']          ,
-        \ 'l' : ['<C-W>l'     , 'window-right']          ,
-        \ 'k' : ['<C-W>k'     , 'window-up']             ,
-        \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
-        \ 'J' : ['resize +5'  , 'expand-window-below']   ,
-        \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
-        \ 'K' : ['resize -5'  , 'expand-window-up']      ,
-        \ '=' : ['<C-W>='     , 'balance-window']        ,
-        \ 's' : ['<C-W>s'     , 'split-window-below']    ,
-        \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
-        \ 'q' : ['wq'     , 'save-and-quit']    ,
-        \ '?' : ['Windows'    , 'fzf-window']            ,
-        \ }
-  let g:which_key_map.x = {
-        \ 'name' : '+text',
-        \ }
+augroup END
+" }}}
+
+" ----------------------------------------------------------------------------
+" StripWhitespace of every file on save {{{
+" ----------------------------------------------------------------------------
+augroup strip_whitespace_before_save
+	autocmd!
+	autocmd BufWrite * call StripWhitespace()
+augroup END
+
+" ----------------------------------------------------------------------------
+" Goyo {{{ Settings for goyo.vim with limelight
+" ----------------------------------------------------------------------------
+augroup zen_mode_settings
+  autocmd!
+function! s:goyo_enter()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status off
+    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  endif
+  set noshowmode
+  set noshowcmd
+  set scrolloff=999
+  " Goyo opens another buffer, so setting an option locally does not change
+  " setting for any other buffer 😅
+  setlocal nolist
+  Limelight
+endfunction
+
+function! s:goyo_leave()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status on
+    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  endif
+  set showmode
+  set showcmd
+  set scrolloff=5
+  Limelight!
+endfunction
+
+autocmd User GoyoEnter nested call <SID>goyo_enter()
+autocmd User GoyoLeave nested call <SID>goyo_leave()
 augroup END
 " }}}
 
@@ -198,8 +198,9 @@ augroup filetype_markdown
   " https://vi.stackexchange.com/questions/7258/how-do-i-prevent-vim-from-hiding-symbols-in-markdown-and-json
   autocmd FileType markdown set conceallevel=0
   " Build and view markdown files
-  autocmd FileType markdown nnoremap <leader>mb :!pandoc -c styles/solarized.css -s % -o $(basename % .md).html<CR>
-  autocmd FileType markdown nnoremap <leader>mv :!firefox $(basename % .md).html<CR>
+  autocmd FileType markdown nnoremap <leader>mb :AsyncRun pandoc -c styles/pandoc.css -s % -o $(basename % .md).html<CR>
+  autocmd FileType markdown nnoremap <leader>mv :silent AsyncRun pandoc -c styles/pandoc.css -s % -o $(basename % .md).html && firefox $(basename % .md).html<CR>
+  autocmd FileType markdown nnoremap <leader>mt :AsyncRun typora %<CR>
 
   " TODO: reliably detect if Typora is installed
   if has('mac')
@@ -228,10 +229,10 @@ augroup END
 " ----------------------------------------------------------------------------
 augroup filetype_tex
   autocmd!
+  " Some LaTeX types
+  autocmd BufRead,BufNewFile *.cls setfiletype tex
+  autocmd BufRead,BufNewFile *.lco setfiletype tex
   " https://vi.stackexchange.com/questions/7258/how-do-i-prevent-vim-from-hiding-symbols-in-markdown-and-json
   autocmd FileType tex set conceallevel=0
-  " Build latex file
-  autocmd FileType tex nnoremap <leader>mb :!pdflatex %<CR>
-  autocmd FileType tex nnoremap <leader>mv :!zathura $(basename % .tex).pdf<CR>
 augroup END
 " }}}
