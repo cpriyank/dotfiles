@@ -15,3 +15,5 @@ ssh/.ssh/authorized_keys
 ssh/.ssh/id_*
 ssh/.ssh/*.pem
 ssh/.ssh/known_hosts
+nvim/.config/nvim/tags
+fish/.config/fish/fish_variables
