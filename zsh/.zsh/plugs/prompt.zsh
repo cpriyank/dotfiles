@@ -1,2 +1,2 @@
 # starship prompt https://starship.rs/
-eval "$(starship init zsh)"
+hash starship &>/dev/null && eval "$(starship init zsh)"
