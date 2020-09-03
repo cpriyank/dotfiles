@@ -1,1 +1,0 @@
-eval $(keychain --eval --quiet msft github)
