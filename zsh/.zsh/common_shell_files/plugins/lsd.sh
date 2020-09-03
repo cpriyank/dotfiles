@@ -1,11 +1,14 @@
 # beautify ls
 
 # some colors for ls
-if [[ -x /usr/bin/dircolors ]]; then
-	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)"
+if command -v lsd >/dev/null 2>&1; then
+	if [[ -e ~/.dircolors ]]; then
+		eval "$(dircolors -b ~/.dircolors)"
+	fi
 fi
+
 # icons for ls; requires lsd installed
-if type -p lsd > /dev/null 2>&1; then # check if command exists and is not an alias
+if command -v lsd >/dev/null 2>&1; then # check if command exists and is not an alias
   # some of these override existing aliases
 	alias ls='command lsd --group-dirs first'
 	alias l='command lsd --human-readable --classify --long --group-dirs first'
