@@ -5,16 +5,17 @@ set nocompatible
 " Begin adding plugins here. Managed by vim-plug -----------------------------
 " 
 " Reload vimrc and :PlugInstall to install plugins
+" Setup vim plug if not already
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
 
-call plug#begin('~/.vim/plugged')
+silent! if plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible' " Sensible defaults
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter' " shows a git diff in the 'gutter' (sign column)
-Plug 'majutsushi/tagbar' " explore tags with <leader>t
-
-" Wrappers
-Plug 'tpope/vim-fugitive' " Git wrapper
 
 "" Language specific
 Plug 'fatih/vim-go', {'for': 'go'}
@@ -28,24 +29,28 @@ Plug 'tpope/vim-commentary' " Commenting helper
 Plug 'tpope/vim-surround' " Simplified quoting and parenthesizing
 Plug 'tpope/vim-abolish' " Search for, substitute, and abbreviate words
 Plug 'tpope/vim-repeat' " repeat some of tpope plugin actions with '.'
-function! BuildYCM(info)
-  if a:info.status == 'installed' || a:info.force
-    !./install.py --clang-completer --gocode-completer
-  endif
-endfunction
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+Plug 'tpope/vim-abolish'
+if exists('##TextYankPost')
+	Plug 'machakann/vim-highlightedyank'
+	let g:highlightedyank_highlight_duration = 100
+endif
+
 
 " Visual
-Plug 'itchyny/lightline.vim' " Pretty status line
-Plug 'Yggdroot/indentLine'
 Plug 'junegunn/seoul256.vim' " Seoul256 colorscheme
+Plug 'morhetz/gruvbox'
+Plug 'Yggdroot/indentLine' " Show matching indents
 
 " Misc
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+Plug 'tpope/vim-eunuch' " :Rename, Delete, Chmod, Mkdir, SudoWrite, SudoEdit, Move commands
+Plug 'tpope/vim-unimpaired' " Handy bracket mappings
+Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go', 'C++']}
 Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
-Plug 'tpope/vim-unimpaired' " Handy bracket mappings
 Plug 'terryma/vim-multiple-cursors' " Sublime style multiple selections
 call plug#end()
+endif
 
 
 " Essentials -----------------------------------------------------------------
@@ -89,6 +94,7 @@ endif
 "   Range:   233 (darkest) ~ 239 (lightest)
 "   Default: 237
 let g:seoul256_background = 237
+let g:gruvbox_italic = 1
 
 " let base16colorspace=256  " Access colors present in 256 colorspace
 
@@ -96,7 +102,7 @@ set background=dark
 set t_Co=256 " Use 256 colors
 
 try  " Don't use a color scheme if not found
- colorscheme seoul256
+ colorscheme gruvbox
 catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
