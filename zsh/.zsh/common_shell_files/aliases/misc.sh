@@ -34,7 +34,7 @@ alias da='du -sch'
 # Print path in easier to read, vertical format
 alias ppath='echo $PATH | tr -s ":" "\n"'
 
-alias rm='rm -i -v' # Also see RM_STAR_SILENT options of Zsh
+alias rm='trash-rm' # Also see RM_STAR_SILENT options of Zsh
 
 # Warn on overwrite
 alias cp='cp -i -v'
@@ -73,3 +73,5 @@ alias rg='rg --hidden --ignore-case'
 # Update installed Ruby gems, Homebrew, npm, and their installed packages
 alias brew_update="brew -v update; brew upgrade --force-bottle --cleanup; brew cleanup; brew cask cleanup; brew prune; brew doctor; npm-check -g -u"
 alias update_brew_npm_gem='brew_update; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update --no-document'
+
+alias fc-monospace="fc-list :spacing=100"
