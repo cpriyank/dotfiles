@@ -47,9 +47,9 @@ function xrr
 end
 
 function t
-	if test -n $argv 
-		tree -C $argv 
-	else 
+	if test -n $argv
+		tree -C $argv
+	else
 		tree -C .
 	end
 end
@@ -97,7 +97,7 @@ function shantib
 	redshift -o -l 23.22:72.68
 end
 
-# Seattle coordinates  
+# Seattle coordinates
 function shanti
 	redshift -o -l 47.61:-122.33 -t 4500:2800
 end
@@ -279,10 +279,10 @@ alias paclist='expac -HM "%011m\t%-20n\t%10d" ( comm -23 <(pacman -Qqen|sort) <(
 alias aurlist='pacman -Qm'
 
 # Search AUR for matching strings
-alias aurfind='pacaur -Ss'
+alias aurfind='paru -Ss'
 
 # Install an AUR package
-alias aurin='yay -S'
+alias aurin='paru -S'
 
 # Upgrade AUR packages. See archlinux news before upgrading
-alias aurupg='yay -Syu -w --answerclean None --answerdiff None --answeredit None'
+alias aurupg='paru -Syu -w'
