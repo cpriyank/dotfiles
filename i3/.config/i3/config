@@ -142,8 +142,6 @@ for_window [window_role="task_dialog"] floating enable
 
 # windows that should always float
 for_window [class="(?i)^lxappearance$"] floating enable
-# Teams notification spawns a full window if we don't allow it to float
-for_window [title="Microsoft Teams Notification"] floating enable
 for_window [title="Open Folder"] floating disable
 
 #
@@ -178,8 +176,8 @@ bindsym $mod+i exec chromium --incognito
 bindsym $mod+space exec --no-startup-id rofi -show drun -show-icons
 
 # Alt + Tab to show open windows
-bindsym $mod+Tab exec rofi --no-startup-id -show window -show-icons
-bindsym $alt+Tab exec rofi --no-startup-id -show window -show-icons
+bindsym $mod+Tab exec rofi -show window -show-icons
+bindsym $alt+Tab exec rofi -show window -show-icons
 
 
 # set color variables
@@ -229,6 +227,6 @@ bar {
 # create a startup notification context, without which the firefox window(s)
 # cannot be matched onto the workspace on which the command was started and
 # opens in focused workspace rather than the one where exec command was issued)
-# exec --no-startup-id i3-msg 'workspace 1; exec TZ=UTC firefox;'
 exec --no-startup-id i3-msg "workspace $firefox; exec firefox"
 exec --no-startup-id i3-msg "workspace $terminal; exec alacritty"
+bindsym $mod+z exec ~/bin/external-monitor.bash
