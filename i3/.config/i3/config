@@ -79,8 +79,8 @@ bindsym $mod+Shift+x mode "$mode_system"
 
 # Pulse Audio controls
 # For PulseAudio
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse set Master 5%+ unmute
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse set Master 5%- unmute
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 --unmute
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5
 
 # mpc controls
 bindsym Shift+XF86AudioLowerVolume exec mpc prev
