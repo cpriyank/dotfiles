@@ -1,39 +1,56 @@
 /* * hand crafted theme by priyank chaudhary to match i3wm colors */
 /* * see https://github.com/davatorium/rofi/blob/next/doc/rofi-theme.5.markdown */
 /* * for customization options */
+
+configuration {
+    width:           50;
+    lines:           5;
+    columns:         1;
+    font:            "Sans 30";
+    bw:              1;
+    padding:         2;
+    yoffset:         -2;
+    xoffset:         0;
+    fixed-num-lines: false;
+    show-icons:      true;
+    icon-theme:      "Papirus";
+    terminal:        "alacritty";
+}
+
 * {
-	dark   : #312c32;
-	light  : #feffff;
-	skyblue: #98dafc;
-	red    : #e05038;
-	orange : #e6af4b;
-	spacing: 0;
+	dark:             #312c32;
+	darkopaque:       #312c3299; /* final two hex are for alpha channel for transparency */
+	light:            #feffff;
+	skyblue:          #98dafc;
+	red:              #e05038;
+	orange:           #e6af4b;
+	spacing:          0;
 	background-color: transparent;
 }
 
 window {
-	transparency: "real";
-	/*fullscreen: true;*/
-	background-color: #312c3299; /* @dark  + 99 for opacity */
+	transparency:     "real";
+	/*fullscreen:     true;*/
+	background-color: @darkopaque;
 }
 
 mainbox {
-	children: [inputbar, message, listview];
-	spacing: 30px;
-	/*margin: 20%;*/
-	padding: 30px 0;
-	border: 1px;
+	children:     [inputbar, message, listview];
+	spacing:      30px;
+	/*margin:     20%;*/
+	padding:      30px 0;
+	border:       1px;
 	border-color: @dark;
 }
 
 inputbar {
-	padding: 0 30px;
+	padding:  0 30px;
 	children: [prompt, textbox-prompt-colon, entry, case-indicator];
 }
 
 /* this is disabled so config options won't matter */
 prompt {
-	enabled: false;
+	enabled:    false;
 	text-color: @light;
 }
 
@@ -81,6 +98,10 @@ scrollbar {
 element {
 	padding: 5px;
 	highlight: bold underline;
+}
+
+element-icon {
+	size: 1.65ch;
 }
 
 element normal {
