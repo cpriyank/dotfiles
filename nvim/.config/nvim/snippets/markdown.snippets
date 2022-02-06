@@ -1,0 +1,41 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+snippet rec Recurrence
+\$\$
+${1:functionName}(i, j) = \\begin{cases}
+   $1(i, j) &\\text{if } ${2:first}[${3:firstIndex}] ${4:relation} ${5:second}[${6:secondIndex}] \\\\
+   $1(i, j) &\\text{if } $2[${7:firstIndexAdjustment}] ${8:anotherRelation} $5[${9:secondIndexAdjustment}]
+\\end{cases}
+\$\$
+
+snippet recm Recurrence
+\$\$
+${1:functionName}(i, j) = \\begin{cases}
+	 $1(i, j) &\\text{if } ${2:first}[${3:firstIndex}] ${4:relation} ${5:second}[${6:secondIndex}] \quad or \quad $2[$3] $4 $5[$6]\\\\
+	 $1(i, j) &\\text{if } $2[${7:firstIndexAdjustment}] ${8:anotherRelation} $5[${9:secondIndexAdjustment}]
+\\end{cases}
+\$\$
