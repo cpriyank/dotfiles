@@ -1,0 +1,34 @@
+set number
+set relativenumber " Use relative line numbers
+set ideajoin
+set clipboard^=unnamed,unnamedplus " Make yanks go to OS clipboard. Also see ideaput
+set idearefactormode=keep
+
+let mapleader = " "
+
+" Use Q for formatting the current paragraph (or visual selection), == for
+" file
+vmap Q gq
+nmap Q gqap
+nmap == :action ReformatCode<cr>
+
+nnoremap - :action SplitVertically<CR>
+nnoremap _ :action SplitHorizontally<CR>
+
+inoremap jk <Esc>
+inoremap kj <Esc>
+
+vnoremap < <gv
+vnoremap > >gv
+nnoremap [[ :action MethodUp<CR>
+nnoremap ]] :action MethodDown<CR>
+nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
+nnoremap ]e :action GotoNextError<CR>
+nnoremap [e :action GotoPreviousError<CR>
+
+" Plugins ---------------------------------------------------------------------
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'vim-scripts/ReplaceWithRegister'
+Plug 'tommcdo/vim-exchange'
+Plug 'machakann/vim-highlightedyank'
