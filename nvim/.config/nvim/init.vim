@@ -19,7 +19,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-gtfo' " (xdg-)open terminal/tmux pane/file manager of current directory with got and gof
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKeyVisual', 'WhichKey!', 'WhichKeyVisual!'] } " Show keybinds in a popup
-" Plug 'mhinz/vim-startify' " :startify, :SSave, :SLoad, and nice startup screen
+Plug 'mhinz/vim-startify' " :startify, :SSave, :SLoad, and nice startup screen
 
 " Colors
 Plug 'AlessandroYorba/Despacio'
@@ -103,8 +103,14 @@ Plug 'derekwyatt/vim-scala'
 Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'] }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
+" Notes
+Plug 'lervag/wiki.vim'
+let g:wiki_root = '~/z/notes/work'
+let g:wiki_filetypes = ['md']
+let g:wiki_link_extension = '.md'
+
 Plug 'ryanoasis/vim-devicons' " Has to be loaded last
-set guifont=SauceCodePro\ Nerd\ Font\ 12 " nerd fonts are required for vim-devicons
+set guifont=Iosevka\ Nerd\ Font:h16 " nerd fonts are required for vim-devicons
 
 call plug#end()
 endif
