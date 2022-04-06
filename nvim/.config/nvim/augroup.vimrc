@@ -76,15 +76,19 @@ augroup END
 augroup leader_mappings
   autocmd!
   nnoremap <leader>c :cclose<bar>lclose<cr>
-nnoremap <leader>w :w<CR>
-nnoremap <leader>q :wq<CR>
-nnoremap <leader>ff :Files<CR>
-nnoremap <leader>bb :Buffers<CR>
-nnoremap <leader>fg :GFiles<CR>
-nnoremap <leader>fr :History<CR>
-nnoremap <leader>se :CocCommand snippets.editSnippets<CR>
-nnoremap <leader>ss :call StripWhitespace()<CR>
-nnoremap <leader>sr :%s:::g<Left><Left><Left>
+  nnoremap <leader>w :w<CR>
+  nnoremap <leader>q :wq<CR>
+  " Tell FZF to use RG - so we can skip .gitignore files even if not using
+  " :GitFiles search
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
+  nnoremap <leader>ff :Files<CR>
+  nnoremap <leader>bb :Buffers<CR>
+  nnoremap <leader>fg :GFiles<CR>
+  nnoremap <leader>fr :History<CR>
+  nnoremap <leader>rg :Rg<CR>
+  nnoremap <leader>se :CocCommand snippets.editSnippets<CR>
+  nnoremap <leader>ss :call StripWhitespace()<CR>
+  nnoremap <leader>sr :%s:::g<Left><Left><Left>
  " send selection to other buffer
   " vnoremap <leader>sp y<C-w>wp<C-w>w<CR>
   xnoremap <leader>sp y<C-w>wp<C-w>w<CR>
