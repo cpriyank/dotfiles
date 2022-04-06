@@ -27,6 +27,15 @@ nnoremap Y y$
 " From https://stackoverflow.com/questions/4298910/vim-close-buffer-but-not-split-window
 nmap ,d :b#<bar>bd#<CR>
 
+" Replace selection in visual mode with <C-r>
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+vmap <Enter> <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 " ----------------------------------------------------------------------------
 " #!! | Shebang
 " ----------------------------------------------------------------------------
@@ -63,4 +72,10 @@ silent! exe "set <S-Right>=\<Esc>f"
 " ----------------------------------------------------------------------------
 " I don't use the default U command, bind it for undotree
 nnoremap U :UndotreeToggle<CR>
+"  }}}
+" ----------------------------------------------------------------------------
+" plugin gitgutter {{{
+" ----------------------------------------------------------------------------
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
 "  }}}
