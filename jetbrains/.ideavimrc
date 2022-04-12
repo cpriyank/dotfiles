@@ -17,6 +17,8 @@ nnoremap _ :action SplitHorizontally<CR>
 
 inoremap jk <Esc>
 inoremap kj <Esc>
+nnoremap j gj
+nnoremap k gk
 
 vnoremap < <gv
 vnoremap > >gv
