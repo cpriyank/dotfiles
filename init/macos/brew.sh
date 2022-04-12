@@ -10,8 +10,8 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # Necessary packages
-brew install stow zsh zsh-syntax-highlighting zsh-autosuggestions go python3\
-	youtube-dl mpv luajit neovim ncdu
+brew install stow zsh zsh-syntax-highlighting zsh-autosuggestions python3\
+	youtube-dl mpv luajit neovim ncdu gh bat fd ripgrep fish
 
 # Install more recent versions of some macOS tools.
 # brew install vim --with-luajit --with-override-system-vi
