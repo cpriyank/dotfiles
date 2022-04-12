@@ -68,6 +68,10 @@ function rm
 	trash $argv
 end
 
+function cp
+  rsync --archive -hh --partial --info=stats1,progress2 --modify-window=1 $argv
+end
+
 # function cp
 	# command gcp --interactive --verbose $argv
 # end
@@ -125,8 +129,13 @@ function gr --description "Jump to the git root"
 	end
 end
 
+# alias ga only if forgit is not installed
 function ga
-	git add $argv
+	if not type forgit::add &> /dev/null
+		git add $argv
+	else
+		forgit::add
+	end
 end
 
 function gc
@@ -257,6 +266,7 @@ alias pacin='sudo pacman -S'
 alias pacins='sudo pacman -U'
 alias pacrem='sudo pacman -Rns'
 alias pacref='sudo pacman -Syy'
+alias nixup='nix-channel --update; and darwin-rebuild switch'
 
 # Delete the lock file /var/lib/pacman/db.lck
 alias pacunlock='sudo rm /var/lib/pacman/db.lck'
