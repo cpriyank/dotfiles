@@ -790,6 +790,10 @@ defaults write com.google.Chrome.canary DisablePrintPreview -bool true
 defaults write com.google.Chrome PMPrintingExpandedStateForPrint2 -bool true
 defaults write com.google.Chrome.canary PMPrintingExpandedStateForPrint2 -bool true
 
+# https://mmazzarolo.com/blog/2022-04-16-drag-window-by-clicking-anywhere-on-macos/
+# Moving a macOS window by clicking anywhere on it (like on Linux) with CMD+Ctrl+Click
+defaults write -g NSWindowShouldDragOnGesture -bool true
+
 ###############################################################################
 # GPGMail 2                                                                   #
 ###############################################################################
