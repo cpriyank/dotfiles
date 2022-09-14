@@ -17,3 +17,5 @@ ssh/.ssh/*.pem
 ssh/.ssh/known_hosts
 nvim/.config/nvim/tags
 fish/.config/fish/fish_variables
+fish/.config/fish/completions/fisher.fish
+fish/.config/fish/functions/fisher.fish
