@@ -19,7 +19,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-gtfo' " (xdg-)open terminal/tmux pane/file manager of current directory with got and gof
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKeyVisual', 'WhichKey!', 'WhichKeyVisual!'] } " Show keybinds in a popup
-" Plug 'mhinz/vim-startify' " :startify, :SSave, :SLoad, and nice startup screen
+Plug 'mhinz/vim-startify' " :startify, :SSave, :SLoad, and nice startup screen
 
 " Colors
 Plug 'AlessandroYorba/Despacio'
