@@ -3,6 +3,7 @@ set relativenumber " Use relative line numbers
 set ideajoin
 set clipboard^=unnamed,unnamedplus " Make yanks go to OS clipboard. Also see ideaput
 set idearefactormode=keep
+set smartcase
 
 let mapleader = " "
 
