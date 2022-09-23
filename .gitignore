@@ -17,3 +17,4 @@ ssh/.ssh/*.pem
 ssh/.ssh/known_hosts
 nvim/.config/nvim/tags
 fish/.config/fish/fish_variables
+hammerspoon/.config/hammerspoon/Spoons/RecursiveBinder.spoon/docs.json
