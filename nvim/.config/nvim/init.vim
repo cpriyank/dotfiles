@@ -33,7 +33,6 @@ Plug 'tomasr/molokai'
 " Other visual enhancement
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-" Plug 'itchyny/lightline.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
@@ -42,8 +41,7 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable', 'for': 'python' }
 " TODO: autocmd
 autocmd! User indentLine doautocmd indentLine Syntax
-" Plug 'liuchengxu/eleline.vim'
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " semantic highlight for Python
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " semantic highlight for Python
 Plug 'romainl/vim-cool' " disables search highlighting when you are done searching and re-enables it when you search again.
 
 " Edit
@@ -78,8 +76,8 @@ Plug 'AndrewRadev/splitjoin.vim' " Split/join line(s) with gS and gJ
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 " Plug 'ervandew/supertab' " all vim insert mode completions with Tab
 
-Plug 'Shougo/neoinclude.vim'
-Plug 'jsfaint/coc-neoinclude'
+" Plug 'Shougo/neoinclude.vim'
+" Plug 'jsfaint/coc-neoinclude'
 " Use release branch
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
@@ -92,19 +90,25 @@ Plug 'tpope/vim-rhubarb' " Hub command interface
 Plug 'airblade/vim-gitgutter' " Git diff in signing column
 
 " Lang
-Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
-Plug 'rust-lang/rust.vim', {'for': 'rust'}
+" Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
+" Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'dag/vim-fish'
-Plug 'octol/vim-cpp-enhanced-highlight'
+" Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'liuchengxu/vista.vim' " Viewer & Finder for LSP symbols and tags
 " TODO: this can be removed in favor of vista.vim
 Plug 'lyuts/vim-rtags', { 'for': ['c', 'cpp'] }
-Plug 'derekwyatt/vim-scala'
-Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'] }
+" Plug 'derekwyatt/vim-scala'
+" Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'] }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
+" Notes
+" Plug 'lervag/wiki.vim'
+" let g:wiki_root = '~/z/notes/work'
+" let g:wiki_filetypes = ['md']
+" let g:wiki_link_extension = '.md'
+
 Plug 'ryanoasis/vim-devicons' " Has to be loaded last
-set guifont=SauceCodePro\ Nerd\ Font\ 12 " nerd fonts are required for vim-devicons
+set guifont=InconsolataLGC\ Nerd\ Font:h16 " nerd fonts are required for vim-devicons
 
 call plug#end()
 endif
