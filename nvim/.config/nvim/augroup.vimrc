@@ -123,14 +123,6 @@ augroup END
 " }}}
 
 " ----------------------------------------------------------------------------
-" StripWhitespace of every file on save {{{
-" ----------------------------------------------------------------------------
-augroup strip_whitespace_before_save
-	autocmd!
-	autocmd BufWrite * call StripWhitespace()
-augroup END
-
-" ----------------------------------------------------------------------------
 " Goyo {{{ Settings for goyo.vim with limelight
 " ----------------------------------------------------------------------------
 augroup zen_mode_settings

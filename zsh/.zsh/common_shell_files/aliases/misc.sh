@@ -34,7 +34,13 @@ alias da='du -sch'
 # Print path in easier to read, vertical format
 alias ppath='echo $PATH | tr -s ":" "\n"'
 
-alias rm='trash' # Also see RM_STAR_SILENT options of Zsh
+if command -v trash-rm >/dev/null 2>&1; then
+    alias rm='trash-rm'
+elif command -v trash >/dev/null 2>&1; then
+    alias rm='trash' # Also see RM_STAR_SILENT options of Zsh
+else
+    alias rm='rm -i'
+fi
 
 # Warn on overwrite
 alias cp='cp -i -v'

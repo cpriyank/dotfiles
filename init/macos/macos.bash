@@ -894,6 +894,13 @@ defaults write -g NSWindowShouldDragOnGesture -bool true
 # defaults write com.tapbots.TweetbotMac OpenURLsDirectly -bool true
 
 ###############################################################################
+# Hammerspoon
+###############################################################################
+
+# Keep hammerspoon config in the "right" place
+defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
+
+###############################################################################
 # Spectacle.app                                                               #
 ###############################################################################
 
