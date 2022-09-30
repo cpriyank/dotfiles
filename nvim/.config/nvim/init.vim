@@ -78,8 +78,8 @@ Plug 'AndrewRadev/splitjoin.vim' " Split/join line(s) with gS and gJ
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 " Plug 'ervandew/supertab' " all vim insert mode completions with Tab
 
-Plug 'Shougo/neoinclude.vim'
-Plug 'jsfaint/coc-neoinclude'
+" Plug 'Shougo/neoinclude.vim'
+" Plug 'jsfaint/coc-neoinclude'
 " Use release branch
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
@@ -93,15 +93,15 @@ Plug 'airblade/vim-gitgutter' " Git diff in signing column
 
 " Lang
 Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
-Plug 'rust-lang/rust.vim', {'for': 'rust'}
-Plug 'dag/vim-fish'
-Plug 'octol/vim-cpp-enhanced-highlight'
+" Plug 'rust-lang/rust.vim', {'for': 'rust'}
+" Plug 'dag/vim-fish'
+" Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'liuchengxu/vista.vim' " Viewer & Finder for LSP symbols and tags
 " TODO: this can be removed in favor of vista.vim
-Plug 'lyuts/vim-rtags', { 'for': ['c', 'cpp'] }
-Plug 'derekwyatt/vim-scala'
-Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'] }
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" Plug 'lyuts/vim-rtags', { 'for': ['c', 'cpp'] }
+" Plug 'derekwyatt/vim-scala'
+" Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'] }
+" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown']}
 
 " Notes
 Plug 'lervag/wiki.vim'
