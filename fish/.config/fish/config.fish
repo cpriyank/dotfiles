@@ -28,23 +28,24 @@ set -gx LESS_TERMCAP_so \e'[01;44;33m'
 set -gx LESS_TERMCAP_ue \e'[0m'
 set -gx LESS_TERMCAP_us \e'[01;32m'
 
-### color ls output
-if command --search --quiet gdircolors ;and test -e $HOME/.dircolors
-	eval (gdircolors --c-shell $HOME/.dircolors)
-end
+### color ls output. This is replaced by built-in colors in lsd
+# if command --search --quiet gdircolors ;and test -e $HOME/.dircolors
+# 	eval (gdircolors --c-shell $HOME/.dircolors)
+# end
 
-if command --search --quiet dircolors ;and test -e $HOME/.dircolors
-	eval (dircolors --c-shell $HOME/.dircolors)
-end
+# if command --search --quiet dircolors ;and test -e $HOME/.dircolors
+# 	eval (dircolors --c-shell $HOME/.dircolors)
+# end
 #}}}
 
 ###############################################################################
 ### Prompt {{{
 ###############################################################################
 # starship prompt. requires https://starship.rs/guide/#%F0%9F%9A%80-installation
-if command --search --quiet "starship"
-	starship init fish | source
-end
+# This is replaced by built-in prompt hydro in nix-darwin
+# if command --search --quiet "starship"
+# 	starship init fish | source
+# end
 #}}}
 
 ### Some handy aliases
