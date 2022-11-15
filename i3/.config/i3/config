@@ -162,10 +162,10 @@ hide_edge_borders both
 #
 # Launchers
 #
-bindsym $mod+f exec alacritty -e vifm
+bindsym $mod+f exec kitty -e vifm
 bindsym $mod+u exec firefox
 bindsym $mod+y exec firefox --private-window
-bindsym $mod+Return exec --no-startup-id alacritty
+bindsym $mod+Return exec --no-startup-id kitty
 bindsym $mod+t exec --no-startup-id i3-sensible-terminal # failsafe terminal
 # bindsym $mod+h exec transmission-gtk
 bindsym $mod+g exec chromium
@@ -228,5 +228,5 @@ bar {
 # cannot be matched onto the workspace on which the command was started and
 # opens in focused workspace rather than the one where exec command was issued)
 exec --no-startup-id i3-msg "workspace $firefox; exec firefox"
-exec --no-startup-id i3-msg "workspace $terminal; exec alacritty"
+exec --no-startup-id i3-msg "workspace $terminal; exec kitty"
 bindsym $mod+z exec ~/bin/external-monitor.bash

@@ -42,6 +42,7 @@ end
 if test -e $HOME/.config/fish/private.fish
 	source $HOME/.config/fish/private.fish
 end
+#}}}
 
 ###############################################################################
 ### Environment variables {{{
