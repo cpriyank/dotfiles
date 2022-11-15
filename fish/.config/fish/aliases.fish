@@ -289,10 +289,10 @@ alias paclist='expac -HM "%011m\t%-20n\t%10d" ( comm -23 <(pacman -Qqen|sort) <(
 alias aurlist='pacman -Qm'
 
 # Search AUR for matching strings
-alias aurfind='paru -Ss'
+alias aurfind='trizen -Ss'
 
 # Install an AUR package
-alias aurin='paru -S'
+alias aurin='trizen -S'
 
 # Upgrade AUR packages. See archlinux news before upgrading
-alias aurupg='paru -Syu -w'
+alias aurupg='trizen -Syu -w'
