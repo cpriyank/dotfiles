@@ -58,8 +58,5 @@
     "vim.gdefault": true,
     "vim.highlightedyank.enable": true,
     "vim.enableNeovim": true,
-    "vim.neovimPath": "/usr/bin/nvim",
     "vim.camelCaseMotion.enable": true,
-    "C_Cpp.updateChannel": "Insiders",
-    "markdown.preview.fontFamily": "-apple-system, BlinkMacSystemFont, serif, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif"
 }
