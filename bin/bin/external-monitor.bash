@@ -9,6 +9,7 @@ then
 	# Find names of your outputs using command `xrandr -q`
 	notify-send "turning off laptop screen"
 	xrandr --output eDP-1 --off
+	xrandr --auto
 	feh --bg-fill --randomize ~/Pictures/wallpapers/
 else
 	notify-send "turning on laptop screen"
