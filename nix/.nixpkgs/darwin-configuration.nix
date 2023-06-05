@@ -15,9 +15,10 @@
     [
       alacritty
       bat
-      # cod # broken in 22.05
+      cod # broken in 22.05
       delta
       diff-so-fancy
+      emacs
       fd
       fishPlugins.done
       fishPlugins.fzf-fish
@@ -25,7 +26,9 @@
       fishPlugins.hydro
       fzf
       gh
-      kitty
+      kakoune
+      # kitty
+      luajit
       lsd
       mpv
       neovim
@@ -33,10 +36,15 @@
       openssl
       ripgrep
       tex
-      starship
+      # starship
       tmux
       tmuxPlugins.extrakto
-      # vscode
+      ghostscript
+      graphicsmagick
+      imagemagick
+      pandoc
+      vim
+      vscode # needs nixpkgs.config.allowUnfree
     ];
 
   # Use a custom configuration.nix location.
@@ -45,6 +53,7 @@
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
   nix.package = pkgs.nix;
+	nixpkgs.config.allowUnfree = true;
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   # programs.zsh.enable = true;  # default shell on catalina

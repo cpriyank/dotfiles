@@ -21,12 +21,14 @@ Plug 'justinmk/vim-gtfo' " (xdg-)open terminal/tmux pane/file manager of current
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKeyVisual', 'WhichKey!', 'WhichKeyVisual!'] } " Show keybinds in a popup
 Plug 'mhinz/vim-startify' " :startify, :SSave, :SLoad, and nice startup screen
 
+Plug 'tweekmonster/startuptime.vim'
+
 " Colors
 Plug 'AlessandroYorba/Despacio'
 Plug 'cocopon/iceberg.vim'
 Plug 'junegunn/seoul256.vim'
 Plug 'w0ng/vim-hybrid'
-Plug 'morhetz/gruvbox'
+" Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 Plug 'tomasr/molokai'
 
@@ -42,7 +44,7 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable', 'for': 'python' }
 " TODO: autocmd
 autocmd! User indentLine doautocmd indentLine Syntax
-" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " semantic highlight for Python
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " semantic highlight for Python
 Plug 'romainl/vim-cool' " disables search highlighting when you are done searching and re-enables it when you search again.
 
 " Edit
@@ -54,6 +56,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-eunuch' " :Rename, Delete, Chmod, Mkdir, SudoWrite, SudoEdit, Move commands
 Plug 'rhysd/clever-f.vim' " Extended f, F, t and T key mappings for Vim
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'vim-scripts/ReplaceWithRegister' " replace selection or motion with register with gr
 Plug 'AndrewRadev/splitjoin.vim' "gS and gJ to split/join single/multiple lines
@@ -81,7 +84,7 @@ Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
 " Plug 'jsfaint/coc-neoinclude'
 " Use release branch
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'honza/vim-snippets'
 
 " Git
@@ -113,6 +116,16 @@ set guifont=InconsolataLGC\ Nerd\ Font:h16 " nerd fonts are required for vim-dev
 
 call plug#end()
 endif
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "c", "rust" },  -- list of language that will be disabled
+  },
+}
+EOF
 
 " Source other config files now
 for s:path in split(expand('~/.config/nvim/*.vimrc'), "\n")
