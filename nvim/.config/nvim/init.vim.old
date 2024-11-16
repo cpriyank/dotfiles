@@ -17,8 +17,7 @@ silent! if plug#begin('~/.local/share/nvim/plugged')
 " File/project management
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'justinmk/vim-gtfo' " (xdg-)open terminal/tmux pane/file manager of current directory with got and gof
-Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKeyVisual', 'WhichKey!', 'WhichKeyVisual!'] } " Show keybinds in a popup
+"Plug 'justinmk/vim-gtfo' " (xdg-)open terminal/tmux pane/file manager of current directory with got and gof
 Plug 'mhinz/vim-startify' " :startify, :SSave, :SLoad, and nice startup screen
 
 Plug 'tweekmonster/startuptime.vim'
@@ -44,7 +43,7 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable', 'for': 'python' }
 " TODO: autocmd
 autocmd! User indentLine doautocmd indentLine Syntax
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " semantic highlight for Python
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " semantic highlight for Python
 Plug 'romainl/vim-cool' " disables search highlighting when you are done searching and re-enables it when you search again.
 
 " Edit
@@ -75,22 +74,11 @@ Plug 'justinmk/vim-sneak' " motion enhancement
 let g:sneak#label = 1
 " motion within camel and snake case with ",w"
 Plug 'vim-scripts/camelcasemotion', {'for': ['Java', 'Python', 'Go', 'C++']}
-Plug 'AndrewRadev/splitjoin.vim' " Split/join line(s) with gS and gJ
-" Plug 'ConradIrwin/vim-bracketed-paste'  " Automatic `:set paste`¬
 Plug 'cohama/lexima.vim' " Automatically close brackets, quotes, etc
-" Plug 'ervandew/supertab' " all vim insert mode completions with Tab
-
-" Plug 'Shougo/neoinclude.vim'
-" Plug 'jsfaint/coc-neoinclude'
-" Use release branch
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'sheerun/vim-polyglot'
-Plug 'honza/vim-snippets'
 
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim' " Git commit browser
-Plug 'tpope/vim-rhubarb' " Hub command interface
 Plug 'airblade/vim-gitgutter' " Git diff in signing column
 
 " Lang
@@ -98,11 +86,7 @@ Plug 'airblade/vim-gitgutter' " Git diff in signing column
 " Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'dag/vim-fish'
 " Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'liuchengxu/vista.vim' " Viewer & Finder for LSP symbols and tags
-" TODO: this can be removed in favor of vista.vim
-" Plug 'lyuts/vim-rtags', { 'for': ['c', 'cpp'] }
 " Plug 'derekwyatt/vim-scala'
-" Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp'] }
 " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown']}
 
 " Notes
@@ -116,16 +100,6 @@ set guifont=InconsolataLGC\ Nerd\ Font:h16 " nerd fonts are required for vim-dev
 
 call plug#end()
 endif
-
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = { "c", "rust" },  -- list of language that will be disabled
-  },
-}
-EOF
 
 " Source other config files now
 for s:path in split(expand('~/.config/nvim/*.vimrc'), "\n")
