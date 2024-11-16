@@ -1,0 +1,19 @@
+[core]
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    hyperlinks=true
+    hyperlinks-file-link-format = "vscode://file/{path}:{line}"
+    minus-style = white bold ul "#EE4B2B"
+    # delta detects terminal colors automatically; set one of these to disable auto-detection
+    # dark = true
+    # light = true
+[merge]
+    conflictstyle = zdiff3
+[color]
+    ui = true
+[user]
+    email = p_chaudhary@apple.com
+    name = Priyank🌸
