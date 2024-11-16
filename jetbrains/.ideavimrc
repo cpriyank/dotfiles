@@ -1,6 +1,15 @@
 set number
 set relativenumber " Use relative line numbers
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=5
+
+" Do incremental searching.
+set incsearch
+
 set ideajoin
+set ideastatusicon=gray
+set idearefactormode=keep
 set clipboard^=unnamed,unnamedplus " Make yanks go to OS clipboard. Also see ideaput
 set idearefactormode=keep
 set smartcase
@@ -25,13 +34,32 @@ vnoremap < <gv
 vnoremap > >gv
 nnoremap [[ :action MethodUp<CR>
 nnoremap ]] :action MethodDown<CR>
-nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
+map <leader>r <Action>(RenameElement)
+map <leader>e <Action>(Run)
+map <leader>z <Action>(ToggleDistractionFreeMode)
+map <leader>s <Action>(SelectInProjectView)
+map <leader>a <Action>(Annotate)
+map <leader>h <Action>(Vcs.ShowTabbedFileHistory)
+map <leader>o <Action>(FileStructurePopup)
+map <leader>f <Action>(GotoFile)
+map <leader>g <Action>(FindInPath)
+map <leader>b <Action>(Switcher)
+
 nnoremap ]e :action GotoNextError<CR>
 nnoremap [e :action GotoPreviousError<CR>
 
-" Plugins ---------------------------------------------------------------------
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'vim-scripts/ReplaceWithRegister'
-Plug 'tommcdo/vim-exchange'
-Plug 'machakann/vim-highlightedyank'
+" Plugins See list of supported ones -----------------------------------------
+set surround
+set multiple-cursors
+set argtextobj
+Plug 'vim-commentary'
+set easymotion
+set textobj-entire
+set ReplaceWithRegister
+set exchange
+set textobj-indent
+set highlightedyank
+set matchit
+
+""" Plugin settings -------------------------
+let g:argtextobj_pairs="[:],(:),<:>"
