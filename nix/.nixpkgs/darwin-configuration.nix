@@ -13,38 +13,43 @@
 {
     environment.systemPackages = with pkgs;
     [
-      alacritty
       bat
-      cod # broken in 22.05
       delta
-      diff-so-fancy
-      emacs
       fd
+      ffmpeg
       fishPlugins.done
-      fishPlugins.fzf-fish
       fishPlugins.forgit
+      fishPlugins.fzf
+      fishPlugins.gruvbox
       fishPlugins.hydro
+      fishPlugins.pisces
       fzf
       gh
-      kakoune
-      # kitty
+      ghostscript
+      gping
+      graphicsmagick
+      imagemagick
+      # kakoune
+      kitty
+      lazygit
       luajit
       lsd
       mpv
       neovim
+      nil # nix language server
+      nixpkgs-fmt
       nodejs
-      openssl
+      pandoc
+      pyright
       ripgrep
+      sad
       tex
       # starship
       tmux
       tmuxPlugins.extrakto
-      ghostscript
-      graphicsmagick
-      imagemagick
-      pandoc
       vim
       vscode # needs nixpkgs.config.allowUnfree
+      zoxide
     ];
 
   # Use a custom configuration.nix location.
