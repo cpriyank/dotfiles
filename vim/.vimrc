@@ -39,7 +39,7 @@ endif
 " Visual
 Plug 'junegunn/seoul256.vim' " Seoul256 colorscheme
 Plug 'morhetz/gruvbox'
-Plug 'Yggdroot/indentLine' " Show matching indents
+" Plug 'Yggdroot/indentLine' " Show matching indents
 
 " Misc
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
@@ -248,6 +248,9 @@ inoremap hh <C-p>
 " Toggle folding with <Space>
 nnoremap <Space> za
 vnoremap <Space> za
+
+" Map ; to :
+nnoremap ; :
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()

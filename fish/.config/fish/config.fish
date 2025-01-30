@@ -25,21 +25,9 @@ set -gx LESS_TERMCAP_us \e'[01;32m'
 # end
 #}}}
 
-###############################################################################
-### Prompt {{{
-###############################################################################
-# starship prompt. requires https://starship.rs/guide/#%F0%9F%9A%80-installation
-# This is replaced by built-in prompt hydro in nix-darwin
-# if command --search --quiet "starship"
-# 	starship init fish | source
-# end
-#}}}
-
-# detects usage of --help commands parses their output and generates auto-completions for your shell
-if command --search --quiet "cod"
-  cod init $fish_pid fish | source
+if command --search --quiet "zoxide"
+  zoxide init fish | source
 end
-
 ### Some handy aliases
 if test -e $HOME/.config/fish/aliases.fish
 	source $HOME/.config/fish/aliases.fish
@@ -73,4 +61,14 @@ if status is-login
     if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
         exec startx -- -keeptty
     end
+end
+
+# Track the number of shell sessions
+set -U fish_gc_count (math (set -q fish_gc_count; echo $fish_gc_count) + 1)
+
+# Run garbage collection every 1000 sessions
+if test $fish_gc_count -ge 1000
+    echo "Running Nix garbage collection..."
+    /run/current-system/sw/bin/nix-collect-garbage -d
+    set -U fish_gc_count 0  # Reset the counter
 end
