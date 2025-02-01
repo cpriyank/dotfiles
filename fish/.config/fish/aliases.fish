@@ -282,9 +282,6 @@ alias paclfind='pacman -Qs'
 # Remove orphaned packages
 alias pacrorf='sudo pacman -Rns (pacman -Qtdq)'
 
-# List all explicitly installed packages not in base and base-devel
-alias paclist='expac -HM "%011m\t%-20n\t%10d" ( comm -23 <(pacman -Qqen|sort) <(pacman -Qqg base base-devel|sort) ) | sort -n'
-
 # List packages installed from AUR
 alias aurlist='pacman -Qm'
 
@@ -292,7 +289,7 @@ alias aurlist='pacman -Qm'
 alias aurfind='trizen -Ss'
 
 # Install an AUR package
-alias aurin='trizen -S'
+alias aurin='trizen -S --noedit'
 
 # Upgrade AUR packages. See archlinux news before upgrading
-alias aurupg='trizen -Syu -w'
+alias aurupg='trizen -Syu -w --noedit'

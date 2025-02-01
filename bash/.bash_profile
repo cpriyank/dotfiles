@@ -63,3 +63,4 @@ for file in ${HOME}/.zsh/common_shell_files/**/*.sh; do
   [[ -r "$file" ]] && source "$file"
 done
 unset file
+. "$HOME/.cargo/env"

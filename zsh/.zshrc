@@ -90,3 +90,5 @@ unset plugins
 # which is sourced before executing this
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

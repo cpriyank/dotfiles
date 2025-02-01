@@ -6,7 +6,7 @@ configuration {
     width:           50;
     lines:           5;
     columns:         1;
-    font:            "Sans 30";
+    font:            "Sans 20";
     bw:              1;
     padding:         2;
     yoffset:         -2;
@@ -14,7 +14,7 @@ configuration {
     fixed-num-lines: false;
     show-icons:      true;
     icon-theme:      "Papirus";
-    terminal:        "alacritty";
+    terminal:        "kitty";
 }
 
 * {

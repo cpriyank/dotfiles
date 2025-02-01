@@ -82,7 +82,7 @@ Plug 'junegunn/gv.vim' " Git commit browser
 Plug 'airblade/vim-gitgutter' " Git diff in signing column
 
 " Lang
-" Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 " Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'dag/vim-fish'
 " Plug 'octol/vim-cpp-enhanced-highlight'

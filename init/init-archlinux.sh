@@ -2,7 +2,7 @@ echo "Will install a few packages now..."
 # make sure that essentials are installed
 sudo pacman -S i3 picom dunst pamixer pipewire pipewire-pulse feh rofi \
 	neovim xorg-xinit redshift stow bat fzf fd ripgrep z texlive-bin texlive-core texlive-science\
-	texlive-latexextra
+	texlive-latexextra fish zoxide
 cd ~/.dotfiles
 stow X bin colors compton dunst i3 nvim spacemacs systemd zathura zsh
 git submodules update --init

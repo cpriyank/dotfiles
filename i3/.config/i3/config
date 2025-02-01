@@ -163,18 +163,21 @@ hide_edge_borders both
 # Launchers
 #
 bindsym $mod+f exec kitty -e vifm
-bindsym $mod+u exec firefox
+bindsym $mod+u exec zen-browser
 bindsym $mod+y exec firefox --private-window
 bindsym $mod+Return exec --no-startup-id kitty
-bindsym $mod+t exec --no-startup-id i3-sensible-terminal # failsafe terminal
+# bindsym $mod+t exec --no-startup-id i3-sensible-terminal # failsafe terminal
 # bindsym $mod+h exec transmission-gtk
 bindsym $mod+g exec chromium
 bindsym $mod+i exec chromium --incognito
+bindsym $mod+t exec ocrdesktop
 # bindsym $mod+s exec textsuggest
 # bindsym $mod+n exec xsecurelock
 # Run programs with Mod Key + space
 bindsym $mod+space exec --no-startup-id rofi -show drun -show-icons
 bindsym $mod+Control+space exec --no-startup-id rofi -show emoji -modi emoji
+# clipboard management with greenclip
+bindsym $alt+Control+h exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 
 # Alt + Tab to show open windows
 bindsym $mod+Tab exec rofi -show window -show-icons
@@ -228,6 +231,6 @@ bar {
 # create a startup notification context, without which the firefox window(s)
 # cannot be matched onto the workspace on which the command was started and
 # opens in focused workspace rather than the one where exec command was issued)
-exec --no-startup-id i3-msg "workspace $firefox; exec firefox"
+exec --no-startup-id i3-msg "workspace $firefox; exec zen-browser"
 exec --no-startup-id i3-msg "workspace $terminal; exec kitty"
 bindsym $mod+z exec ~/bin/external-monitor.bash

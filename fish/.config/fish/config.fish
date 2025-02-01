@@ -63,13 +63,3 @@ if status is-login
         exec startx -- -keeptty
     end
 end
-
-# Track the number of shell sessions
-set -U fish_gc_count (math (set -q fish_gc_count; echo $fish_gc_count) + 1)
-
-# Run garbage collection every 1000 sessions
-if test $fish_gc_count -ge 1000
-    echo "Running Nix garbage collection..."
-    /run/current-system/sw/bin/nix-collect-garbage -d
-    set -U fish_gc_count 0  # Reset the counter
-end

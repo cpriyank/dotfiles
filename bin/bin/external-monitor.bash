@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 
-# Detects monitors; if external monitors is connected,
-# disables laptop screen
-
-# if condition test can be more reliable here
-if [[ $(xrandr --listmonitors | wc -l) == 3 ]];
+# Detects monitors; if external monitor "DP-2" or "HDMI-1"
+# is connected, disable laptop screen
+if xrandr --listmonitors | grep -q "DP-2\|HDMI-1";
 then
-	# Find names of your outputs using command `xrandr -q`
 	notify-send "turning off laptop screen"
 	xrandr --output eDP-1 --off
-	xrandr --auto
-	feh --bg-fill --randomize ~/Pictures/wallpapers/
+	# xrandr --auto
 else
 	notify-send "turning on laptop screen"
 	xrandr --auto
-	feh --bg-fill --randomize ~/Pictures/wallpapers/
 fi
+echo "done"
+feh --bg-fill --randomize ~/Pictures/wallpapers/

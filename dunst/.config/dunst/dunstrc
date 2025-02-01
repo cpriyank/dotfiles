@@ -1,6 +1,6 @@
 # See dunst(5) for all configuration options
 [global]
-    font = "Sans 14"
+    font = "Inter 14"
 
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing window manager is
