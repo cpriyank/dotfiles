@@ -16,8 +16,10 @@
 	# The home.packages option allows you to install Nix packages into your
 	# environment.
 	home.packages = with pkgs; [
+		awscli2
 		bat
 		delta
+		direnv
 		fd
 		ffmpeg
 		fzf
@@ -26,6 +28,7 @@
 		gping
 		graphicsmagick
 		imagemagick
+		jq
 		lazygit
 		luajit
 		lsd
@@ -33,13 +36,17 @@
 		neovim
 		nodejs
 		pandoc
+		postgresql
 		pyright
+		rbenv
 		ripgrep
 		sad
+		stow
 		nerd-fonts._0xproto
 		# starship
 		tmux
 		tmuxPlugins.extrakto
+		uv
 		vim
 		# vscode # needs nixpkgs.config.allowUnfree
 		zoxide
@@ -97,10 +104,20 @@
     if test -d "/Applications/kitty.app/Contents/MacOS"
       set -p fish_user_paths "/Applications/kitty.app/Contents/MacOS"
     end
+	if test -d "/usr/local/sessionmanagerplugin"
+	  set -p fish_user_paths "/usr/local/sessionmanagerplugin/bin"
+	end
+	if test -d "$HOME/.local/bin"
+      set -p fish_user_paths "$HOME/.local/bin"
+    end
 
     if command --search --quiet "zoxide"
-  zoxide init fish | source
-end
+		zoxide init fish | source
+	end
+
+	if command --search --quiet "direnv"
+		direnv hook fish | source
+	end
 
 # private config not under public source control
 if test -e $HOME/.config/fish/private.fish
@@ -115,6 +132,7 @@ else
 	set -gx EDITOR nano
 end
     source ~/.dotfiles/fish/.config/fish/aliases.fish
+    source ~/.dotfiles/fish/.config/fish/gists.fish
 		'';
 		shellAliases = {
 			ll = "ls -lah";
