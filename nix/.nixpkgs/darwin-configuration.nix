@@ -17,12 +17,6 @@
       delta
       fd
       ffmpeg
-      fishPlugins.done
-      fishPlugins.forgit
-      fishPlugins.fzf
-      fishPlugins.gruvbox
-      fishPlugins.hydro
-      fishPlugins.pisces
       fzf
       gh
       ghostscript
@@ -30,7 +24,7 @@
       graphicsmagick
       imagemagick
       # kakoune
-      kitty
+      # kitty
       lazygit
       luajit
       lsd
