@@ -28,6 +28,9 @@ set -gx LESS_TERMCAP_us \e'[01;32m'
 if command --search --quiet "zoxide"
   zoxide init fish | source
 end
+if command --search --quiet "direnv"
+  direnv hook fish | source
+end
 ### Some handy aliases
 if test -e $HOME/.config/fish/aliases.fish
 	source $HOME/.config/fish/aliases.fish

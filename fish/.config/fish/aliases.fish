@@ -56,7 +56,7 @@ end
 
 # Make du readable
 function da
-	du -sch $argv
+	gdu -sch $argv
 end
 
 # Warn on overwrite
@@ -251,35 +251,47 @@ end
 
 alias lg='lazygit'
 
-alias pacupg='sudo pacman -Syu'
-alias pacin='sudo pacman -S'
-alias pacins='sudo pacman -U'
-alias pacrem='sudo pacman -Rns'
-alias pacref='sudo pacman -Syy'
-alias nixup='nix-channel --update; and darwin-rebuild switch'
+# Only set the following if running linux
+if type -q pacman
+	alias pacupg='sudo pacman -Syu'
+	alias pacin='sudo pacman -S'
+	alias pacins='sudo pacman -U'
+	alias pacrem='sudo pacman -Rns'
+	alias pacref='sudo pacman -Syy'
 
-# Delete the lock file /var/lib/pacman/db.lck
-alias pacunlock='sudo rm /var/lib/pacman/db.lck'
+	# check if usb-hid-brightness is installed
+	# max value is 54000
+	if type -q usb-hid-brightness
+		alias monitor-brightness='sudo usb-hid-brightness'
+	else
+	    echo "usb-hid-brightness not installed"
+	end
 
-# Package search and info from remote repos
-alias pacrinfo='pacman -Si'
-alias pacrfind='pacman -Ss'
+	# Delete the lock file /var/lib/pacman/db.lck
+	alias pacunlock='sudo rm /var/lib/pacman/db.lck'
 
-# Same as above for local repos
-alias paclinfo='pacman -Qi'
-alias paclfind='pacman -Qs'
+	# Package search and info from remote repos
+	alias pacrinfo='pacman -Si'
+	alias pacrfind='pacman -Ss'
 
-# Remove orphaned packages
-alias pacrorf='sudo pacman -Rns (pacman -Qtdq)'
+	# Same as above for local repos
+	alias paclinfo='pacman -Qi'
+	alias paclfind='pacman -Qs'
 
-# List packages installed from AUR
-alias aurlist='pacman -Qm'
+	# Remove orphaned packages
+	alias pacrorf='sudo pacman -Rns (pacman -Qtdq)'
 
-# Search AUR for matching strings
-alias aurfind='trizen -Ss'
+	# List packages installed from AUR
+	alias aurlist='pacman -Qm'
 
-# Install an AUR package
-alias aurin='trizen -S --noedit'
+	# Search AUR for matching strings
+	alias aurfind='trizen -Ss'
 
-# Upgrade AUR packages. See archlinux news before upgrading
-alias aurupg='trizen -Syu -w --noedit'
+	# Install an AUR package
+	alias aurin='trizen -S --noedit'
+
+	# Upgrade AUR packages. See archlinux news before upgrading
+	alias aurupg='trizen -Syu -w --noedit'
+else
+    alias pacupg='nix-channel --update; and darwin-rebuild switch'
+end

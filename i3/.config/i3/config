@@ -162,15 +162,14 @@ hide_edge_borders both
 #
 # Launchers
 #
-bindsym $mod+f exec kitty -e vifm
-bindsym $mod+u exec zen-browser
+bindsym $mod+f exec rio -e vifm
+bindsym $mod+u exec firefox
 bindsym $mod+y exec firefox --private-window
 bindsym $mod+Return exec --no-startup-id kitty
 # bindsym $mod+t exec --no-startup-id i3-sensible-terminal # failsafe terminal
 # bindsym $mod+h exec transmission-gtk
 bindsym $mod+g exec chromium
 bindsym $mod+i exec chromium --incognito
-bindsym $mod+t exec ocrdesktop
 # bindsym $mod+s exec textsuggest
 # bindsym $mod+n exec xsecurelock
 # Run programs with Mod Key + space
@@ -206,7 +205,7 @@ client.background       $dark
 # i3bar
 #
 bar {
-    status_command i3status --config ~/.config/i3/i3status
+    status_command i3status-rs ~/.config/i3status-rust/config.toml
     position top
     mode hide
     modifier $mod
@@ -231,6 +230,6 @@ bar {
 # create a startup notification context, without which the firefox window(s)
 # cannot be matched onto the workspace on which the command was started and
 # opens in focused workspace rather than the one where exec command was issued)
-exec --no-startup-id i3-msg "workspace $firefox; exec zen-browser"
-exec --no-startup-id i3-msg "workspace $terminal; exec kitty"
+exec --no-startup-id i3-msg "workspace $firefox; exec firefox"
+exec --no-startup-id i3-msg "workspace $terminal; exec rio"
 bindsym $mod+z exec ~/bin/external-monitor.bash
