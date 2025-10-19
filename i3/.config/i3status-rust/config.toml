@@ -1,0 +1,47 @@
+[icons]
+icons = "awesome6"
+
+[theme]
+theme = "plain"
+
+[[block]]
+block = "cpu"
+interval = 5
+format = "   $utilization "
+
+[[block]]
+block = "memory"
+format = "   Used $mem_used/$mem_total "
+
+[[block]]
+block = "load"
+format = " Load: $1m.eng(w:4) "
+
+[[block]]
+block = "disk_space"
+path = "/"
+info_type = "available"
+format = "   $available / $total "
+alert = 10.0
+
+[[block]]
+block = "battery"
+format = "   $percentage $time "
+
+[[block]]
+block = "net"
+format = "    $ssid $signal_strength $frequency "
+
+[[block]]
+block = "sound"
+format = "    $volume "
+
+[[block]]
+block = "temperature"
+format = "  $max "
+
+[[block]]
+block = "time"
+interval = 60
+format = "   $timestamp.datetime(f:'%a %d %b %H:%M') "
+
