@@ -58,6 +58,7 @@
 		rustc
 		rsync
 		cargo
+		rsync
 		sad
 		sox  # for audio recording
 		stow
