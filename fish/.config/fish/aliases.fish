@@ -250,6 +250,7 @@ function md --wraps mkdir -d "Create a directory and cd into it"
 end
 
 alias lg='lazygit'
+alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 
 # Only set the following if running linux
 if type -q pacman
