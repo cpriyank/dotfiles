@@ -21,6 +21,7 @@
 		delta
 		direnv
 		emacs-macport
+		espeak-ng
 		fd
 		ffmpeg
 		fzf
@@ -41,8 +42,11 @@
 		pyright
 		rbenv
 		ripgrep
+		rustc
+		cargo
 		sad
 		stow
+		syncthing
 		nerd-fonts._0xproto
 		# starship
 		tmux
@@ -50,6 +54,7 @@
 		uv
 		vim
 		# vscode # needs nixpkgs.config.allowUnfree
+		zed-editor
 		zoxide
 	];
 
@@ -111,7 +116,11 @@
 	if test -d "$HOME/.local/bin"
       set -p fish_user_paths "$HOME/.local/bin"
     end
+    fish_add_path /Users/orca/.opencode/bin
 
+    if test -d "$HOME/.config/emacs/bin"
+      set -p fish_user_paths "$HOME/.config/emacs/bin"
+    end
     if command --search --quiet "zoxide"
 		zoxide init fish | source
 	end
