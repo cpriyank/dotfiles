@@ -21,34 +21,23 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "0xProto Nerd Font" :size 20 :weight 'regular)
-     doom-variable-pitch-font (font-spec :family "Source Serif 4" :size 20 :weight 'regular))
-;; Enable visual-line-mode automatically for org files
-(add-hook 'org-mode-hook #'visual-line-mode)
-(setq nerd-icons-font-family "0xProto Nerd Font")
+(setq doom-font (font-spec :family "0xProto Nerd Font Mono" :size 20 :weight 'regular)
+     doom-variable-pitch-font (font-spec :family "Hoefler Text" :size 24 :weight 'regular))
+
 (after! org-modern
-  ;; Step 1: Tell org-modern that you want to REPLACE the stars.
-  ;; This is the crucial master switch.
+  ;; Force these settings to apply
   (setq org-modern-star 'replace)
+  (setq org-modern-replace-stars '("🌺" "🌸" "" "🌱"))
+  (setq org-modern-list '((?+ . "❱") (?- . "●") (?* . "·")))
+  (setq org-modern-checkbox '((?\s . "○") (?X . "⦿") (?- . "◑"))))
 
-  ;; Step 2: Provide the list of characters to use for each headline level.
-  ;; This can be a string or a list of strings. A list is clearer.
-  (setq org-modern-replace-stars
-      '("🌸" "🌺" "" "🌱"))
-
-  ;; List Items: Clean and simple circles/dots
-(setq org-modern-list
-      '( (?+ . "❱")
-         (?- . "●")
-         (?* . "·")))
-
-;; Checkboxes: Double circle for done, single for to-do
-(setq org-modern-checkbox
-      '( (?\s . "○")  ; To-do (space)
-         (?X . "⦿")  ; Done (X)
-         (?- . "◑"))) ; In-progress (-)
-
-  )
+;; Enable mixed-pitch-mode to actually USE Hoefler Text in Org
+(add-hook! 'org-mode-hook #'mixed-pitch-mode)
+;; Disable indent guides in Org mode to fix the "random dashes" artifact
+(remove-hook! 'org-mode-hook #'highlight-indent-guides-mode)
+;; Enable visual-line-mode automatically for org files
+(add-hook! 'org-mode-hook #'visual-line-mode)
+(setq nerd-icons-font-family "0xProto Nerd Font Mono")
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
@@ -60,7 +49,7 @@
 (setq doom-theme 'doom-monokai-pro)
 
 ;; Splash screen/dashboard image
-(setq fancy-splash-image (concat doom-private-dir "splash.svg"))
+(setq fancy-splash-image (concat doom-user-dir "splash.png"))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -68,8 +57,34 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/z/org/")
+(setq org-directory "~/Documents/org/")
+(setq org-agenda-files '("~/Documents/org/gtd/"))
+(setq org-roam-directory "~/Documents/org/roam/")
+(setq org-log-done 'time)
 
+;; workflow states (Sequence of Todo -> Done)
+(after! org
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+  (setq org-capture-templates
+        '(("t" "Todo" entry 
+           (file+headline "inbox.org" "Inbox") 
+           "* TODO %?" 
+           :prepend t        ;; Add to top of Inbox
+           :kill-buffer t    ;; Close file after capturing
+           :empty-lines 0)   ;; No extra empty lines
+          ))
+
+        ;; Allow creating new nodes during refile by appending "/New Headline"
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
+  
+  ;; Use full outline paths (e.g., "projects.org/Project Alpha/Task")
+  (setq org-refile-use-outline-path 'file)
+  (setq org-outline-path-complete-in-steps nil)
+  ;; Log the time when you finish a task (like Things logbook)
+  (setq org-log-done 'time)
+  )
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -102,3 +117,43 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+(use-package! gptel
+  :config
+  (map! :leader
+        :prefix ("l" . "llm")
+        :desc "GPTel Chat"        "c" #'gptel
+        :desc "GPTel Send"        "s" #'gptel-send
+        :desc "GPTel Menu"        "m" #'gptel-menu
+        :desc "GPTel Rewrite"     "r" #'gptel-rewrite
+        :desc "GPTel Add Context" "a" #'gptel-add)
+  
+  (setq gptel-max-tokens 65535)
+  
+  (setq gptel-model "claude-sonnet-4-5-20250929-v1:rsn"
+        gptel-backend
+        (gptel-make-anthropic "OrgClaude"
+          :host "engine.pair.gov.sg"
+          :protocol "https"
+          :stream t
+          :endpoint "/v1/messages"
+          :models '("claude-sonnet-4-5-20250929-v1:rsn")
+          :header (lambda () `(("x-api-key" . ,(getenv "SONNET_45_API_KEY"))
+                               ("anthropic-version" . "2023-06-01"))))))
+
+
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)
+              ("C-n" . 'copilot-next-completion)
+              ("C-p" . 'copilot-previous-completion))
+
+  :config
+  (add-to-list 'copilot-indentation-alist '(prog-mode 2))
+  (add-to-list 'copilot-indentation-alist '(org-mode 2))
+  (add-to-list 'copilot-indentation-alist '(text-mode 2))
+  (add-to-list 'copilot-indentation-alist '(clojure-mode 2))
+  (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2)))
