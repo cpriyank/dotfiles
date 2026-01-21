@@ -157,6 +157,76 @@ require("lazy").setup({
 		},
 	},
 
+	{
+		"yetone/avante.nvim",
+		build = vim.fn.has("win32") ~= 0
+				and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+			or "make",
+		event = "VeryLazy",
+		version = false,
+		opts = {
+			instructions_file = "avante.md",
+			provider = "pair", -- Use custom provider name
+			providers = {
+				pair = {
+					__inherited_from = "claude", -- Inherit claude's logic
+					endpoint = "https://engine.pair.gov.sg",
+					model = "claude-sonnet-4-5-20250929-v1:rsn",
+					api_key_name = "SONNET_45_API_KEY",
+					timeout = 30000,
+					-- Override parse_curl_args to use x-api-key header
+					parse_curl_args = function(opts, code_opts)
+						local base = require("avante.providers").claude
+						local args = base.parse_curl_args(opts, code_opts)
+
+						-- Replace the Authorization header with x-api-key
+						local api_key = os.getenv(opts.api_key_name)
+						args.headers["Authorization"] = nil -- Remove standard auth
+						args.headers["x-api-key"] = api_key -- Add PAIR's custom header
+
+						-- Remove anthropic-beta header that PAIR doesn't support
+						args.headers["anthropic-beta"] = nil
+
+						return args
+					end,
+				},
+			},
+		},
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			"nvim-mini/mini.pick",
+			"nvim-telescope/telescope.nvim",
+			"hrsh7th/nvim-cmp",
+			"ibhagwan/fzf-lua",
+			"stevearc/dressing.nvim",
+			"folke/snacks.nvim",
+			"nvim-tree/nvim-web-devicons",
+			"zbirenbaum/copilot.lua",
+			{
+				"HakonHarnes/img-clip.nvim",
+				event = "VeryLazy",
+				opts = {
+					default = {
+						embed_image_as_base64 = false,
+						prompt_for_file_name = false,
+						drag_and_drop = {
+							insert_mode = true,
+						},
+						use_absolute_path = true,
+					},
+				},
+			},
+			{
+				"MeanderingProgrammer/render-markdown.nvim",
+				opts = {
+					file_types = { "markdown", "Avante" },
+				},
+				ft = { "markdown", "Avante" },
+			},
+		},
+	},
+
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
 	--
 	-- This is often very useful to both group configuration, as well as handle
