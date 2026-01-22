@@ -140,7 +140,6 @@
           :header (lambda () `(("x-api-key" . ,(getenv "SONNET_45_API_KEY"))
                                ("anthropic-version" . "2023-06-01"))))))
 
-
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
@@ -148,8 +147,8 @@
               ("TAB" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)
-              ("C-n" . 'copilot-next-completion)
-              ("C-p" . 'copilot-previous-completion))
+              ("M-n" . 'copilot-next-completion)
+              ("M-p" . 'copilot-previous-completion))
 
   :config
   (add-to-list 'copilot-indentation-alist '(prog-mode 2))
