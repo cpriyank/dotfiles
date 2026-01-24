@@ -1,5 +1,7 @@
 #!/bin/bash
 # Context Menu TTS - Read selected text aloud using Kokoro-TTS
+set -euo pipefail
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 KOKORO_URL="http://localhost:8880"
 KOKORO_DIR="$HOME/.kokoro-tts"
 TEMP_AUDIO="/tmp/context-menu-tts-$$.mp3"
@@ -14,7 +16,6 @@ start_server() {
     notify "Kokoro TTS" "Starting TTS server..."
     cd "$KOKORO_DIR"
     nohup ./start-kokoro.sh > /tmp/kokoro-tts.log 2>&1 &
-
     local elapsed=0
     while ! is_server_running; do
         sleep 2

@@ -1,12 +1,37 @@
+#!/bin/bash
+# Context Menu Summarize - Summarize text using Claude on GovCloud
+# Displays result in native AppleScript HUD
 set -euo pipefail
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 API_URL="https://engine.pair.gov.sg/v1/messages"
 MODEL="claude-sonnet-4-5-20250929-v1:rsn"
+TTS_SCRIPT="$HOME/.local/bin/context-menu-tts.sh"
 notify() {
     osascript -e "display notification \"$2\" with title \"$1\""
+}
+show_hud() {
+    local title="$1"
+    local message="$2"
+
+    # Escape special characters for AppleScript
+    message="${message//\\/\\\\}"
+    message="${message//\"/\\\"}"
+    message="${message//$'\n'/\\n}"
+
+    # Show HUD dialog with Read Aloud option
+    local result
+    result=$(osascript -e "
+        set theMessage to \"$message\"
+        set theDialog to display dialog theMessage with title \"$title\" buttons {\"Read Aloud\", \"OK\"} default button \"OK\" giving up after 300
+        return button returned of theDialog
+    " 2>/dev/null || echo "OK")
+
+    echo "$result"
 }
 get_api_key() {
     security find-generic-password -a "$USER" -s "anthropic-api-key" -w 2>/dev/null
 }
+# Read text from stdin
 TEXT=$(cat)
 if [ -z "$TEXT" ]; then
     notify "Summarize" "Error: No text selected"
@@ -19,7 +44,7 @@ if [ -z "$API_KEY" ]; then
     exit 1
 fi
 notify "Summarize" "Summarizing text..."
-PROMPT="Please provide a concise summary of the following text. Focus on the key points and main ideas:\n\n$TEXT"
+PROMPT="Please provide a concise summary of the following text. Focus on the key points and main ideas. Use plain text without markdown formatting:\n\n$TEXT"
 RESPONSE=$(curl -s "$API_URL" \
     -H "x-api-key: $API_KEY" \
     -H "anthropic-version: 2023-06-01" \
@@ -37,9 +62,10 @@ if [ -z "$SUMMARY" ] || [ "$SUMMARY" = "null" ]; then
 fi
 # Copy to clipboard
 echo "$SUMMARY" | pbcopy
-# Show notification (truncated if long)
-DISPLAY_TEXT="$SUMMARY"
-if [ ${#DISPLAY_TEXT} -gt 200 ]; then
-    DISPLAY_TEXT="${DISPLAY_TEXT:0:197}..."
+# Show HUD and get button result
+BUTTON=$(show_hud "Summary (copied to clipboard)" "$SUMMARY")
+# If user clicked "Read Aloud", send to TTS
+if [ "$BUTTON" = "Read Aloud" ]; then
+    echo "$SUMMARY" | "$TTS_SCRIPT"
 fi
-notify "Summary Copied" "$DISPLAY_TEXT"
+
