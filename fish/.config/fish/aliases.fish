@@ -237,7 +237,7 @@ if type -q lsd
 	abbr --add --global la lsd -al
 end
 
-function md --wraps mkdir -d "Create a directory and cd into it"
+function mcd --wraps mkdir -d "Create a directory and cd into it"
   command mkdir -p $argv
   if test $status = 0
     switch $argv[(count $argv)]
@@ -248,6 +248,7 @@ function md --wraps mkdir -d "Create a directory and cd into it"
     end
   end
 end
+alias mkcd='mcd'
 
 alias lg='lazygit'
 alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
