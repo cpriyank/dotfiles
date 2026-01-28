@@ -27,6 +27,7 @@
 		fzf
 		gh
 		ghostscript
+		go
 		gping
 		graphicsmagick
 		imagemagick
@@ -43,6 +44,7 @@
 		rbenv
 		ripgrep
 		rustc
+		rsync
 		cargo
 		sad
 		stow
@@ -56,6 +58,8 @@
 		# vscode # needs nixpkgs.config.allowUnfree
 		zed-editor
 		zoxide
+		whisper-cpp
+		sox  # for audio recording
 	];
 
 
