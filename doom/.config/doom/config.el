@@ -1,135 +1,98 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
-;; (setq user-full-name "John Doe"
-;;       user-mail-address "john@doe.com")
-
-;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;;
-;; - `doom-font' -- the primary font to use
-;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;; - `doom-symbol-font' -- for symbols
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-;;
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
+;; -----------------------
+;; UI / fonts
+;; -----------------------
 (setq doom-font (font-spec :family "0xProto Nerd Font Mono" :size 20 :weight 'regular)
-     doom-variable-pitch-font (font-spec :family "Hoefler Text" :size 24 :weight 'regular))
+      doom-variable-pitch-font (font-spec :family "Avenir Next" :size 24 :weight 'regular)
+      nerd-icons-font-family "0xProto Nerd Font Mono"
+      doom-theme 'doom-monokai-pro
+      fancy-splash-image (concat doom-user-dir "splash.png")
+      display-line-numbers-type 'relative)
 
+;; -----------------------
+;; Org paths (set before org loads)
+;; -----------------------
+(setq org-directory "~/Documents/org/"
+      org-agenda-files '("~/Documents/org/gtd/")
+      org-roam-directory "~/Documents/org/roam/")
+
+;; -----------------------
+;; Org look & feel
+;; -----------------------
 (after! org-modern
-  ;; Force these settings to apply
-  (setq org-modern-star 'replace)
-  (setq org-modern-replace-stars '("🌺" "🌸" "" "🌱"))
-  (setq org-modern-list '((?+ . "❱") (?- . "●") (?* . "·")))
-  (setq org-modern-checkbox '((?\s . "○") (?X . "⦿") (?- . "◑"))))
+  (setq org-modern-star 'replace
+        org-modern-replace-stars '("🌺" "🌸" "☸︎" "🌱")
+        org-modern-list '((?+ . "❱") (?- . "●") (?* . "·"))
+        org-modern-checkbox '((?\s . "○") (?X . "⦿") (?- . "◑"))))
 
-;; Enable mixed-pitch-mode to actually USE Hoefler Text in Org
-(add-hook! 'org-mode-hook #'mixed-pitch-mode)
-;; Disable indent guides in Org mode to fix the "random dashes" artifact
-(remove-hook! 'org-mode-hook #'highlight-indent-guides-mode)
-;; Enable visual-line-mode automatically for org files
-(add-hook! 'org-mode-hook #'visual-line-mode)
-(setq nerd-icons-font-family "0xProto Nerd Font Mono")
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
+(custom-set-faces!
+  '(org-quote :slant italic :inherit variable-pitch))
 
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-monokai-pro)
+(defun orca/org-setup ()
+  (mixed-pitch-mode 1)
+  (visual-line-mode 1)
+  (visual-fill-column-mode 1))
 
-;; Splash screen/dashboard image
-(setq fancy-splash-image (concat doom-user-dir "splash.png"))
+(add-hook! org-mode #'orca/org-setup)
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/org/")
-(setq org-agenda-files '("~/Documents/org/gtd/"))
-(setq org-roam-directory "~/Documents/org/roam/")
-(setq org-log-done 'time)
-
-;; workflow states (Sequence of Todo -> Done)
 (after! org
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (add-hook! org-mode (setq-local line-spacing 0.15))
+  (custom-set-faces!
+    '(org-document-title :weight regular :height 1.15)
+    '(org-level-1 :inherit outline-1 :weight regular :height 1.10)
+    '(org-level-2 :inherit outline-2 :weight regular :height 1.06)
+    '(org-level-3 :inherit outline-3 :weight regular :height 1.03)
+    '(org-level-4 :inherit outline-4 :weight regular :height 1.00))
+  (setq org-log-done 'time
+        org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CANCELLED(c)"))
+        org-capture-templates
+        '(("t" "Todo" entry
+           (file+headline "inbox.org" "Inbox")
+           "* TODO %?"
+           :prepend t
+           :kill-buffer t
+           :empty-lines 0))
+        org-refile-allow-creating-parent-nodes 'confirm
+        org-refile-use-outline-path 'file
+        org-outline-path-complete-in-steps nil))
 
-  (setq org-capture-templates
-        '(("t" "Todo" entry 
-           (file+headline "inbox.org" "Inbox") 
-           "* TODO %?" 
-           :prepend t        ;; Add to top of Inbox
-           :kill-buffer t    ;; Close file after capturing
-           :empty-lines 0)   ;; No extra empty lines
-          ))
+;; -----------------------
+;; Pandoc helpers (clipboard conversions)
+;; -----------------------
+(defun orca/paste-markdown-as-org ()
+  "Convert clipboard markdown to org and insert at point."
+  (interactive)
+  (let ((markdown (current-kill 0)))
+    (insert
+     (with-temp-buffer
+       (insert markdown)
+       (shell-command-on-region (point-min) (point-max)
+                                "pandoc -f markdown -t org" t t)
+       (buffer-string)))))
 
-        ;; Allow creating new nodes during refile by appending "/New Headline"
-  (setq org-refile-allow-creating-parent-nodes 'confirm)
-  
-  ;; Use full outline paths (e.g., "projects.org/Project Alpha/Task")
-  (setq org-refile-use-outline-path 'file)
-  (setq org-outline-path-complete-in-steps nil)
-  ;; Log the time when you finish a task (like Things logbook)
-  (setq org-log-done 'time)
-  )
+(defun orca/copy-org-as-markdown ()
+  "Convert region from org to markdown and copy to clipboard."
+  (interactive)
+  (when (use-region-p)
+    (let ((org-text (buffer-substring-no-properties (region-beginning) (region-end))))
+      (with-temp-buffer
+        (insert org-text)
+        (shell-command-on-region (point-min) (point-max)
+                                 "pandoc -f org -t markdown" t t)
+        (kill-ring-save (point-min) (point-max)))
+      (deactivate-mark)
+      (message "Copied as Markdown"))))
 
-;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
-;;
-;;   (after! PACKAGE
-;;     (setq x y))
-;;
-;; The exceptions to this rule:
-;;
-;;   - Setting file/directory variables (like `org-directory')
-;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
-;;   - Setting doom variables (which start with 'doom-' or '+').
-;;
-;; Here are some additional functions/macros that will help you configure Doom.
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-;; etc).
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
+;; -----------------------
+;; GPTel
+;; -----------------------
 (use-package! gptel
+  :commands (gptel gptel-send gptel-menu gptel-rewrite gptel-add)
   :config
-  (map! :leader
-        :prefix ("l" . "llm")
-        :desc "GPTel Chat"        "c" #'gptel
-        :desc "GPTel Send"        "s" #'gptel-send
-        :desc "GPTel Menu"        "m" #'gptel-menu
-        :desc "GPTel Rewrite"     "r" #'gptel-rewrite
-        :desc "GPTel Add Context" "a" #'gptel-add)
-  
-  (setq gptel-max-tokens 65535)
-  
-  (setq gptel-model "claude-sonnet-4-5-20250929-v1:rsn"
+  (setq gptel-max-tokens 65535
+        gptel-model "claude-sonnet-4-5-20250929-v1:rsn"
         gptel-backend
         (gptel-make-anthropic "OrgClaude"
           :host "engine.pair.gov.sg"
@@ -137,22 +100,37 @@
           :stream t
           :endpoint "/v1/messages"
           :models '("claude-sonnet-4-5-20250929-v1:rsn")
-          :header (lambda () `(("x-api-key" . ,(getenv "SONNET_45_API_KEY"))
-                               ("anthropic-version" . "2023-06-01"))))))
+          :header (lambda ()
+                    `(("x-api-key" . ,(getenv "SONNET_45_API_KEY"))
+                      ("anthropic-version" . "2023-06-01")))))
 
+  (map! :leader
+        (:prefix ("l" . "llm")
+         :desc "GPTel Chat"        "c" #'gptel
+         :desc "GPTel Send"        "s" #'gptel-send
+         :desc "GPTel Menu"        "m" #'gptel-menu
+         :desc "GPTel Rewrite"     "r" #'gptel-rewrite
+         :desc "GPTel Add Context" "a" #'gptel-add)
+        (:prefix ("y" . "yank/paste convert")
+         :desc "Paste MD as Org" "p" #'orca/paste-markdown-as-org
+         :desc "Copy Org as MD"  "y" #'orca/copy-org-as-markdown)))
+
+;; -----------------------
+;; Copilot
+;; -----------------------
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)
-              ("M-n" . 'copilot-next-completion)
-              ("M-p" . 'copilot-previous-completion))
-
+              ("<tab>" . copilot-accept-completion)
+              ("TAB" . copilot-accept-completion)
+              ("C-<tab>" . copilot-accept-completion-by-word)
+              ("C-TAB" . copilot-accept-completion-by-word)
+              ("M-n" . copilot-next-completion)
+              ("M-p" . copilot-previous-completion))
   :config
-  (add-to-list 'copilot-indentation-alist '(prog-mode 2))
-  (add-to-list 'copilot-indentation-alist '(org-mode 2))
-  (add-to-list 'copilot-indentation-alist '(text-mode 2))
-  (add-to-list 'copilot-indentation-alist '(clojure-mode 2))
-  (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2)))
+  (dolist (pair '((prog-mode . 2)
+                  (org-mode . 2)
+                  (text-mode . 2)
+                  (clojure-mode . 2)
+                  (emacs-lisp-mode . 2)))
+    (add-to-list 'copilot-indentation-alist pair)))
