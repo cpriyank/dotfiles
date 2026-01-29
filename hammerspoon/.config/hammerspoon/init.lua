@@ -106,9 +106,9 @@ local keyMap = {
 		end,
 
 		-- Tiling (focused window)
-		[singleKey("h", "left 50%")] = toUnit(hs.layout.left50),
-		[singleKey("l", "right 50%")] = toUnit(hs.layout.right50),
-		[singleKey("f", "maximize")] = toUnit(hs.layout.maximized),
+		[singleKey("a", "left 50%")] = toUnit(hs.layout.left50),
+		[singleKey("d", "right 50%")] = toUnit(hs.layout.right50),
+		[singleKey("s", "maximize")] = toUnit(hs.layout.maximized),
 
 		-- Quarters
 		[singleKey("q", "top-left")] = toUnit({ x = 0, y = 0, w = 0.5, h = 0.5 }),
