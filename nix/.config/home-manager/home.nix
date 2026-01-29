@@ -25,6 +25,7 @@
 		fd
 		ffmpeg
 		fzf
+		gdu
 		gh
 		ghostscript
 		go
