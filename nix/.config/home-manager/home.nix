@@ -16,12 +16,19 @@
 	# The home.packages option allows you to install Nix packages into your
 	# environment.
 	home.packages = with pkgs; [
+	        act
 		awscli2
 		bat
+		colima
 		delta
 		direnv
+		docker
+                docker-compose
+                docker-buildx
+	        docker-credential-helpers # Essential for macOS keychain auth
 		emacs-macport
 		espeak-ng
+		elan
 		fd
 		ffmpeg
 		fzf
@@ -34,12 +41,14 @@
 		imagemagick
 		jq
 		lazygit
+		localsend
 		luajit
 		lsd
 		mpv
 		neovim
 		nodejs
 		pandoc
+		pnpm
 		postgresql
 		pyright
 		rbenv
@@ -48,6 +57,7 @@
 		rsync
 		cargo
 		sad
+		sox  # for audio recording
 		stow
 		syncthing
 		nerd-fonts._0xproto
@@ -56,12 +66,41 @@
 		tmuxPlugins.extrakto
 		uv
 		vim
+		whisper-cpp
 		# vscode # needs nixpkgs.config.allowUnfree
 		zed-editor
 		zoxide
-		whisper-cpp
-		sox  # for audio recording
 	];
+
+	  # Manually define the LaunchAgent to enforce M4 Pro flags on startup
+  launchd.agents.colima = {
+    enable = true;
+    config = {
+      Label = "com.github.abiosoft.colima";
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "${config.home.homeDirectory}/.colima/default/daemon.log";
+      StandardErrorPath = "${config.home.homeDirectory}/.colima/default/daemon.err";
+      EnvironmentVariables = {
+        PATH = "${pkgs.lib.makeBinPath [ pkgs.colima pkgs.docker pkgs.qemu ]}:/usr/bin:/bin:/usr/sbin:/sbin";
+      };
+      ProgramArguments = [
+        "${pkgs.colima}/bin/colima"
+        "start"
+        "--foreground"
+        "--verbose"
+        # M4 Pro "Golden" Flags
+        "--cpu" "6"
+        "--memory" "16"
+        "--disk" "100"
+        "--vm-type" "vz"
+        "--mount-type" "virtiofs"
+        "--vz-rosetta"
+        "--network-address" # Optional: gives the VM its own IP
+      ];
+    };
+  };
+
 
 
 	# Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -96,13 +135,29 @@
 	#  /etc/profiles/per-user/orca/etc/profile.d/hm-session-vars.sh
 	#
 	home.sessionVariables = {
+	DOCKER_HOST = "unix://${config.home.homeDirectory}/.colima/default/docker.sock";
 		# EDITOR = "emacs";
 	};
 
 	programs.fish = {
 		enable = true;
+				interactiveShellInit = ''
+			# Define the separator function manually here to ensure it's registered
+			function print_log_separator --on-event fish_postexec
+			    # Don't draw if the command was 'clear' or clear-like
+			    if test "$argv" != "clear"
+			        set -l term_width $COLUMNS
+			        set_color 444
+			        string repeat -n $term_width "─"
+			        set_color normal
+			    end
+			end
+		'';
 		shellInit = ''
     # Your fish initialization here
+    if test -d "$HOME/.cargo/bin"
+      set -p fish_user_paths "$HOME/.cargo/bin"
+    end
     if test -d "$HOME/.nix-profile/bin"
       set -p fish_user_paths "$HOME/.nix-profile/bin"
     end
