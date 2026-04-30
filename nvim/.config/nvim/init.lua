@@ -83,6 +83,7 @@ require("lazy").setup({
 	-- Detect tabstop and shiftwidth automatically
 	"tpope/vim-sleuth",
 	{ "nvim-mini/mini.pairs", version = false },
+	"github/copilot.vim",
 
 	-- Git signs in the gutter
 	{

@@ -1,0 +1,328 @@
+/* Tufte-inspired Markdown Preview with Sepia Tones */
+
+:root {
+  /* Sepia color palette */
+  --color-primary: #704020;      /* Dark brown */
+  --color-secondary: #a67c52;    /* Medium brown */
+  --color-accent: #d4a574;       /* Light brown */
+  --color-light: #f5f1e8;        /* Off-white/cream */
+  --color-dark: #2b2520;         /* Very dark brown */
+  --color-border: #e8dcc8;       /* Light sepia border */
+  
+  /* Typography */
+  --font-main: 'Georgia', 'Garamond', 'Cambria', serif;
+  --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+  --font-size-base: 16px;
+  --line-height-base: 1.6;
+  --letter-spacing-base: 0.01em;
+}
+
+/* Main container */
+body {
+  font-family: var(--font-main);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-dark);
+  background-color: var(--color-light);
+  letter-spacing: var(--letter-spacing-base);
+  padding: 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Headings - Tufte style */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-main);
+  color: var(--color-primary);
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-top: 0;
+  border-bottom: 2px solid var(--color-secondary);
+  padding-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-top: 1.8em;
+  border-left: 4px solid var(--color-secondary);
+  padding-left: 1rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--color-secondary);
+}
+
+h4, h5, h6 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Paragraphs */
+p {
+  margin: 1em 0;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Lists */
+ul, ol {
+  margin: 1.5em 0;
+  padding-left: 2.5rem;
+}
+
+li {
+  margin: 0.5em 0;
+  line-height: var(--line-height-base);
+}
+
+ul li::marker {
+  color: var(--color-secondary);
+}
+
+ol li::marker {
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+/* Links */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--color-secondary);
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+  background-color: rgba(164, 124, 82, 0.05);
+}
+
+/* Code */
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background-color: rgba(112, 64, 32, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+}
+
+code {
+  padding: 0.15em 0.35em;
+  color: var(--color-primary);
+}
+
+pre {
+  padding: 1.5em;
+  margin: 1.5em 0;
+  overflow-x: auto;
+  background-color: rgba(112, 64, 32, 0.03);
+  border-left: 4px solid var(--color-secondary);
+}
+
+pre code {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: var(--color-dark);
+}
+
+/* Blockquotes */
+blockquote {
+  margin: 1.5em 0;
+  padding: 0 1.5em;
+  border-left: 4px solid var(--color-secondary);
+  color: var(--color-secondary);
+  font-style: italic;
+  background-color: rgba(212, 165, 116, 0.08);
+  font-size: 0.95em;
+  line-height: 1.7;
+}
+
+blockquote p {
+  margin: 0.5em 0;
+}
+
+blockquote p:first-child {
+  margin-top: 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Horizontal rules */
+hr {
+  border: none;
+  border-top: 2px solid var(--color-border);
+  margin: 2em 0;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.95em;
+}
+
+thead {
+  background-color: rgba(112, 64, 32, 0.08);
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+th {
+  padding: 0.75em 1em;
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: 0.05em;
+}
+
+td {
+  padding: 0.75em 1em;
+  border-bottom: 1px solid var(--color-border);
+}
+
+tbody tr:nth-child(odd) {
+  background-color: rgba(212, 165, 116, 0.03);
+}
+
+tbody tr:hover {
+  background-color: rgba(212, 165, 116, 0.08);
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  margin: 1.5em 0;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+/* Strong and emphasis */
+strong {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+em {
+  font-style: italic;
+  color: var(--color-secondary);
+}
+
+/* Line numbers in code blocks */
+.hljs-ln-n {
+  color: var(--color-secondary);
+  opacity: 0.5;
+  padding-right: 1em;
+  user-select: none;
+}
+
+/* Syntax highlighting override */
+.hljs {
+  background-color: rgba(112, 64, 32, 0.03);
+  color: var(--color-dark);
+}
+
+.hljs-string {
+  color: #a3660a;
+}
+
+.hljs-number {
+  color: #7a4a0a;
+}
+
+.hljs-literal {
+  color: var(--color-primary);
+}
+
+.hljs-attr {
+  color: var(--color-secondary);
+}
+
+.hljs-variable {
+  color: var(--color-primary);
+}
+
+.hljs-keyword {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.hljs-built_in {
+  color: var(--color-secondary);
+}
+
+.hljs-comment {
+  color: #9a8070;
+  font-style: italic;
+}
+
+/* Adjustments for readability */
+@media (max-width: 768px) {
+  body {
+    padding: 1.5rem;
+    font-size: 15px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.4rem;
+  }
+  
+  h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #d4a574;
+    --color-secondary: #c99563;
+    --color-accent: #a67c52;
+    --color-light: #2b2520;
+    --color-dark: #f5f1e8;
+    --color-border: #4a3f38;
+  }
+  
+  body {
+    background-color: var(--color-light);
+    color: var(--color-dark);
+  }
+  
+  code, pre {
+    background-color: rgba(212, 165, 116, 0.15);
+    border-color: var(--color-border);
+  }
+  
+  pre code {
+    color: var(--color-dark);
+  }
+  
+  table thead {
+    background-color: rgba(212, 165, 116, 0.15);
+  }
+  
+  tbody tr:nth-child(odd) {
+    background-color: rgba(212, 165, 116, 0.08);
+  }
+  
+  tbody tr:hover {
+    background-color: rgba(212, 165, 116, 0.15);
+  }
+}

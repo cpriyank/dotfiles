@@ -21,12 +21,13 @@
 		bat
 		colima
 		delta
+		deno
 		direnv
 		docker
                 docker-compose
                 docker-buildx
 	        docker-credential-helpers # Essential for macOS keychain auth
-		emacs-macport
+		# emacs-macport
 		espeak-ng
 		elan
 		fd
@@ -35,6 +36,7 @@
 		gdu
 		gh
 		ghostscript
+		gnutar
 		go
 		gping
 		graphicsmagick
@@ -51,7 +53,7 @@
 		pnpm
 		postgresql
 		pyright
-		rbenv
+		rclone
 		ripgrep
 		rustc
 		rsync
@@ -70,6 +72,7 @@
 		# vscode # needs nixpkgs.config.allowUnfree
 		zed-editor
 		zoxide
+		zstd
 	];
 
 	  # Manually define the LaunchAgent to enforce M4 Pro flags on startup
@@ -175,6 +178,9 @@
 	end
 	if test -d "$HOME/.local/bin"
       set -p fish_user_paths "$HOME/.local/bin"
+    end
+	if test -d "$HOME/.deno/bin"
+      set -p fish_user_paths "$HOME/.deno/bin"
     end
     fish_add_path /Users/orca/.opencode/bin
 
