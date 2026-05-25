@@ -7,13 +7,13 @@
     }
   },
 	// "coc.preferences.formatOnSaveFiletypes": ["python", "vim", "javascript", "vue", "cpp"],
-	// "python.pythonPath": "/home/prichaud/anaconda3/bin/python",
+	// "python.pythonPath": "$HOME/anaconda3/bin/python",
 	// "python.jediEnabled":false,
 	// "python.linting.pylintEnabled": true,
 	// "python.formatting.provider":"black",
 	// "clangd.semanticHighlighting": true,
 	"coc.source.omni.filetypes": ["json"],
-	// "snippets.userSnippetsDirectory": "/home/prichaud/.config/nvim/snippets",
+	// "snippets.userSnippetsDirectory": "$HOME/.config/nvim/snippets",
   "cSpell.userWords": [
     "Alman",
     "Bynes",
@@ -23,4 +23,3 @@
     "Priyank"
   ]
 }
-
