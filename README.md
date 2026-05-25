@@ -13,3 +13,6 @@ Just have a look at names of directories in the root of this repo
 ## Dependencies
 
 GNU stow
+
+## Caveats
+- [Dotfiles are personal](https://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/). You'll likely want to tweak them. These work for my freebsd, macOS, and Linux (Arch, Ubuntu, Nix, Debian) machines.
