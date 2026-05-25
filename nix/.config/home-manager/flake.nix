@@ -1,5 +1,5 @@
 {
-  description = "Home Manager configuration of orca";
+  description = "Home Manager configuration";
 
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
@@ -17,7 +17,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
-      homeConfigurations."orca" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."{{HOME_MANAGER_USERNAME}}" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
         # Specify your home configuration modules here, for example,

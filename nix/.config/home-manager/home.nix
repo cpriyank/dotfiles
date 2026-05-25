@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 
 {
-	home.username = "orca";
-	home.homeDirectory = "/Users/orca";
+	home.username = "{{HOME_MANAGER_USERNAME}}";
+	home.homeDirectory = "{{HOME_MANAGER_HOME_DIRECTORY}}";
 
 	# This value determines the Home Manager release that your configuration is
 	# compatible with. This helps avoid breakage when a new Home Manager release
@@ -16,12 +16,10 @@
 	# The home.packages option allows you to install Nix packages into your
 	# environment.
 	home.packages = with pkgs; [
-	        act
 		awscli2
 		bat
 		colima
 		delta
-		deno
 		direnv
 		docker
                 docker-compose
@@ -29,7 +27,6 @@
 	        docker-credential-helpers # Essential for macOS keychain auth
 		# emacs-macport
 		espeak-ng
-		elan
 		fd
 		ffmpeg
 		fzf
@@ -37,7 +34,6 @@
 		gh
 		ghostscript
 		gnutar
-		go
 		gping
 		graphicsmagick
 		imagemagick
@@ -69,9 +65,8 @@
 		tmuxPlugins.extrakto
 		uv
 		vim
-		whisper-cpp
 		# vscode # needs nixpkgs.config.allowUnfree
-		zed-editor
+		yazi # terminal file manager
 		zoxide
 		zstd
 	];
@@ -136,7 +131,7 @@
 	#
 	# or
 	#
-	#  /etc/profiles/per-user/orca/etc/profile.d/hm-session-vars.sh
+	#  /etc/profiles/per-user/<username>/etc/profile.d/hm-session-vars.sh
 	#
 	home.sessionVariables = {
 	DOCKER_HOST = "unix://${config.home.homeDirectory}/.colima/default/docker.sock";
@@ -180,10 +175,7 @@
 	if test -d "$HOME/.local/bin"
       set -p fish_user_paths "$HOME/.local/bin"
     end
-	if test -d "$HOME/.deno/bin"
-      set -p fish_user_paths "$HOME/.deno/bin"
-    end
-    fish_add_path /Users/orca/.opencode/bin
+    fish_add_path $HOME/.opencode/bin
 
     if test -d "$HOME/.config/emacs/bin"
       set -p fish_user_paths "$HOME/.config/emacs/bin"
