@@ -10,6 +10,11 @@ gnupg/*
 mpd/.config/mpd/*
 !mpd/.config/mpd/mpd.conf
 
+.stow-wrapper/values.env
+.stow-wrapper/values/
+.stow-wrapper/rendered/
+nix/.config/home-manager/result
+
 # Top secret!
 ssh/.ssh/authorized_keys
 ssh/.ssh/id_*
