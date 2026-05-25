@@ -1,10 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
 echo "Will install a few packages now..."
-# make sure that essentials are installed
-sudo pacman -S i3 picom dunst pamixer pipewire pipewire-pulse feh rofi \
-	neovim xorg-xinit redshift stow bat fzf fd ripgrep z texlive-bin texlive-core texlive-science\
-	texlive-latexextra fish zoxide
+
+packages=(
+	# Desktop/bootstrap packages for this Arch profile.
+	i3
+	picom
+	dunst
+	pamixer
+	pipewire
+	pipewire-pulse
+	feh
+	rofi
+	xorg-xinit
+	redshift
+	z
+	texlive-bin
+	texlive-core
+	texlive-science
+	texlive-latexextra
+	fish
+	git
+
+	# Keep in sync with nix/.config/home-manager/home.nix home.packages.
+	bat
+	git-delta
+	direnv
+	fd
+	ffmpeg
+	fzf
+	gdu
+	github-cli
+	ghostscript
+	tar
+	gping
+	graphicsmagick
+	imagemagick
+	jq
+	lazygit
+	localsend
+	luajit
+	lsd
+	mpv
+	neovim
+	nodejs
+	# pandoc # large set of dependencies
+	pyright
+	rclone
+	ripgrep
+	rsync
+	stow
+	ttf-0xproto-nerd
+	tmux
+	trash-cli
+	uv
+	vim
+	zoxide
+)
+
+sudo pacman -S --needed "${packages[@]}"
+
 cd ~/.dotfiles
-stow X bin colors compton dunst i3 nvim spacemacs systemd zathura zsh
+stow X bin colors compton dunst i3 nvim systemd zathura fish
 git submodules update --init
 echo "vim-plug for neovim is already installed. Run :PlugInstall and :UpdateRemotePlugins\
 	from within init.vim."
