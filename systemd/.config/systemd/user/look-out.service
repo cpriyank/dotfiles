@@ -3,4 +3,4 @@ Description=Reminder to look far and outside to reduce eyestrain, via libnotify
 
 [Service]
 Type=simple
-ExecStart=/home/prichaud/bin/lookout.zsh
+ExecStart=%h/bin/lookout.zsh

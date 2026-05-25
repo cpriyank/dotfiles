@@ -3,4 +3,4 @@ Description=CPU overheating notification via libnotify
 
 [Service]
 Type=simple
-ExecStart=/home/tiniyo/bin/overheatnotify.zsh
+ExecStart=%h/bin/overheatnotify.zsh

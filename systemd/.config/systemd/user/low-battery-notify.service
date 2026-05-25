@@ -3,4 +3,4 @@ Description=Low battery notification via libnotify
 
 [Service]
 Type=simple
-ExecStart=/home/prichaud/bin/batterynotify.zsh
+ExecStart=%h/bin/batterynotify.zsh
