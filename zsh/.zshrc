@@ -5,7 +5,7 @@
 ## Command history------------------------------------------------------------
 # (Zsh doesn't use readline. It uses its own ZLE (Z Line Editing).
 HISTFILE=${ZDOTDIR:-${HOME}}/.zsh_history
-HISTSIZE=16384
+HISTSIZE=65536
 SAVEHIST=$HISTSIZE
 setopt HIST_IGNORE_ALL_DUPS
 
