@@ -20,27 +20,6 @@ export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 # Save multi-line commands as one command
 shopt -s cmdhist
 
-##
-## Completion…
-##
-
-# bash completion.
-# TODO: Test this for ubuntu and debian
-if  hash brew 2> /dev/null; then
-  if [[ -f "$(brew --prefix)/share/bash-completion/bash_completion" ]]; then
-    source "$(brew --prefix)/share/bash-completion/bash_completion";
-  elif [[ -f /usr/share/bash-completion ]]; then
-    source "/usr/share/bash-completion"
-    source "$(brew --prefix)/etc/bash_completion.d/brew"
-    # hub completion
-  fi
-
-  if  which hub > /dev/null; then
-    source "$(brew --prefix)/etc/bash_completion.d/hub.bash_completion.sh";
-  fi
-
-fi
-
 # Enable tab completion for `g` by marking it as an alias for `git`
 if type __git_complete &> /dev/null; then
     __git_complete g __git_main
@@ -63,4 +42,3 @@ for file in ${HOME}/.zsh/common_shell_files/**/*.sh; do
   [[ -r "$file" ]] && source "$file"
 done
 unset file
-. "$HOME/.cargo/env"
