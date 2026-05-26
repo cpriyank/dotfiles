@@ -6,6 +6,9 @@
 typeset -gU path
 export GOPATH=$HOME/z/go
 path=($path ~/bin $GOPATH/bin ~/.local/bin)
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi
 
 # export VDPAU_DRIVER=va_gl
 #export LIBVA_DRIVER_NAME=vdpau
