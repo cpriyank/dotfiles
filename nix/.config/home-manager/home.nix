@@ -28,10 +28,11 @@
     jq
     lazygit
     localsend
-    luajit
     lsd
+    luajit
     mpv
     neovim
+    nerd-fonts._0xproto
     nodejs
     pandoc
     pnpm
@@ -45,7 +46,6 @@
     sox
     stow
     syncthing
-    nerd-fonts._0xproto
     tmux
     tmuxPlugins.extrakto
     trash-cli
