@@ -51,7 +51,6 @@
     trash-cli
     uv
     vim
-    yazi
     zstd
   ];
 
