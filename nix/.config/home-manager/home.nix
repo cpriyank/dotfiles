@@ -127,7 +127,6 @@
       end
     '';
     shellAliases = {
-      ll = "ls -lah";
       gs = "git status";
     };
     plugins = [
