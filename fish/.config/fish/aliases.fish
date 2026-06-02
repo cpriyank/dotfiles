@@ -76,25 +76,6 @@ end
 	# command gcp --interactive --verbose $argv
 # end
 
-### Download video by URL from STDIN
-function apo
-	youtube-dl $argv
-end
-
-function asong
-	youtube-dl -f 251 $argv
-end
-
-# Download videos from the list of URLs from a file
-function apone
-	youtube-dl -a $argv
-end
-
-# just play audio from a video file or url
-function p
-	mpv --no-video $argv
-end
-
 ### Redshift aliases. For saving eyes, seriously.
 # Gandhinagar coordinates
 function shantib
@@ -224,7 +205,7 @@ function g --wraps git
         git $argv;
 end
 
-function update --description "update brew, pip packages"
+function updatebrew --description "update brew, pip packages"
    brew update
 	 brew cleanup
 	 # toolbox update
@@ -251,7 +232,6 @@ end
 alias mkcd='mcd'
 
 alias lg='lazygit'
-alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 
 # Only set the following if running linux
 if type -q pacman
@@ -295,5 +275,5 @@ if type -q pacman
 	# Upgrade AUR packages. See archlinux news before upgrading
 	alias aurupg='trizen -Syu -w --noedit'
 else
-    alias pacupg='nix-channel --update; and darwin-rebuild switch'
+    alias pacupg='nix flake update --flake ~/.dotfiles/nix/.config/home-manager; and home-manager switch --flake ~/.dotfiles/nix/.config/home-manager'
 end
