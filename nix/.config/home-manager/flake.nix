@@ -17,7 +17,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
-      homeConfigurations."{{HOME_MANAGER_USERNAME}}" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."orca" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
         # Specify your home configuration modules here, for example,
