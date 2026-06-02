@@ -63,6 +63,7 @@
 		# starship
 		tmux
 		tmuxPlugins.extrakto
+		trash-cli
 		uv
 		vim
 		# vscode # needs nixpkgs.config.allowUnfree
