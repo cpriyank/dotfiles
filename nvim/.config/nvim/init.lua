@@ -34,7 +34,9 @@ end)
 vim.keymap.set("i", "jk", "<Esc>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", ";", ":")
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>q", function()
+	vim.diagnostic.setloclist()
+end, { desc = "Open diagnostic [Q]uickfix list" })
 vim.keymap.set("n", "<leader>fs", "<cmd>w<CR>", { desc = "Current [F]ile [S]ave" })
 vim.keymap.set("n", "<leader>fq", "<cmd>wq<CR>", { desc = "Current [F]ile [Q]uit" })
 
@@ -44,34 +46,33 @@ vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right win
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
--- [[ Basic Autocommands ]]
--- Highlight when yanking text
-vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-	callback = function()
-		vim.hl.on_yank()
-	end,
-})
+-- [[ Basic Autocommands (deferred — none needed before first screen draw) ]]
+vim.schedule(function()
+	vim.api.nvim_create_autocmd("TextYankPost", {
+		desc = "Highlight when yanking (copying) text",
+		group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+		callback = function()
+			vim.hl.on_yank()
+		end,
+	})
 
--- Enable treesitter highlight for bundled parsers (no plugin required)
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "lua", "markdown", "vim", "vimdoc", "query" },
-	group = vim.api.nvim_create_augroup("user-treesitter", { clear = true }),
-	callback = function()
-		pcall(vim.treesitter.start)
-	end,
-})
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = { "lua", "markdown", "vim", "vimdoc", "query" },
+		group = vim.api.nvim_create_augroup("user-treesitter", { clear = true }),
+		callback = function()
+			pcall(vim.treesitter.start)
+		end,
+	})
 
--- Enable spell-check for prose filetypes (avoid noise on code identifiers)
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "markdown", "text", "gitcommit" },
-	group = vim.api.nvim_create_augroup("user-spell", { clear = true }),
-	callback = function()
-		vim.opt_local.spell = true
-		vim.opt_local.spelllang = "en_us"
-	end,
-})
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = { "markdown", "text", "gitcommit" },
+		group = vim.api.nvim_create_augroup("user-spell", { clear = true }),
+		callback = function()
+			vim.opt_local.spell = true
+			vim.opt_local.spelllang = "en_us"
+		end,
+	})
+end)
 
 -- Retain cursor position when opening files (modern API)
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -86,89 +87,89 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 	end,
 })
 
--- [[ LSP (Neovim 0.11+ built-in vim.lsp.config / vim.lsp.enable) ]]
--- Install servers via :MasonInstall <name>. No nvim-lspconfig/mason-lspconfig required.
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("user-lsp-attach", { clear = true }),
-	callback = function(event)
-		local map = function(keys, func, desc, mode)
-			vim.keymap.set(mode or "n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
-		end
+-- [[ LSP (deferred — servers attach on FileType, no need to block startup) ]]
+vim.schedule(function()
+	vim.api.nvim_create_autocmd("LspAttach", {
+		group = vim.api.nvim_create_augroup("user-lsp-attach", { clear = true }),
+		callback = function(event)
+			local map = function(keys, func, desc, mode)
+				vim.keymap.set(mode or "n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+			end
 
-		local builtin = require("telescope.builtin")
-		map("gd", builtin.lsp_definitions, "[G]oto [D]efinition")
-		map("gr", builtin.lsp_references, "[G]oto [R]eferences")
-		map("gI", builtin.lsp_implementations, "[G]oto [I]mplementation")
-		map("<leader>D", builtin.lsp_type_definitions, "Type [D]efinition")
-		map("<leader>ds", builtin.lsp_document_symbols, "[D]ocument [S]ymbols")
-		map("<leader>ws", builtin.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-		map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-		map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
-		map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+			local builtin = require("telescope.builtin")
+			map("gd", builtin.lsp_definitions, "[G]oto [D]efinition")
+			map("gr", builtin.lsp_references, "[G]oto [R]eferences")
+			map("gI", builtin.lsp_implementations, "[G]oto [I]mplementation")
+			map("<leader>D", builtin.lsp_type_definitions, "Type [D]efinition")
+			map("<leader>ds", builtin.lsp_document_symbols, "[D]ocument [S]ymbols")
+			map("<leader>ws", builtin.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+			map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+			map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+			map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-		local client = vim.lsp.get_client_by_id(event.data.client_id)
-		if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-			local hl_group = vim.api.nvim_create_augroup("user-lsp-highlight", { clear = false })
-			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-				buffer = event.buf,
-				group = hl_group,
-				callback = vim.lsp.buf.document_highlight,
-			})
-			vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-				buffer = event.buf,
-				group = hl_group,
-				callback = vim.lsp.buf.clear_references,
-			})
-			vim.api.nvim_create_autocmd("LspDetach", {
-				group = vim.api.nvim_create_augroup("user-lsp-detach", { clear = true }),
-				callback = function(ev)
-					vim.lsp.buf.clear_references()
-					vim.api.nvim_clear_autocmds({ group = "user-lsp-highlight", buffer = ev.buf })
-				end,
-			})
-		end
+			local client = vim.lsp.get_client_by_id(event.data.client_id)
+			if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+				local hl_group = vim.api.nvim_create_augroup("user-lsp-highlight", { clear = false })
+				vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+					buffer = event.buf,
+					group = hl_group,
+					callback = vim.lsp.buf.document_highlight,
+				})
+				vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+					buffer = event.buf,
+					group = hl_group,
+					callback = vim.lsp.buf.clear_references,
+				})
+				vim.api.nvim_create_autocmd("LspDetach", {
+					group = vim.api.nvim_create_augroup("user-lsp-detach", { clear = true }),
+					callback = function(ev)
+						vim.lsp.buf.clear_references()
+						vim.api.nvim_clear_autocmds({ group = "user-lsp-highlight", buffer = ev.buf })
+					end,
+				})
+			end
 
-		if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-			map("<leader>th", function()
-				vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-			end, "[T]oggle Inlay [H]ints")
-		end
-	end,
-})
+			if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+				map("<leader>th", function()
+					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+				end, "[T]oggle Inlay [H]ints")
+			end
+		end,
+	})
 
--- Default capabilities: advertise snippet support so LSP returns rich completions
-local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-lsp_capabilities.textDocument.completion.completionItem.snippetSupport = true
-vim.lsp.config("*", { capabilities = lsp_capabilities })
+	local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
+	lsp_capabilities.textDocument.completion.completionItem.snippetSupport = true
+	vim.lsp.config("*", { capabilities = lsp_capabilities })
 
-vim.lsp.config("lua_ls", {
-	settings = {
-		Lua = { completion = { callSnippet = "Replace" } },
-	},
-})
-vim.lsp.enable("lua_ls")
+	vim.lsp.config("lua_ls", {
+		settings = {
+			Lua = { completion = { callSnippet = "Replace" } },
+		},
+	})
+	vim.lsp.enable("lua_ls")
 
-vim.lsp.config("pyright", {
-	cmd = { "pyright-langserver", "--stdio" },
-	filetypes = { "python" },
-	root_markers = {
-		"pyrightconfig.json",
-		"pyproject.toml",
-		"setup.py",
-		"setup.cfg",
-		"requirements.txt",
-		"Pipfile",
-		".git",
-	},
-	settings = {
-		python = {
-			analysis = {
-				autoImportCompletions = true,
+	vim.lsp.config("pyright", {
+		cmd = { "pyright-langserver", "--stdio" },
+		filetypes = { "python" },
+		root_markers = {
+			"pyrightconfig.json",
+			"pyproject.toml",
+			"setup.py",
+			"setup.cfg",
+			"requirements.txt",
+			"Pipfile",
+			".git",
+		},
+		settings = {
+			python = {
+				analysis = {
+					autoImportCompletions = true,
+				},
 			},
 		},
-	},
-})
-vim.lsp.enable("pyright")
+	})
+	vim.lsp.enable("pyright")
+end)
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -186,11 +187,12 @@ require("lazy").setup({
 	-- Copilot (<Tab> is integrated through blink.cmp below)
 	{
 		"github/copilot.vim",
-		lazy = false,
+		event = "VeryLazy",
 		init = function()
 			vim.g.copilot_no_tab_map = true
 		end,
 		config = function()
+			vim.fn["copilot#Init"]()
 			vim.keymap.set("i", "<C-l>", 'copilot#Accept("\\<CR>")', {
 				expr = true,
 				replace_keycodes = false,
@@ -202,7 +204,7 @@ require("lazy").setup({
 	-- Git signs in the gutter
 	{
 		"lewis6991/gitsigns.nvim",
-		event = { "BufReadPre", "BufNewFile" },
+		event = "VeryLazy",
 		opts = {
 			signs = {
 				add = { text = "+" },
@@ -360,6 +362,7 @@ require("lazy").setup({
 	-- <Tab> accepts Copilot when visible, then falls back to blink completion/snippets.
 	{
 		"saghen/blink.cmp",
+		event = "InsertEnter",
 		version = "1.*",
 		config = function(_, opts)
 			require("blink.cmp").setup(opts)
