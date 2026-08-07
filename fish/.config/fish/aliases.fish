@@ -61,15 +61,90 @@ end
 
 # Warn on overwrite
 # function mv
-	# command gmv --interactive --verbose $argv
+# 	command gmv --interactive --verbose $argv
 # end
 
 function rm
 	trash $argv
 end
 
+# Helper function to prompt for directory creation and handle overwrites
+function __safe_file_op --argument-names op
+    set -e argv[1]
+
+    if test (count $argv) -lt 2
+        echo "Usage: $op source... destination"
+        return 1
+    end
+
+    # Get destination (last argument)
+    set -l dest $argv[-1]
+    set -l sources $argv[1..-2]
+
+    # Determine destination directory
+    set -l dest_dir
+    if test (count $sources) -gt 1
+        # Multiple sources: dest must be a directory
+        set dest_dir $dest
+    else
+        # Single source: dest could be file or dir
+        if string match -q '*/' $dest
+            set dest_dir $dest
+        else if test -d $dest
+            set dest_dir $dest
+        else
+            set dest_dir (dirname $dest)
+        end
+    end
+
+    # Check if destination directory exists
+    if not test -d $dest_dir
+        read -l -P "Directory '$dest_dir' doesn't exist. Create it? [y/N] " confirm
+        if test "$confirm" = y -o "$confirm" = Y
+            mkdir -p $dest_dir
+            or return 1
+        else
+            echo "Aborted."
+            return 1
+        end
+    end
+
+    # Check for overwrites
+    for src in $sources
+        set -l target
+        if test -d $dest
+            set target $dest/(basename $src)
+        else
+            set target $dest
+        end
+
+        if test -e $target
+            read -l -P "Overwrite '$target'? [y/N] " confirm
+            if test "$confirm" != y -a "$confirm" != Y
+                echo "Skipping '$src'."
+                set -l idx (contains -i $src $sources)
+                set -e sources[$idx]
+            end
+        end
+    end
+
+    # Execute the operation if there are sources left
+    if test (count $sources) -gt 0
+        switch $op
+            case cp
+                rsync --archive -hh --partial --info=stats1,progress2 --modify-window=1 $sources $dest
+            case mv
+                command mv --verbose $sources $dest
+        end
+    end
+end
+
 function cp
-  rsync --archive -hh --partial --info=stats1,progress2 --modify-window=1 $argv
+    __safe_file_op cp $argv
+end
+
+function mv
+    __safe_file_op mv $argv
 end
 
 # function cp
