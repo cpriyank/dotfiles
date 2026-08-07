@@ -31,6 +31,10 @@ end
 if command --search --quiet "direnv"
   direnv hook fish | source
 end
+
+# Allow cd to find directories in home without typing ~/
+set -gx CDPATH . ~
+
 ### Some handy aliases
 if test -e $HOME/.config/fish/aliases.fish
 	source $HOME/.config/fish/aliases.fish
