@@ -87,89 +87,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 	end,
 })
 
--- [[ LSP (deferred — servers attach on FileType, no need to block startup) ]]
-vim.schedule(function()
-	vim.api.nvim_create_autocmd("LspAttach", {
-		group = vim.api.nvim_create_augroup("user-lsp-attach", { clear = true }),
-		callback = function(event)
-			local map = function(keys, func, desc, mode)
-				vim.keymap.set(mode or "n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
-			end
-
-			local builtin = require("telescope.builtin")
-			map("gd", builtin.lsp_definitions, "[G]oto [D]efinition")
-			map("gr", builtin.lsp_references, "[G]oto [R]eferences")
-			map("gI", builtin.lsp_implementations, "[G]oto [I]mplementation")
-			map("<leader>D", builtin.lsp_type_definitions, "Type [D]efinition")
-			map("<leader>ds", builtin.lsp_document_symbols, "[D]ocument [S]ymbols")
-			map("<leader>ws", builtin.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-			map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-			map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
-			map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-
-			local client = vim.lsp.get_client_by_id(event.data.client_id)
-			if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-				local hl_group = vim.api.nvim_create_augroup("user-lsp-highlight", { clear = false })
-				vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-					buffer = event.buf,
-					group = hl_group,
-					callback = vim.lsp.buf.document_highlight,
-				})
-				vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-					buffer = event.buf,
-					group = hl_group,
-					callback = vim.lsp.buf.clear_references,
-				})
-				vim.api.nvim_create_autocmd("LspDetach", {
-					group = vim.api.nvim_create_augroup("user-lsp-detach", { clear = true }),
-					callback = function(ev)
-						vim.lsp.buf.clear_references()
-						vim.api.nvim_clear_autocmds({ group = "user-lsp-highlight", buffer = ev.buf })
-					end,
-				})
-			end
-
-			if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-				map("<leader>th", function()
-					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-				end, "[T]oggle Inlay [H]ints")
-			end
-		end,
-	})
-
-	local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-	lsp_capabilities.textDocument.completion.completionItem.snippetSupport = true
-	vim.lsp.config("*", { capabilities = lsp_capabilities })
-
-	vim.lsp.config("lua_ls", {
-		settings = {
-			Lua = { completion = { callSnippet = "Replace" } },
-		},
-	})
-	vim.lsp.enable("lua_ls")
-
-	vim.lsp.config("pyright", {
-		cmd = { "pyright-langserver", "--stdio" },
-		filetypes = { "python" },
-		root_markers = {
-			"pyrightconfig.json",
-			"pyproject.toml",
-			"setup.py",
-			"setup.cfg",
-			"requirements.txt",
-			"Pipfile",
-			".git",
-		},
-		settings = {
-			python = {
-				analysis = {
-					autoImportCompletions = true,
-				},
-			},
-		},
-	})
-	vim.lsp.enable("pyright")
-end)
+-- [[ Trusted project-local configs ]]
+require("trusted-exrc")
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -184,21 +103,29 @@ vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
 require("lazy").setup({
-	-- Copilot (<Tab> is integrated through blink.cmp below)
+	-- Detect tabstop and shiftwidth automatically
+	"tpope/vim-sleuth",
+
 	{
-		"github/copilot.vim",
-		event = "VeryLazy",
-		init = function()
-			vim.g.copilot_no_tab_map = true
-		end,
-		config = function()
-			vim.fn["copilot#Init"]()
-			vim.keymap.set("i", "<C-l>", 'copilot#Accept("\\<CR>")', {
-				expr = true,
-				replace_keycodes = false,
-				silent = true,
-			})
-		end,
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		opts = {
+			suggestion = {
+				enabled = true,
+				auto_trigger = true,
+				hide_during_completion = true,
+				keymap = {
+					accept = "<M-l>",
+					accept_word = false,
+					accept_line = false,
+					next = "<M-]>",
+					prev = "<M-[>",
+					dismiss = "<C-]>",
+				},
+			},
+			panel = { enabled = false },
+		},
 	},
 
 	-- Git signs in the gutter
@@ -328,6 +255,106 @@ require("lazy").setup({
 	{
 		"folke/lazydev.nvim",
 		ft = "lua",
+		opts = {
+			library = {
+				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+			},
+		},
+	},
+	{ "Bilal2453/luvit-meta", lazy = true },
+
+	-- Main LSP Configuration
+	{
+		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			{ "williamboman/mason.nvim", config = true },
+			"williamboman/mason-lspconfig.nvim",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			{ "j-hui/fidget.nvim", opts = {} },
+		},
+		config = function()
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+				callback = function(event)
+					local map = function(keys, func, desc, mode)
+						mode = mode or "n"
+						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+					end
+
+					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+					map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+					map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+					map(
+						"<leader>ws",
+						require("telescope.builtin").lsp_dynamic_workspace_symbols,
+						"[W]orkspace [S]ymbols"
+					)
+					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+
+					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+						local highlight_augroup =
+							vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+							buffer = event.buf,
+							group = highlight_augroup,
+							callback = vim.lsp.buf.document_highlight,
+						})
+						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+							buffer = event.buf,
+							group = highlight_augroup,
+							callback = vim.lsp.buf.clear_references,
+						})
+						vim.api.nvim_create_autocmd("LspDetach", {
+							group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+							callback = function(event2)
+								vim.lsp.buf.clear_references()
+								vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+							end,
+						})
+					end
+
+					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+						map("<leader>th", function()
+							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+						end, "[T]oggle Inlay [H]ints")
+					end
+				end,
+			})
+
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			local servers = {
+				lua_ls = {
+					settings = {
+						Lua = {
+							completion = { callSnippet = "Replace" },
+						},
+					},
+				},
+			}
+
+			require("mason").setup()
+
+			local ensure_installed = vim.tbl_keys(servers or {})
+			vim.list_extend(ensure_installed, { "stylua" })
+			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
+			require("mason-lspconfig").setup({
+				handlers = {
+					function(server_name)
+						local server = servers[server_name] or {}
+						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+						require("lspconfig")[server_name].setup(server)
+					end,
+				},
+			})
+		end,
 	},
 
 	-- Autoformat
@@ -358,54 +385,36 @@ require("lazy").setup({
 		},
 	},
 
-	-- Completion: blink.cmp (Rust-native fuzzy, single-plugin replacement for nvim-cmp stack).
-	-- <Tab> accepts Copilot when visible, then falls back to blink completion/snippets.
+	-- Autocompletion via blink.cmp
 	{
 		"saghen/blink.cmp",
-		event = "InsertEnter",
 		version = "1.*",
-		config = function(_, opts)
-			require("blink.cmp").setup(opts)
-			-- Re-register LSP capabilities with blink's richer set (snippet, resolve, etc.)
-			vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
-		end,
+		event = "InsertEnter",
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+		},
 		opts = {
 			keymap = {
-				preset = "super-tab",
+				preset = "default",
+				["<CR>"] = { "select_and_accept", "fallback" },
 				["<Tab>"] = {
 					function(cmp)
-						local ok, suggestion = pcall(vim.fn["copilot#GetDisplayedSuggestion"])
-						if ok and suggestion and suggestion.text ~= "" then
-							return vim.fn["copilot#Accept"]("")
-						end
-
-						if cmp.snippet_active() then
-							return cmp.accept()
-						end
+						if cmp.snippet_active() then return cmp.accept() end
 						return cmp.select_and_accept()
 					end,
 					"snippet_forward",
 					"fallback",
 				},
 			},
-			appearance = { nerd_font_variant = "mono" },
-			completion = {
-				documentation = { auto_show = true, auto_show_delay_ms = 200 },
-				list = { selection = { preselect = false, auto_insert = false } },
+			appearance = {
+				nerd_font_variant = "mono",
 			},
-			snippets = { preset = "default" }, -- uses vim.snippet
+			completion = {
+				documentation = { auto_show = false },
+			},
 			sources = {
-				default = { "lsp", "path", "buffer", "lazydev" },
+				default = { "lazydev", "lsp", "path", "snippets", "buffer" },
 				providers = {
-					lsp = {
-						score_offset = 10,
-					},
-					path = {
-						score_offset = -5,
-					},
-					buffer = {
-						score_offset = -8,
-					},
 					lazydev = {
 						name = "LazyDev",
 						module = "lazydev.integrations.blink",
@@ -413,8 +422,25 @@ require("lazy").setup({
 					},
 				},
 			},
-			fuzzy = { implementation = "prefer_rust_with_warning" },
 		},
+		opts_extend = { "sources.default" },
+		config = function(_, opts)
+			require("blink.cmp").setup(opts)
+			-- Hide Copilot suggestions when blink.cmp menu is open
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "BlinkCmpMenuOpen",
+				callback = function()
+					require("copilot.suggestion").dismiss()
+					vim.b.copilot_suggestion_hidden = true
+				end,
+			})
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "BlinkCmpMenuClose",
+				callback = function()
+					vim.b.copilot_suggestion_hidden = false
+				end,
+			})
+		end,
 	},
 
 	-- Colorscheme
@@ -458,6 +484,45 @@ require("lazy").setup({
 				twilight = { enabled = true },
 				gitsigns = { enabled = false },
 			},
+		},
+	},
+
+	-- Rich markdown rendering in-editor
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		ft = { "markdown" },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {
+			heading = {
+				sign = true,
+				icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
+			},
+			code = {
+				sign = true,
+				style = "full",
+				left_pad = 1,
+				right_pad = 1,
+				border = "thin",
+			},
+			bullet = {
+				icons = { "", "󰧞", "󰄮", "󰄯" },
+			},
+			checkbox = {
+				unchecked = { icon = " " },
+				checked = { icon = " " },
+				custom = {
+					todo = { raw = "[-]", rendered = "󰥔 ", highlight = "RenderMarkdownTodo" },
+				},
+			},
+			quote = { icon = "┃" },
+			pipe_table = { style = "full" },
+			link = { image = " ", hyperlink = " " },
+			win_options = {
+				conceallevel = { rendered = 2, default = vim.api.nvim_get_option_value("conceallevel", {}) },
+			},
+		},
+		keys = {
+			{ "<leader>tm", "<cmd>RenderMarkdown toggle<CR>", desc = "[T]oggle [M]arkdown rendering" },
 		},
 	},
 
