@@ -1,38 +1,53 @@
 -- Trusted project-local configs
--- Automatically sources .nvim.lua or .exrc files in project roots
--- Uses Neovim's built-in 'exrc' with trust management
+-- Sources .nvim.lua files only in trusted project paths
+--
+-- Set trusted paths via environment variable in ~/.config/fish/private.fish:
+--   set -gx NVIM_TRUSTED_PROJECTS "$HOME/project1:$HOME/project2"
+-- Paths are colon-separated (like PATH)
 
--- Enable exrc (project-local config files)
-vim.opt.exrc = true
-
--- Create command to trust current directory's local config
-vim.api.nvim_create_user_command("TrustExrc", function()
-	local cwd = vim.fn.getcwd()
-	local exrc = cwd .. "/.nvim.lua"
-	local vimrc = cwd .. "/.exrc"
-
-	if vim.fn.filereadable(exrc) == 1 then
-		vim.secure.trust({ path = exrc, action = "allow" })
-		vim.notify("Trusted: " .. exrc, vim.log.levels.INFO)
-	elseif vim.fn.filereadable(vimrc) == 1 then
-		vim.secure.trust({ path = vimrc, action = "allow" })
-		vim.notify("Trusted: " .. vimrc, vim.log.levels.INFO)
-	else
-		vim.notify("No .nvim.lua or .exrc found in " .. cwd, vim.log.levels.WARN)
+local function get_trusted_projects()
+	local env = vim.env.NVIM_TRUSTED_PROJECTS or ""
+	if env == "" then
+		return {}
 	end
-end, { desc = "Trust local .nvim.lua or .exrc file" })
+	return vim.split(env, ":", { plain = true, trimempty = true })
+end
 
--- Create command to deny/revoke trust
-vim.api.nvim_create_user_command("DenyExrc", function()
-	local cwd = vim.fn.getcwd()
-	local exrc = cwd .. "/.nvim.lua"
-	local vimrc = cwd .. "/.exrc"
-
-	if vim.fn.filereadable(exrc) == 1 then
-		vim.secure.trust({ path = exrc, action = "deny" })
-		vim.notify("Denied: " .. exrc, vim.log.levels.INFO)
-	elseif vim.fn.filereadable(vimrc) == 1 then
-		vim.secure.trust({ path = vimrc, action = "deny" })
-		vim.notify("Denied: " .. vimrc, vim.log.levels.INFO)
+local function is_trusted(cwd)
+	for _, trusted in ipairs(get_trusted_projects()) do
+		local expanded = vim.fn.expand(trusted)
+		if cwd == expanded or cwd:find("^" .. vim.pesc(expanded) .. "/") then
+			return expanded
+		end
 	end
-end, { desc = "Deny trust for local .nvim.lua or .exrc file" })
+	return nil
+end
+
+local function try_source(trusted_path)
+	local exrc = trusted_path .. "/.nvim.lua"
+	if vim.fn.filereadable(exrc) == 1 then
+		dofile(exrc)
+		return true
+	end
+	return false
+end
+
+-- Source on directory change
+vim.api.nvim_create_autocmd("DirChanged", {
+	desc = "Source .nvim.lua for trusted projects",
+	group = vim.api.nvim_create_augroup("trusted-exrc", { clear = true }),
+	callback = function()
+		local trusted = is_trusted(vim.fn.getcwd())
+		if trusted then
+			try_source(trusted)
+		end
+	end,
+})
+
+-- Source on startup
+local trusted = is_trusted(vim.fn.getcwd())
+if trusted then
+	vim.schedule(function()
+		try_source(trusted)
+	end)
+end
